@@ -72,7 +72,7 @@ body.sh-on #hdr{filter:brightness(.62)}
 
 /* Tab-Leiste */
 #nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(22,22,24,.8);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
-  border-top:.5px solid var(--ln);display:grid;grid-template-columns:repeat(5,1fr);padding:0 var(--sar) var(--sab) var(--sal)}
+  border-top:.5px solid var(--ln);display:grid;grid-template-columns:repeat(6,1fr);padding:0 var(--sar) var(--sab) var(--sal)}
 #nav button{height:var(--nav);background:none;border:0;color:#8E8E93;font:500 10px/1 var(--sans);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;touch-action:manipulation}
 #nav .ic{width:25px;height:25px;transition:transform .4s var(--spring)}
 #nav button.on{color:var(--acc)}
@@ -344,6 +344,132 @@ svg text{font-family:var(--rnd)}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 body.nofx *,body.nofx *::before,body.nofx *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+
+/* Casino */
+.cz-bal{display:inline-flex;align-items:center;gap:6px;padding:0 12px;min-height:34px;border-radius:17px;background:rgba(255,214,10,.14);color:var(--yl);font:700 15px var(--rnd);white-space:nowrap}
+.cz-hero{border-radius:24px;padding:18px 16px;margin:10px 0;background:radial-gradient(120% 100% at 100% 0%,rgba(255,214,10,.32),rgba(255,214,10,0) 55%),linear-gradient(165deg,#2b2410,#17150d 65%);box-shadow:inset 0 0 0 1.5px rgba(255,214,10,.35)}
+.cz-hero .eyebrow{color:var(--yl)}
+.cz-hero .big{font:800 44px/1.05 var(--rnd);color:#fff;margin:4px 0}
+.cz-hero .big small{font-size:18px;color:var(--yl)}
+.cz-h{font:800 21px/1.2 var(--sans);color:var(--yl);letter-spacing:.03em;margin:26px 2px 12px;text-transform:uppercase}
+.cz-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 12px}
+.cz-t{background:none;border:0;color:var(--tx);display:flex;flex-direction:column;align-items:center;gap:8px;padding:0;font:700 13.5px/1.2 var(--sans);text-align:center;min-width:0}
+.cz-t .ib{width:100%;aspect-ratio:1;border-radius:22px;background:radial-gradient(circle at 50% 38%,#262012,#111 72%);box-shadow:inset 0 0 0 2px rgba(214,178,74,.55),0 6px 18px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;font-size:50px;line-height:1;transition:transform .35s var(--spring);position:relative;overflow:hidden}
+.cz-t .ib svg{width:66%;height:66%}
+.cz-t:active .ib{transform:scale(.9)}
+.betbar{background:var(--s1);border-radius:18px;padding:12px;margin:12px 0}
+.betbar .row .b.sm{min-width:48px;padding:0 8px}
+.cz-stage{border-radius:22px;padding:14px;margin:10px 0;background:var(--s1);position:relative;overflow:hidden}
+.felt{background:radial-gradient(130% 90% at 50% 0%,#1f5a37,#0f2e1d 70%,#0b2216);box-shadow:inset 0 0 0 2px rgba(214,178,74,.35)}
+.cres{min-height:30px;text-align:center;font:800 20px/1.3 var(--rnd);margin:6px 0}
+.cres.win{color:var(--acc)}.cres.lose{color:#FF6961}.cres.push{color:var(--yl)}
+.cres.pop{animation:pop .5s var(--spring)}
+.chipv{font:700 12px var(--rnd);color:var(--yl)}
+#czPop{position:fixed;left:50%;top:40%;z-index:92;transform:translate(-50%,-50%);pointer-events:none;text-align:center;font:900 52px/1 var(--rnd);color:var(--yl);text-shadow:0 6px 30px rgba(255,214,10,.45),0 2px 0 #000;animation:czpop 1.5s var(--spring) forwards}
+#czPop small{display:block;font:800 18px var(--rnd);color:#fff;margin-top:6px}
+@keyframes czpop{0%{transform:translate(-50%,-30%) scale(.4);opacity:0}25%{transform:translate(-50%,-50%) scale(1.12);opacity:1}70%{transform:translate(-50%,-55%) scale(1);opacity:1}100%{transform:translate(-50%,-80%) scale(.95);opacity:0}}
+.shake{animation:shake .45s ease}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* Spielkarten */
+.hand{display:flex;justify-content:center;align-items:center;min-height:92px;padding-right:22px}
+.pc{width:60px;height:86px;border-radius:9px;background:linear-gradient(160deg,#fff,#eceae4);color:#111;display:inline-flex;flex-direction:column;justify-content:space-between;padding:4px 6px;margin-right:-22px;box-shadow:0 6px 16px rgba(0,0,0,.45);position:relative;flex:none}
+.pc span{font:800 18px/1 var(--rnd)}
+.pc i{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-style:normal;font-size:30px;line-height:1}
+.pc .bt{align-self:flex-end;transform:rotate(180deg)}
+.pc.red{color:#D71F3B}
+.pc.back{background:repeating-linear-gradient(45deg,#B3123C 0 7px,#8A0C2D 7px 14px);box-shadow:inset 0 0 0 3px #fff,0 6px 16px rgba(0,0,0,.45)}
+.pc.deal{animation:deal .5s var(--ease) both}
+.pc.big{width:110px;height:156px;border-radius:14px;margin:0;padding:8px 10px}
+.pc.big span{font-size:30px}.pc.big i{font-size:60px}
+.pc.flip{animation:cflip .5s var(--ease)}
+@keyframes deal{from{transform:translate(90px,-140px) rotate(25deg);opacity:0}}
+@keyframes cflip{0%{transform:rotateY(90deg)}100%{transform:rotateY(0)}}
+.hlab{text-align:center;font:700 13px var(--sans);color:rgba(255,255,255,.75);margin:4px 0 6px}
+.hlab b{display:inline-block;min-width:34px;padding:3px 8px;border-radius:12px;background:rgba(0,0,0,.35);color:#fff;font:800 15px var(--rnd);margin-left:6px}
+.hbox{border-radius:16px;padding:6px 4px;transition:background .3s}
+.hbox.on{background:rgba(255,214,10,.12);box-shadow:inset 0 0 0 1.5px rgba(255,214,10,.5)}
+.btns{display:grid;gap:8px;margin-top:10px}
+/* Roulette */
+.rlw{position:relative;width:270px;height:270px;margin:4px auto 6px}
+.rlw svg.wh{width:100%;height:100%;transition:transform 5s cubic-bezier(.12,.68,.1,1)}
+.rlw .ptr{position:absolute;left:50%;top:-4px;transform:translateX(-50%);width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:22px solid var(--yl);filter:drop-shadow(0 2px 4px rgba(0,0,0,.6));z-index:2}
+.rlw .ctr{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#3a3326,#16130d);box-shadow:0 0 0 3px #b8932e,0 4px 16px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font:900 34px var(--rnd);color:#fff}
+.rlh{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:4px 0 10px}
+.rlh i{font-style:normal;min-width:28px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;font:800 12px var(--rnd);color:#fff}
+.rn-r{background:#D71F3B}.rn-b{background:#26262A}.rn-g{background:#1E9E4A}
+.rlb{display:grid;grid-template-columns:52px repeat(3,minmax(0,1fr));gap:4px}
+.rlb button{min-height:44px;border:0;border-radius:8px;color:#fff;font:800 16px var(--rnd);position:relative;padding:0}
+.rlb .z{grid-column:2/5;background:#1E9E4A}
+.rlb .dz{background:#2C2C2E;font:700 12px var(--sans);writing-mode:vertical-rl;transform:rotate(180deg)}
+.rlb .ot{background:#2C2C2E;font:700 13px var(--sans)}
+.rlout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin-top:4px}
+.rlout button{min-height:44px;border:0;border-radius:8px;background:#2C2C2E;color:#fff;font:700 14px var(--sans);position:relative}
+.rlout .rr{background:#D71F3B}.rlout .bb{background:#26262A;box-shadow:inset 0 0 0 1px #555}
+.bchip{position:absolute;right:3px;top:3px;min-width:22px;height:22px;padding:0 5px;border-radius:11px;background:var(--yl);color:#000;font:800 11px/22px var(--rnd);box-shadow:0 2px 6px rgba(0,0,0,.5);animation:pop .35s var(--spring);writing-mode:horizontal-tb}
+.rlb .dz .bchip{transform:rotate(180deg)}
+.rlb button.hit,.rlout button.hit{box-shadow:0 0 0 3px var(--yl),0 0 18px rgba(255,214,10,.7)}
+/* Slots */
+.sl-m{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px;border-radius:20px;background:linear-gradient(180deg,#3a1d06,#1d0f04);box-shadow:inset 0 0 0 2px #d6b24a,0 10px 30px rgba(0,0,0,.5)}
+.sl-r{height:252px;overflow:hidden;border-radius:12px;background:linear-gradient(180deg,#fff7e6,#fff 20%,#fff 80%,#f1e4c8);position:relative}
+.sl-s{position:absolute;left:0;right:0;top:0}
+.sl-c{height:84px;display:flex;align-items:center;justify-content:center;font-size:52px;line-height:1}
+.sl-c.win{animation:slwin .8s ease-in-out infinite alternate}
+@keyframes slwin{to{transform:scale(1.18);filter:drop-shadow(0 0 10px rgba(255,200,0,.9))}}
+.sl-l{position:absolute;inset:8px;pointer-events:none}
+.sl-l polyline{fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:600;stroke-dashoffset:600;animation:dash .8s ease forwards;filter:drop-shadow(0 0 4px rgba(0,0,0,.6))}
+@keyframes dash{to{stroke-dashoffset:0}}
+/* Kacheln (Mines, Tower, Keno) */
+.mgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.mt{aspect-ratio:1;border:0;border-radius:12px;background:linear-gradient(180deg,#3A3A3C,#2C2C2E);box-shadow:inset 0 -3px 0 rgba(0,0,0,.35);font-size:30px;display:flex;align-items:center;justify-content:center;padding:0;transition:transform .25s var(--spring)}
+.mt:active{transform:scale(.9)}
+.mt.gem{background:linear-gradient(180deg,#1f3b2a,#16291e);animation:cflip .4s var(--ease)}
+.mt.bomb{background:linear-gradient(180deg,#5a1a16,#3a0f0c);animation:cflip .4s var(--ease)}
+.mt.dim{opacity:.4}
+.mt[disabled]{opacity:1}
+.tw{display:grid;gap:6px}
+.twr{display:grid;grid-template-columns:62px 1fr;gap:6px;align-items:center}
+.twr>b{font:800 13px var(--rnd);color:var(--mu);text-align:right}
+.twr.on>b{color:var(--yl)}
+.twc{display:grid;gap:6px}
+.twc .mt{aspect-ratio:auto;height:46px;font-size:24px}
+.twr.on .mt:not(.gem):not(.bomb){box-shadow:inset 0 0 0 2px var(--yl),0 0 14px rgba(255,214,10,.35)}
+.kg{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.kn{min-height:46px;border:0;border-radius:10px;background:#2C2C2E;color:#fff;font:700 16px var(--rnd);transition:transform .25s var(--spring),background .2s}
+.kn.sel{background:#7D3FD1}
+.kn.drw{background:#3A3A3C;color:var(--mu);animation:pop .35s var(--spring)}
+.kn.hit{background:var(--yl);color:#000;animation:pop .45s var(--spring)}
+.ktab{display:flex;gap:4px;overflow-x:auto;margin-top:10px;scrollbar-width:none}
+.ktab div{flex:1 0 46px;text-align:center;border-radius:8px;background:#2C2C2E;padding:6px 2px;font:700 12px var(--rnd)}
+.ktab div small{display:block;color:var(--mu);font-size:10px}
+.ktab div.on{background:var(--yl);color:#000}.ktab div.on small{color:#000}
+/* Münze */
+.coin{width:150px;height:150px;margin:10px auto;position:relative;transform-style:preserve-3d;transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.coin>div{position:absolute;inset:0;border-radius:50%;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;align-items:center;justify-content:center;font:900 44px var(--rnd);color:#6b4a00;background:radial-gradient(circle at 35% 30%,#fff3b0,#f5c542 40%,#c7921a 75%,#8d6410);box-shadow:inset 0 0 0 7px rgba(255,255,255,.25),inset 0 0 0 12px rgba(0,0,0,.12)}
+.coin>div.z{transform:rotateY(180deg);background:radial-gradient(circle at 35% 30%,#f2f2f2,#c9ccd2 45%,#8e939b 80%,#5c6068);color:#35383e}
+.coin-wrap{perspective:800px;padding:10px 0}
+/* Plinko, Crash, Glücksrad */
+.cv{width:100%;display:block;border-radius:16px}
+.crm{position:absolute;left:0;right:0;top:34%;text-align:center;font:900 46px var(--rnd);color:#fff;text-shadow:0 4px 20px rgba(0,0,0,.6);pointer-events:none}
+.crm.boom{color:#FF453A;animation:shake .45s ease}
+.crm.ok{color:var(--acc)}
+.pill-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin:6px 0}
+.pill-row i{font-style:normal;padding:4px 9px;border-radius:12px;font:800 12px var(--rnd);background:#2C2C2E}
+.dbar{position:relative;height:16px;border-radius:8px;margin:36px 4px 10px;background:linear-gradient(90deg,#FF453A var(--p),#30D158 var(--p))}
+.dbar.under{background:linear-gradient(90deg,#30D158 var(--p),#FF453A var(--p))}
+.dmark{position:absolute;top:-34px;transform:translateX(-50%);transition:left .6s var(--spring);font:800 15px var(--rnd);background:#fff;color:#000;border-radius:8px;padding:4px 7px}
+.dmark::after{content:'';position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);border:6px solid transparent;border-top-color:#fff;border-bottom:0}
+.dmark.w{background:var(--acc)}.dmark.l{background:#FF453A;color:#fff}.dmark.l::after{border-top-color:#FF453A}.dmark.w::after{border-top-color:var(--acc)}
+input.rng{width:100%;height:44px;-webkit-appearance:none;appearance:none;background:transparent}
+input.rng::-webkit-slider-runnable-track{height:8px;border-radius:4px;background:#3A3A3C}
+input.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;border-radius:50%;background:#fff;margin-top:-11px;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.bigm{font:900 64px/1.1 var(--rnd);text-align:center;margin:18px 0 6px;transition:color .3s}
+/* Rubbellos */
+.scx{position:relative;border-radius:18px;overflow:hidden;background:linear-gradient(160deg,#5b2bb5,#3b1a82);padding:12px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.2)}
+.scg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.scg div{height:84px;border-radius:12px;background:#fff8e1;color:#3b1a82;display:flex;flex-direction:column;align-items:center;justify-content:center;font:900 22px var(--rnd)}
+.scg div small{font:700 10px var(--sans);color:#7a5bb8}
+.scg div.win{background:var(--yl);animation:slwin .8s ease-in-out infinite alternate}
+.scx canvas{position:absolute;left:12px;top:12px;touch-action:none;border-radius:12px}
 </style>
 </head>
 <body>
@@ -392,6 +518,7 @@ function blank() {
   return {
     v: SCHEMA, lib: {}, programs: [], active: null, loads: {}, sessions: [], weights: [],
     settings: clone(DEF_SET), draft: null, game: { best: 0, plays: 0 },
+    casino: { bal: 1000, earned: 0, bets: {}, run: {}, hist: [], rounds: 0, won: 0, wager: 0, best: 0 },
     meta: { created: new Date().toISOString(), lastExport: null, migrations: [], archive: {}, extra: {}, dismiss: {}, notes: [] }
   };
 }
@@ -466,6 +593,7 @@ function normalize(s) {
   const b = blank();
   for (const k of Object.keys(b)) if (s[k] === undefined) s[k] = b[k];
   s.settings = Object.assign(clone(DEF_SET), s.settings);
+  s.casino = Object.assign(b.casino, s.casino);
   s.meta = Object.assign(b.meta, s.meta);
   for (const L of Object.values(s.lib)) {
     const d = newLib({ id: L.id });
@@ -923,6 +1051,7 @@ const ICO = {
   trophy: '<svg viewBox="0 0 24 24"><path d="M7.5 4.5h9v5a4.5 4.5 0 0 1-9 0z"/><path d="M7.5 6.5H4.8a2.8 2.8 0 0 0 3 3.6M16.5 6.5h2.7a2.8 2.8 0 0 1-3 3.6M12 14v3.5M8.5 20h7M9.5 17.5h5"/></svg>',
   flame: '<svg viewBox="0 0 24 24"><path d="M12 21a6.5 6.5 0 0 0 6.5-6.5c0-4.2-3.2-6.4-4.2-10a5.5 5.5 0 0 0-3.1 5.4A3.7 3.7 0 0 1 9 7.5C6.8 9.3 5.5 11.8 5.5 14.5A6.5 6.5 0 0 0 12 21z"/></svg>',
   timer: '<svg viewBox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 9.5v4l2.5 2M10 3h4M18.5 6.5l1.2-1.2"/></svg>',
+  casino: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.5"/><circle cx="9" cy="9" r="1.4" class="f"/><circle cx="15" cy="9" r="1.4" class="f"/><circle cx="9" cy="15" r="1.4" class="f"/><circle cx="15" cy="15" r="1.4" class="f"/><circle cx="12" cy="12" r="1.4" class="f"/></svg>',
   bolt: '<svg viewBox="0 0 24 24" class="f"><path d="M13.5 2.5L5 13.5h6l-1 8 8.5-11h-6z"/></svg>'
 };
 const icon = (k, cls) => '<i class="ic' + (cls ? ' ' + cls : '') + '">' + ICO[k] + '</i>';
@@ -1129,7 +1258,7 @@ A.tStop = () => { S.draft.timer = null; cancelBeep(); save(); renderTimer(); };
 /* ============================================================
    Navigation und Rendering
    ============================================================ */
-const TABS = [['heute', 'Heute'], ['plan', 'Plan'], ['stats', 'Auswertung'], ['gewicht', 'Gewicht'], ['daten', 'Daten']];
+const TABS = [['heute', 'Heute'], ['plan', 'Plan'], ['stats', 'Auswertung'], ['gewicht', 'Gewicht'], ['casino', 'Casino'], ['daten', 'Daten']];
 function renderNav() {
   $('#nav').innerHTML = TABS.map(([k, n]) => {
     const on = V.tab === k, live = k === 'heute' && S.draft;
@@ -1145,6 +1274,7 @@ function render(kind) {
   const m = $('#main'); m.innerHTML = html;
   document.body.classList.toggle('nofx', !fxOn());
   drawHdr(); renderNav(); renderTimer(true); animRings();
+  if (V.page === 'cg') czMount();
   if (kind && fxOn()) { m.classList.remove('an-push', 'an-pop', 'an-fade'); void m.offsetWidth; m.classList.add('an-' + kind); }
   if (!kind) m.classList.remove('an-fade', 'an-push', 'an-pop');
   if (kind) countUps(m); else m.querySelectorAll('[data-count]').forEach(x => x.removeAttribute('data-count'));
@@ -1604,6 +1734,7 @@ A.finSave = () => {
   ch.forEach(c => { S.loads[c.id] = c.nw; });
   if (ch.length) ses.changes = ch.map(c => ({ id: c.id, old: c.old, nw: c.nw, why: c.why }));
   if (prs.length) ses.prs = prs.length;
+  const coins = czReward(ses, prs.length); ses.coins = coins; S.casino.bal += coins; S.casino.earned = (S.casino.earned || 0) + coins;
   S.sessions.push(ses);
   if (ses.bw != null && !S.weights.find(w => w.d === sdate(ses))) { S.weights.push({ d: sdate(ses), kg: ses.bw, src: 'einheit' }); S.weights.sort((a, b) => a.d < b.d ? -1 : 1); }
   const p = prog(D.prog); if (p) advanceRotation(p, D.day);
@@ -1620,7 +1751,8 @@ A.finSave = () => {
       '<div class="tile"><div class="k" style="color:var(--pk)">' + icon('trophy') + 'Bestleistungen</div><div class="v">' + W(prs.length) + '</div></div></div>' +
       (prs.length ? '<label class="lb">Neue Bestleistungen</label><div class="lst">' + prs.map(x => '<div class="li"><div class="grow"><b>' + esc(exName(x.id)) + '</b><span class="n">' + (lib(x.id).bw ? 'KG + ' : '') + fmt(x.s.load) + ' kg × ' + x.s.reps + '</span></div><span class="tag pk">' + icon('trophy') + 'PR</span></div>').join('') + '</div>' : '') +
       (up.length ? '<label class="lb">Nächstes Mal</label><div class="lst">' + up.map(c => '<div class="li"><div class="grow"><b>' + esc(exName(c.id)) + '</b><span>' + esc(c.why) + '</span></div><b class="n ' + (c.nw > c.old ? 'gr' : 'rd') + '">' + fmt(c.old) + ' → ' + fmt(c.nw) + '</b></div>').join('') + '</div>' : '') +
-      '<div class="kv" style="margin-top:6px"><span>Nächster Tag</span><b>' + esc(dayLabel(prog(), nextDayId(prog()))) + '</b></div>' +
+      '<div class="kv" style="margin-top:6px"><span>🪙 Chips fürs Casino</span><b style="color:var(--yl)">+' + fmtT(coins) + '</b></div>' +
+      '<div class="kv"><span>Nächster Tag</span><b>' + esc(dayLabel(prog(), nextDayId(prog()))) + '</b></div>' +
       '<button class="b pri wide big" style="margin-top:14px" data-a="closeSheet">Fertig</button>');
     countUps($('#sheet')); animRings(); confetti(170); haptic(2);
   }, 250);
@@ -2283,6 +2415,849 @@ function gameDraw() {
     c.strokeStyle = 'rgba(255,255,255,' + (1 - e.t) + ')'; c.lineWidth = 3; c.stroke();
   }
 }
+
+
+/* ============================================================
+   Casino (nur Spielgeld, verdient durch Training)
+   ============================================================ */
+const CZ_START = 1000, CZ_MIN = 10;
+const CZ = () => S.casino;
+function rnd() { const a = new Uint32Array(1); crypto.getRandomValues(a); return a[0] / 4294967296; }
+function rint(n) { return Math.floor(rnd() * n); }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = rint(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function czRun(g) { return CZ().run[g]; }
+function czSetRun(g, v) { if (v == null) delete CZ().run[g]; else CZ().run[g] = v; save(); }
+const CZL = { lock: false };
+const BETS = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 250000, 500000, 1000000];
+function czBet(g) { return Math.max(CZ_MIN, CZ().bets[g] || 50); }
+function czTake(amt) {
+  amt = Math.round(amt);
+  if (amt < 1) return false;
+  if (CZ().bal < amt) { toast('Nicht genug Chips. Trainieren bringt neue!', true); haptic(2); return false; }
+  CZ().bal -= amt; CZ().wager = (CZ().wager || 0) + amt; save(); czBalUpd(); return true;
+}
+function czPay(g, stake, win, noFx) {
+  const c = CZ(); win = Math.round(win * 100) / 100;
+  c.bal = Math.round((c.bal + win) * 100) / 100; c.rounds = (c.rounds || 0) + 1; c.won = (c.won || 0) + win;
+  if (win - stake > (c.best || 0)) c.best = Math.round(win - stake);
+  c.hist.unshift({ g, bet: stake, win, t: Date.now() }); if (c.hist.length > 80) c.hist.length = 80;
+  save(); czBalUpd();
+  if (!noFx) { if (win > stake) czWinFx(win, stake); else if (win === 0) { haptic(1); blip(180, .08); } }
+}
+let czShown = null;
+function czBalUpd() {
+  const to = Math.floor(CZ().bal), from = czShown ?? to; czShown = to;
+  document.querySelectorAll('.czBal').forEach(el => {
+    if (!fxOn() || from === to) { el.textContent = fmtT(to); return; }
+    const t0 = performance.now(), D = 700;
+    const f = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3); el.textContent = fmtT(from + (to - from) * e); if (k < 1) requestAnimationFrame(f); };
+    requestAnimationFrame(f);
+  });
+}
+function czWinFx(win, stake) {
+  const m = win / stake;
+  haptic(m >= 5 ? 3 : 2); blip(880, .14); setTimeout(() => blip(1320, .12), 120);
+  if (!fxOn()) return;
+  const old = $('#czPop'); if (old) old.remove();
+  const el = document.createElement('div'); el.id = 'czPop';
+  el.innerHTML = '+' + fmtT(win) + '<small>' + fmt(m, 2) + '×</small>'; document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1600);
+  if (m >= 5) confetti(m >= 20 ? 200 : 110);
+}
+function czRes(txt, cls) { const r = $('#cRes'); if (!r) return; r.className = 'cres ' + (cls || '') + ' pop'; r.innerHTML = txt; }
+function balPill() { return '<span class="cz-bal">🪙 <span class="czBal">' + fmtT(Math.floor(CZ().bal)) + '</span></span>'; }
+function betBar(g, o = {}) {
+  const b = czBet(g), dis = o.lock ? ' disabled' : '';
+  return '<div class="betbar"><div class="row"><div class="grow eyebrow">' + (o.label || 'Einsatz') + '</div>' + (o.extra || '') + '</div>' +
+    '<div class="row" style="margin-top:8px"><div class="stp grow"><button data-a="czB" data-g="' + g + '" data-op="-"' + dis + '>−</button><div class="v"><b id="cbV">' + fmtT(b) + '</b><small>Chips</small></div><button data-a="czB" data-g="' + g + '" data-op="+"' + dis + '>+</button></div>' +
+    '<button class="b sm" data-a="czB" data-g="' + g + '" data-op="h"' + dis + '>½</button><button class="b sm" data-a="czB" data-g="' + g + '" data-op="d"' + dis + '>2×</button><button class="b sm" data-a="czB" data-g="' + g + '" data-op="m"' + dis + '>Max</button></div></div>';
+}
+A.czB = d => {
+  if (CZL.lock) return;
+  let b = czBet(d.g); const bal = Math.max(CZ_MIN, Math.floor(CZ().bal));
+  if (d.op === '+') b = BETS.find(x => x > b) ?? b * 2;
+  else if (d.op === '-') { const s = [...BETS].reverse().find(x => x < b); b = s ?? CZ_MIN; }
+  else if (d.op === 'h') b = Math.max(CZ_MIN, Math.floor(b / 2));
+  else if (d.op === 'd') b = b * 2;
+  else if (d.op === 'm') b = bal;
+  b = clamp(b, CZ_MIN, bal); CZ().bets[d.g] = b; save(); haptic(1);
+  const v = $('#cbV'); if (v) v.textContent = fmtT(b);
+  const g = GAMES[d.g]; if (g && g.onBet) g.onBet();
+};
+/* Spielkarten */
+const RK = ['', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'B', 'D', 'K'], SU = ['♠', '♥', '♦', '♣'];
+const cRank = c => c % 13 + 1, cSuit = c => Math.floor(c / 13) % 4;
+const SEEN = new Set();
+function cardH(c, key, delay, big) {
+  let cls = big ? ' big' : '';
+  if (key && !SEEN.has(key)) { SEEN.add(key); cls += ' deal'; }
+  const st = delay ? ' style="animation-delay:' + delay + 'ms"' : '';
+  if (c == null) return '<div class="pc back' + cls + '"' + st + '></div>';
+  const r = cRank(c), s = cSuit(c);
+  return '<div class="pc' + (s === 1 || s === 2 ? ' red' : '') + cls + '"' + st + '><span>' + RK[r] + '</span><i>' + SU[s] + '</i><span class="bt">' + RK[r] + '</span></div>';
+}
+function seenReset(p) { for (const k of [...SEEN]) if (k.startsWith(p)) SEEN.delete(k); }
+function newShoe(decks) { const a = []; for (let d = 0; d < decks; d++) for (let i = 0; i < 52; i++) a.push(i); return shuffle(a); }
+
+/* Lobby-Symbole */
+const GI = {
+  roulette: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#E8A33C"/><circle cx="50" cy="50" r="38" fill="#1a1a1a"/>' + Array.from({ length: 18 }, (_, i) => { const a = i * 20 * Math.PI / 180, b = (i * 20 + 20) * Math.PI / 180; return '<path d="M50 50 L' + (50 + 36 * Math.sin(a)) + ' ' + (50 - 36 * Math.cos(a)) + ' A36 36 0 0 1 ' + (50 + 36 * Math.sin(b)) + ' ' + (50 - 36 * Math.cos(b)) + 'Z" fill="' + (i % 2 ? '#D71F3B' : '#1a1a1a') + '"/>'; }).join('') + '<circle cx="50" cy="50" r="15" fill="#888"/><circle cx="50" cy="50" r="9" fill="#bbb"/><circle cx="38" cy="18" r="4" fill="#fff"/><path d="M50 0 L55 10 L45 10Z" fill="#FFD60A"/></svg>',
+  blackjack: '<svg viewBox="0 0 100 100"><path d="M50 12C40 32 16 42 16 60a16 16 0 0 0 28 10l-6 18h24l-6-18a16 16 0 0 0 28-10c0-18-24-28-34-48z" fill="#2F7BF6"/></svg>',
+  baccarat: '<svg viewBox="0 0 100 100"><path d="M50 8 L82 50 L50 92 L18 50Z" fill="#F0923E"/></svg>',
+  slots: '🍒', crash: '🚀', mines: '💣', dice: '🎲', coin: '🪙', scratch: '<svg viewBox="0 0 100 100"><rect x="8" y="22" width="84" height="56" rx="10" fill="#7C3AED"/><text x="50" y="42" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="sans-serif">RUBBELN</text><rect x="16" y="50" width="20" height="18" rx="4" fill="#E9D8A6"/><rect x="40" y="50" width="20" height="18" rx="4" fill="#222"/><text x="50" y="65" text-anchor="middle" font-size="14" fill="#FFD60A">★</text><rect x="64" y="50" width="20" height="18" rx="4" fill="#E9D8A6"/></svg>',
+  plinko: '<svg viewBox="0 0 100 100"><defs><radialGradient id="pg"><stop offset="0" stop-color="#FFE46B"/><stop offset="1" stop-color="#F5C400"/></radialGradient></defs><rect x="44" y="0" width="12" height="40" fill="#FFD60A" opacity=".12"/><circle cx="50" cy="52" r="26" fill="url(#pg)" style="filter:drop-shadow(0 0 10px #FFD60A)"/></svg>',
+  hilo: '<svg viewBox="0 0 100 100"><path d="M50 10 L72 44 H28Z" fill="#34C759"/><path d="M50 90 L72 56 H28Z" fill="#FF453A"/></svg>',
+  limbo: '<svg viewBox="0 0 100 100"><path d="M12 36 H86" stroke="#888" stroke-width="3" stroke-dasharray="7 6"/><path d="M18 80 C50 80 70 60 80 30" stroke="#FF3B7F" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="80" cy="28" r="9" fill="#FF7AB0" style="filter:drop-shadow(0 0 8px #FF3B7F)"/></svg>',
+  tower: '<svg viewBox="0 0 100 100"><rect x="18" y="78" width="64" height="11" rx="5" fill="#F0923E"/><rect x="24" y="64" width="52" height="11" rx="5" fill="#E9A23B"/><rect x="30" y="50" width="40" height="11" rx="5" fill="#C9B43A"/><rect x="36" y="36" width="28" height="11" rx="5" fill="#A6B83A"/><rect x="41" y="22" width="18" height="11" rx="5" fill="#8DB33A"/><path d="M50 22 V8 L62 11 L50 14" stroke="#FFD60A" stroke-width="3" fill="#FFD60A"/></svg>',
+  wheel: '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#F5C542"/>' + ['#34C759', '#FFD60A', '#AF52DE', '#F0923E', '#FF3B30', '#5AC8FA', '#0A84FF', '#E9A23B'].map((c, i) => { const a = i * 45 * Math.PI / 180, b = (i * 45 + 45) * Math.PI / 180; return '<path d="M50 50 L' + (50 + 41 * Math.sin(a)) + ' ' + (50 - 41 * Math.cos(a)) + ' A41 41 0 0 1 ' + (50 + 41 * Math.sin(b)) + ' ' + (50 - 41 * Math.cos(b)) + 'Z" fill="' + c + '"/>'; }).join('') + '<circle cx="50" cy="50" r="10" fill="#F5C542"/></svg>',
+  keno: '<svg viewBox="0 0 100 100">' + [0, 1, 2].map(r => [0, 1, 2].map(c => '<rect x="' + (12 + c * 27) + '" y="' + (12 + r * 27) + '" width="21" height="21" rx="6" fill="' + (r + c === 0 ? '#C026D3' : 'none') + '" stroke="#C026D3" stroke-width="5"/>').join('')).join('') + '</svg>'
+};
+const GAMES = {};
+const CZSEC = [['Klassiker', ['roulette', 'blackjack', 'baccarat']], ['Slots', ['slots']], ['Minispiele', ['crash', 'plinko', 'mines', 'hilo', 'dice', 'limbo', 'tower', 'wheel', 'keno', 'coin', 'scratch']]];
+function czReward(ses, prs) { return 200 + 10 * sessSets(ses) + 100 * prs; }
+VIEWS.casino = function () {
+  const c = CZ();
+  setHdr('Casino', 'Spielgeld · verdient durch Training', balPill());
+  const today_ = today();
+  let h = '<div class="cz-hero"><div class="eyebrow">Dein Guthaben</div><div class="big"><span class="czBal">' + fmtT(Math.floor(c.bal)) + '</span> <small>Chips</small></div>' +
+    '<div class="sm" style="color:rgba(255,255,255,.7)">Jedes Training bringt 200 Chips + 10 pro Satz + 100 pro Bestleistung.</div>' +
+    (c.bal < CZ_MIN ? (c.lastAid !== today_ ? '<button class="b pri wide" style="margin-top:12px" data-a="czAid">Notration: 100 Chips für heute</button>' : '<p class="sm" style="color:var(--yl)">Pleite. Die nächste Einheit füllt dein Konto wieder auf.</p>') : '') + '</div>';
+  h += '<div class="tiles"><div class="tile"><div class="k">Durch Training</div><div class="v">' + fmtT(c.earned || 0) + '</div></div><div class="tile"><div class="k">Größter Gewinn</div><div class="v">' + fmtT(c.best || 0) + '</div></div></div>';
+  for (const [t, ids] of CZSEC) h += '<div class="cz-h">' + t + '</div><div class="cz-grid">' + ids.map(g => '<button class="cz-t" data-a="czOpen" data-g="' + g + '"><div class="ib">' + GI[g] + '</div>' + GAMES[g].n + '</button>').join('') + '</div>';
+  const hs = c.hist.slice(0, 12);
+  if (hs.length) h += '<h2>Letzte Runden</h2><div class="lst">' + hs.map(x => '<div class="li"><div class="grow"><b>' + GAMES[x.g].n + '</b><span class="n">Einsatz ' + fmtT(x.bet) + ' · ' + new Date(x.t).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) + '</span></div><b class="n ' + (x.win > x.bet ? 'gr' : x.win < x.bet ? 'rd' : 'mu') + '">' + (x.win - x.bet >= 0 ? '+' : '−') + fmtT(Math.abs(x.win - x.bet)) + '</b></div>').join('') + '</div>';
+  h += '<p class="hint">Reines Spielgeld ohne Echtgeldbezug. Die Gewinnchancen entsprechen echten Casino-Spielen: auf Dauer gewinnt die Bank.</p>';
+  return h;
+};
+A.czAid = () => { const c = CZ(); c.lastAid = today(); c.bal += 100; save(); render(); czBalUpd(); };
+A.czOpen = d => { haptic(1); push('cg', { g: d.g }); };
+VIEWS.cg = function () {
+  const G = GAMES[V.ctx.g]; if (!G) { back(); return ''; }
+  setHdr(G.n, 'Casino', balPill(), true);
+  return '<div id="czStage">' + G.draw() + '</div>' + (G.rules ? '<button class="b gh wide" data-a="czRules">Spielregeln</button>' : '');
+};
+function czRedraw() { const G = GAMES[V.ctx.g], st = $('#czStage'); if (!G || !st || V.page !== 'cg') return; st.innerHTML = G.draw(); if (G.mount) G.mount(); czShown = Math.floor(CZ().bal); }
+function czMount() { const G = GAMES[V.ctx.g]; czShown = Math.floor(CZ().bal); if (G && G.mount) G.mount(); }
+A.czRules = () => { const G = GAMES[V.ctx.g]; sheet('<h3>' + G.n + '</h3><div class="sm" style="line-height:1.55">' + G.rules + '</div><button class="b pri wide" style="margin-top:14px" data-a="closeSheet">Verstanden</button>'); };
+
+/* ---------- Roulette (europäisch, ein Zero) ---------- */
+const RW = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
+const RED = new Set([1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]);
+const rlC = n => n === 0 ? 'g' : RED.has(n) ? 'r' : 'b';
+const RL = { rot: 0, spin: false, hit: null };
+const kfmt = v => v >= 1e6 ? fmt(v / 1e6, 1) + 'M' : v >= 1000 ? fmt(v / 1000, 1) + 'k' : String(Math.round(v));
+function rlWin(k, n) {
+  if (k[0] === 'n') return +k.slice(1) === n ? 36 : 0;
+  if (n === 0) return 0;
+  switch (k) {
+    case 'red': return RED.has(n) ? 2 : 0; case 'black': return RED.has(n) ? 0 : 2;
+    case 'even': return n % 2 === 0 ? 2 : 0; case 'odd': return n % 2 ? 2 : 0;
+    case 'low': return n <= 18 ? 2 : 0; case 'high': return n >= 19 ? 2 : 0;
+    case 'd1': return n <= 12 ? 3 : 0; case 'd2': return n > 12 && n <= 24 ? 3 : 0; case 'd3': return n > 24 ? 3 : 0;
+    case 'c1': return n % 3 === 1 ? 3 : 0; case 'c2': return n % 3 === 2 ? 3 : 0; case 'c3': return n % 3 === 0 ? 3 : 0;
+  }
+  return 0;
+}
+function rlWheelSvg() {
+  const a = 360 / 37, P = (r, d) => { const t = d * Math.PI / 180; return (150 + r * Math.sin(t)).toFixed(2) + ' ' + (150 - r * Math.cos(t)).toFixed(2); };
+  let g = '<circle cx="150" cy="150" r="149" fill="#6b4a14"/><circle cx="150" cy="150" r="143" fill="#c9a23c"/>';
+  RW.forEach((n, i) => {
+    const c = i * a, a0 = c - a / 2, a1 = c + a / 2, col = { g: '#1E9E4A', r: '#D71F3B', b: '#161618' }[rlC(n)];
+    g += '<path d="M' + P(138, a0) + ' A138 138 0 0 1 ' + P(138, a1) + ' L' + P(96, a1) + ' A96 96 0 0 0 ' + P(96, a0) + 'Z" fill="' + col + '" stroke="#c9a23c" stroke-width=".8"/>' +
+      '<text x="150" y="' + (150 - 121) + '" transform="rotate(' + c + ' 150 150)" font-size="12" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,sans-serif">' + n + '</text>';
+  });
+  g += '<circle cx="150" cy="150" r="96" fill="#2a1f10"/><circle cx="150" cy="150" r="88" fill="#3b2c16"/>';
+  for (let i = 0; i < 8; i++) g += '<path d="M150 150 L' + P(80, i * 45) + '" stroke="#c9a23c" stroke-width="5" stroke-linecap="round"/>';
+  return '<svg class="wh" id="rlW" viewBox="0 0 300 300" style="transform:rotate(' + RL.rot + 'deg)">' + g + '</svg>';
+}
+function rlBets() { const r = czRun('roulette') || { bets: {} }; if (!czRun('roulette')) CZ().run.roulette = r; return r.bets; }
+const rlTot = () => Object.values(rlBets()).reduce((a, b) => a + b, 0);
+function rlCell(k, label, cls, st) {
+  const v = rlBets()[k];
+  return '<button class="' + cls + (RL.hit != null && !RL.spin && rlWin(k, RL.hit) ? ' hit' : '') + '" data-a="rlB" data-k="' + k + '"' + (st ? ' style="' + st + '"' : '') + '>' + label + (v ? '<span class="bchip">' + kfmt(v) + '</span>' : '') + '</button>';
+}
+GAMES.roulette = {
+  n: 'Roulette',
+  rules: 'Europäisches Roulette mit 37 Fächern (0–36). Setze Chips auf Zahlen oder Chancen, dann drehen.<br><br><b>Auszahlungen</b><br>Einzelne Zahl: 35 zu 1<br>Dutzend oder Kolonne (2:1): 2 zu 1<br>Rot/Schwarz, Gerade/Ungerade, 1–18/19–36: 1 zu 1<br><br>Fällt die 0, verlieren alle einfachen Chancen, Dutzende und Kolonnen. Bankvorteil: 2,7 %.',
+  draw() {
+    const h = CZ().rlh || [];
+    let s = '<div class="cz-stage felt"><div class="rlw"><div class="ptr"></div>' + rlWheelSvg() + '<div class="ctr" id="rlCtr">' + (RL.hit != null && !RL.spin ? '<span style="color:' + { g: '#30D158', r: '#FF5A6E', b: '#fff' }[rlC(RL.hit)] + '">' + RL.hit + '</span>' : '🎯') + '</div></div>' +
+      '<div class="rlh">' + h.slice(0, 12).map(n => '<i class="rn-' + rlC(n) + '">' + n + '</i>').join('') + '</div><div class="cres" id="cRes"></div></div>';
+    s += betBar('roulette', { label: 'Chipwert pro Tipp', lock: RL.spin, extra: '<span class="chipv">Gesetzt: ' + fmtT(rlTot()) + '</span>' });
+    s += '<div class="rlb"><span></span>' + rlCell('n0', '0', 'z');
+    for (let i = 0; i < 12; i++) {
+      if (i % 4 === 0) s += rlCell('d' + (i / 4 + 1), (i / 4 + 1) + '. Dutzend', 'dz', 'grid-row:span 4');
+      for (let c = 1; c <= 3; c++) { const n = i * 3 + c; s += rlCell('n' + n, n, 'rn-' + rlC(n)); }
+    }
+    s += '<span></span>' + rlCell('c1', '2:1', 'ot') + rlCell('c2', '2:1', 'ot') + rlCell('c3', '2:1', 'ot') + '</div>';
+    s += '<div class="rlout">' + rlCell('low', '1–18', '') + rlCell('even', 'Gerade', '') + rlCell('red', 'Rot', 'rr') + rlCell('black', 'Schwarz', 'bb') + rlCell('odd', 'Ungerade', '') + rlCell('high', '19–36', '') + '</div>';
+    s += '<div class="btns" style="grid-template-columns:1fr 1fr 1.4fr"><button class="b" data-a="rlClr"' + (RL.spin ? ' disabled' : '') + '>Löschen</button><button class="b" data-a="rlDbl"' + (RL.spin ? ' disabled' : '') + '>Verdoppeln</button><button class="b pri" data-a="rlSpin"' + (RL.spin ? ' disabled' : '') + '>Drehen</button></div>';
+    return s;
+  }
+};
+A.rlB = d => {
+  if (RL.spin) return;
+  const b = czBet('roulette');
+  if (rlTot() + b > CZ().bal) { toast('Nicht genug Chips für diesen Tipp.', true); return; }
+  RL.hit = null; rlBets()[d.k] = (rlBets()[d.k] || 0) + b; save(); haptic(1); blip(700, .05); czRedraw();
+};
+A.rlClr = () => { if (RL.spin) return; CZ().run.roulette = { bets: {} }; RL.hit = null; save(); czRedraw(); };
+A.rlDbl = () => { if (RL.spin) return; const bs = rlBets(); if (rlTot() * 2 > CZ().bal) { toast('Nicht genug Chips.', true); return; } for (const k in bs) bs[k] *= 2; save(); czRedraw(); };
+A.rlSpin = () => {
+  if (RL.spin) return; const tot = rlTot();
+  if (!tot) { toast('Setze zuerst Chips auf den Tisch.'); return; }
+  if (!czTake(tot)) return;
+  const n = rint(37), idx = RW.indexOf(n), a = 360 / 37, target = -idx * a;
+  const nr = RL.rot + 360 * 6 + ((((target - RL.rot) % 360) + 360) % 360);
+  RL.spin = true; RL.hit = null; czRedraw(); audioUnlock(); window.scrollTo({ top: 0, behavior: fxOn() ? 'smooth' : 'auto' });
+  requestAnimationFrame(() => requestAnimationFrame(() => { const w = $('#rlW'); if (w) w.style.transform = 'rotate(' + nr + 'deg)'; }));
+  let k = 0; const tk = setInterval(() => { if (k++ > 26) return clearInterval(tk); blip(1400 - k * 30, .03); }, 140 + 0);
+  setTimeout(() => {
+    clearInterval(tk); RL.rot = nr % 360; RL.spin = false; RL.hit = n;
+    const bs = rlBets(); let win = 0; for (const k2 in bs) win += bs[k2] * rlWin(k2, n);
+    CZ().rlh = [n, ...(CZ().rlh || [])].slice(0, 20);
+    czPay('roulette', tot, win); czRedraw();
+    czRes(n + ' ' + { g: 'Grün', r: 'Rot', b: 'Schwarz' }[rlC(n)] + ' · ' + (win ? 'Gewinn +' + fmtT(win) : 'Verloren'), win > tot ? 'win' : win ? 'push' : 'lose');
+  }, 5150);
+};
+
+/* ---------- Blackjack ---------- */
+function bjVal(cs) { let t = 0, a = 0; for (const c of cs) { const r = cRank(c); if (r === 1) { a++; t += 11; } else t += Math.min(10, r); } while (t > 21 && a) { t -= 10; a--; } return { t, soft: a > 0 }; }
+const bjBJ = cs => cs.length === 2 && bjVal(cs).t === 21;
+const BJ = { busy: false };
+function bj() { return czRun('blackjack'); }
+function bjDraw(st) { if (!st.shoe || st.shoe.length < 60) { st.shoe = newShoe(6); toast('Neuer Schlitten: 6 Decks gemischt'); } return st.shoe.pop(); }
+GAMES.blackjack = {
+  n: 'Blackjack',
+  rules: 'Ziel: näher an 21 als der Dealer, ohne 21 zu überschreiten. Bildkarten zählen 10, Ass 1 oder 11.<br><br>6 Decks. Der Dealer zieht bis 16 und steht auf allen 17 (auch Soft 17). Blackjack (Ass + 10er mit den ersten zwei Karten) zahlt <b>3:2</b>, normaler Gewinn 1:1, Gleichstand bekommt den Einsatz zurück.<br><br><b>Verdoppeln</b>: auf die ersten zwei Karten, genau eine weitere Karte.<br><b>Teilen</b>: bei zwei gleichwertigen Karten, einmal pro Runde; geteilte Asse bekommen je eine Karte. 21 nach dem Teilen zählt nicht als Blackjack.<br>Der Dealer schaut bei Ass oder 10 auf Blackjack.',
+  draw() {
+    const st = bj();
+    let s = '<div class="cz-stage felt">';
+    if (!st || st.ph === 'bet') {
+      s += '<div class="hlab">Dealer</div><div class="hand">' + cardH(null) + cardH(null) + '</div><div class="hlab" style="margin-top:14px">Du</div><div class="hand">' + cardH(null) + cardH(null) + '</div><div class="cres" id="cRes">Blackjack zahlt 3:2</div></div>' +
+        betBar('blackjack') + '<button class="b pri big wide" data-a="bjDeal">Austeilen</button>';
+      return s;
+    }
+    const hide = st.ph === 'play', dv = bjVal(st.dl).t;
+    s += '<div class="hlab">Dealer <b>' + (hide ? bjVal([st.dl[0]]).t : dv) + '</b></div><div class="hand">' + st.dl.map((c, i) => (i === 1 && hide) ? cardH(null, 'bj' + st.id + 'd1', 300) : cardH(c, 'bj' + st.id + 'd' + i + (i === 1 ? 'o' : ''), i < 2 ? i * 300 + 150 : 0)).join('') + '</div>';
+    s += '<div style="display:grid;grid-template-columns:repeat(' + st.hands.length + ',minmax(0,1fr));gap:6px;margin-top:12px">' + st.hands.map((h, hi) =>
+      '<div class="hbox' + (st.ph === 'play' && hi === st.cur ? ' on' : '') + '"><div class="hand">' + h.c.map((c, i) => cardH(c, 'bj' + st.id + 'h' + hi + 'c' + i, i < 2 && hi === 0 && !st.split ? i * 300 : 0)).join('') + '</div>' +
+      '<div class="hlab">' + (st.hands.length > 1 ? 'Hand ' + (hi + 1) + ' ' : 'Du ') + '<b>' + bjVal(h.c).t + '</b>' + (h.dbl ? ' · 2×' : '') + '</div>' +
+      (h.res ? '<div class="hlab" style="color:' + (h.res.w > h.bet ? 'var(--acc)' : h.res.w === h.bet ? 'var(--yl)' : '#FF6961') + '">' + h.res.t + '</div>' : '') + '</div>').join('') + '</div>';
+    s += '<div class="cres" id="cRes"></div></div>';
+    if (st.ph === 'play') {
+      const h = st.hands[st.cur], two = h.c.length === 2;
+      const canSplit = two && st.hands.length === 1 && Math.min(10, cRank(h.c[0])) === Math.min(10, cRank(h.c[1])) && CZ().bal >= h.bet;
+      s += '<div class="btns" style="grid-template-columns:1fr 1fr"><button class="b big" data-a="bjHit">Karte</button><button class="b pri big" data-a="bjStand">Halten</button>' +
+        '<button class="b" data-a="bjDbl"' + (two && CZ().bal >= h.bet ? '' : ' disabled') + '>Verdoppeln</button><button class="b" data-a="bjSplit"' + (canSplit ? '' : ' disabled') + '>Teilen</button></div>';
+    } else if (st.ph === 'end') s += betBar('blackjack') + '<button class="b pri big wide" data-a="bjDeal">Neue Runde</button>';
+    else s += '<div class="hint" style="text-align:center">Dealer zieht …</div>';
+    return s;
+  },
+  mount() { const st = bj(); if (st && st.ph === 'end' && st.msg) czRes(st.msg.t, st.msg.c); }
+};
+A.bjDeal = () => {
+  if (BJ.busy) return; const bet = czBet('blackjack'); if (!czTake(bet)) return;
+  const old = bj(); const st = { id: uid(), shoe: old && old.shoe, hands: [{ c: [], bet, dbl: false, done: false, res: null }], dl: [], ph: 'play', cur: 0 };
+  seenReset('bj');
+  st.hands[0].c.push(bjDraw(st)); st.dl.push(bjDraw(st)); st.hands[0].c.push(bjDraw(st)); st.dl.push(bjDraw(st));
+  czSetRun('blackjack', st); haptic(1);
+  const up = Math.min(10, cRank(st.dl[0]));
+  if (bjBJ(st.hands[0].c) || ((up === 10 || up === 1) && bjBJ(st.dl))) { czRedraw(); BJ.busy = true; setTimeout(() => { BJ.busy = false; bjSettle(); }, 900); return; }
+  czRedraw();
+};
+function bjNext(st) {
+  const i = st.hands.findIndex(h => !h.done);
+  if (i >= 0) { st.cur = i; save(); czRedraw(); return; }
+  st.ph = 'dealer'; save(); czRedraw();
+  const live = st.hands.some(h => bjVal(h.c).t <= 21);
+  BJ.busy = true;
+  const step = () => {
+    if (live && bjVal(st.dl).t < 17) { st.dl.push(bjDraw(st)); save(); czRedraw(); blip(500, .05); setTimeout(step, 700); }
+    else { BJ.busy = false; bjSettle(); }
+  };
+  setTimeout(step, 700);
+}
+function bjSettle() {
+  const st = bj(); st.ph = 'end';
+  const dv = bjVal(st.dl).t, dBJ = bjBJ(st.dl);
+  let stake = 0, win = 0;
+  st.hands.forEach(h => {
+    stake += h.bet; const pv = bjVal(h.c).t, pBJ = bjBJ(h.c) && st.hands.length === 1;
+    let w = 0, t = '';
+    if (pv > 21) t = 'Überkauft';
+    else if (pBJ && !dBJ) { w = h.bet * 2.5; t = 'Blackjack!'; }
+    else if (dBJ && !pBJ) t = 'Dealer hat Blackjack';
+    else if (pBJ && dBJ) { w = h.bet; t = 'Unentschieden'; }
+    else if (dv > 21) { w = h.bet * 2; t = 'Dealer überkauft'; }
+    else if (pv > dv) { w = h.bet * 2; t = 'Gewonnen'; }
+    else if (pv === dv) { w = h.bet; t = 'Unentschieden'; }
+    else t = 'Verloren';
+    h.res = { w, t }; win += w;
+  });
+  st.msg = { t: win > stake ? 'Gewinn +' + fmtT(win) : win === stake ? 'Einsatz zurück' : 'Verloren', c: win > stake ? 'win' : win === stake ? 'push' : 'lose' };
+  save(); czPay('blackjack', stake, win); czRedraw();
+}
+const bjCur = () => { const st = bj(); return st && st.ph === 'play' && !BJ.busy ? st : null; };
+A.bjHit = () => { const st = bjCur(); if (!st) return; const h = st.hands[st.cur]; h.c.push(bjDraw(st)); haptic(1); const v = bjVal(h.c).t; if (v >= 21) h.done = true; if (v > 21) blip(200, .08); bjNext(st); };
+A.bjStand = () => { const st = bjCur(); if (!st) return; st.hands[st.cur].done = true; bjNext(st); };
+A.bjDbl = () => { const st = bjCur(); if (!st) return; const h = st.hands[st.cur]; if (h.c.length !== 2 || !czTake(h.bet)) return; h.bet *= 2; h.dbl = true; h.c.push(bjDraw(st)); h.done = true; bjNext(st); };
+A.bjSplit = () => {
+  const st = bjCur(); if (!st) return; const h = st.hands[0]; if (!czTake(h.bet)) return;
+  const aces = cRank(h.c[0]) === 1;
+  const h2 = { c: [h.c.pop()], bet: h.bet, dbl: false, done: false, res: null };
+  st.hands.push(h2); st.split = true; h.c.push(bjDraw(st)); h2.c.push(bjDraw(st));
+  if (aces) { h.done = true; h2.done = true; }
+  st.hands.forEach(x => { if (bjVal(x.c).t === 21) x.done = true; });
+  bjNext(st);
+};
+
+/* ---------- Baccarat (Punto Banco) ---------- */
+const bcV = cs => cs.reduce((a, c) => a + (cRank(c) >= 10 ? 0 : cRank(c)), 0) % 10;
+const BC = { P: [], B: [], busy: false, res: null };
+function bcBets() { if (!czRun('baccarat')) CZ().run.baccarat = { bets: { p: 0, b: 0, t: 0 } }; return czRun('baccarat').bets; }
+GAMES.baccarat = {
+  n: 'Baccarat',
+  rules: 'Setze auf <b>Spieler</b>, <b>Bank</b> oder <b>Unentschieden</b>. Beide Seiten bekommen zwei Karten; zählt wird nur die Einerstelle (Bildkarten und 10 zählen 0).<br><br>Bei 8 oder 9 ist Schluss (Natural). Sonst zieht der Spieler bei 0–5 eine dritte Karte. Die Bank folgt der festen Tabelle: 0–2 zieht immer; 3 zieht außer bei Spieler-Drittkarte 8; 4 bei 2–7; 5 bei 4–7; 6 bei 6–7; 7 steht.<br><br><b>Auszahlungen</b>: Spieler 1:1, Bank 1:1 minus 5 % Kommission, Unentschieden 8:1 (Spieler- und Bank-Tipps bekommen dann ihren Einsatz zurück).',
+  draw() {
+    const bs = bcBets(), road = CZ().bcRoad || [];
+    const spot = (k, lab, pay, col) => '<button class="b" style="min-height:64px;flex-direction:column;gap:2px;background:' + col + ';position:relative' + (BC.res && !BC.busy && BC.res === k.toUpperCase() ? ';box-shadow:0 0 0 3px var(--yl)' : '') + '" data-a="bcB" data-k="' + k + '"' + (BC.busy ? ' disabled' : '') + '><span>' + lab + '</span><small style="font:600 11px var(--sans);opacity:.8">' + pay + '</small>' + (bs[k] ? '<span class="bchip">' + kfmt(bs[k]) + '</span>' : '') + '</button>';
+    let s = '<div class="cz-stage felt"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+      '<div class="hbox' + (BC.res === 'P' && !BC.busy ? ' on' : '') + '"><div class="hlab" style="color:#64D2FF">Spieler <b>' + (BC.P.length ? bcV(BC.P) : '–') + '</b></div><div class="hand" style="min-height:90px">' + BC.P.map((c, i) => cardH(c, 'bcP' + BC.id + i)).join('') + '</div></div>' +
+      '<div class="hbox' + (BC.res === 'B' && !BC.busy ? ' on' : '') + '"><div class="hlab" style="color:#FF6961">Bank <b>' + (BC.B.length ? bcV(BC.B) : '–') + '</b></div><div class="hand" style="min-height:90px">' + BC.B.map((c, i) => cardH(c, 'bcB' + BC.id + i)).join('') + '</div></div></div>' +
+      '<div class="cres" id="cRes"></div><div class="pill-row">' + road.slice(0, 24).map(r => '<i style="background:' + { P: '#0A84FF', B: '#D71F3B', T: '#1E9E4A' }[r] + '">' + r + '</i>').join('') + '</div></div>';
+    s += betBar('baccarat', { label: 'Chipwert pro Tipp', lock: BC.busy });
+    s += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">' + spot('p', 'Spieler', '1:1', '#0b4fae') + spot('t', 'Unentsch.', '8:1', '#146b35') + spot('b', 'Bank', '0,95:1', '#9b1830') + '</div>';
+    s += '<div class="btns" style="grid-template-columns:1fr 1.6fr"><button class="b" data-a="bcClr"' + (BC.busy ? ' disabled' : '') + '>Löschen</button><button class="b pri big" data-a="bcDeal"' + (BC.busy ? ' disabled' : '') + '>Austeilen</button></div>';
+    return s;
+  }
+};
+A.bcB = d => { if (BC.busy) return; const bs = bcBets(), b = czBet('baccarat'); if (bs.p + bs.b + bs.t + b > CZ().bal) { toast('Nicht genug Chips.', true); return; } bs[d.k] += b; BC.res = null; save(); haptic(1); czRedraw(); };
+A.bcClr = () => { if (BC.busy) return; CZ().run.baccarat = { bets: { p: 0, b: 0, t: 0 } }; save(); czRedraw(); };
+A.bcDeal = () => {
+  if (BC.busy) return; const bs = bcBets(), tot = bs.p + bs.b + bs.t;
+  if (!tot) { toast('Setze zuerst auf Spieler, Bank oder Unentschieden.'); return; }
+  if (!czTake(tot)) return;
+  let shoe = CZ().run.bcShoe; if (!shoe || shoe.length < 20) shoe = CZ().run.bcShoe = newShoe(8);
+  const dr = () => shoe.pop();
+  BC.id = uid(); BC.P = []; BC.B = []; BC.res = null; BC.busy = true; seenReset('bc');
+  const seq = [['P', dr()], ['B', dr()], ['P', dr()], ['B', dr()]];
+  const p2 = [seq[0][1], seq[2][1]], b2 = [seq[1][1], seq[3][1]];
+  let pv = bcV(p2), bv = bcV(b2), p3 = null;
+  if (pv < 8 && bv < 8) {
+    if (pv <= 5) { p3 = dr(); seq.push(['P', p3]); }
+    const bank = [...b2], x = p3 == null ? null : (cRank(p3) >= 10 ? 0 : cRank(p3));
+    let draw = false;
+    if (x == null) draw = bv <= 5;
+    else if (bv <= 2) draw = true; else if (bv === 3) draw = x !== 8; else if (bv === 4) draw = x >= 2 && x <= 7;
+    else if (bv === 5) draw = x >= 4 && x <= 7; else if (bv === 6) draw = x === 6 || x === 7;
+    if (draw) seq.push(['B', dr()]);
+  }
+  save(); czRedraw();
+  let i = 0;
+  const step = () => {
+    if (i < seq.length) { const [w, c] = seq[i++]; (w === 'P' ? BC.P : BC.B).push(c); blip(520, .04); czRedraw(); setTimeout(step, i === 4 ? 900 : 650); return; }
+    const P = bcV(BC.P), B = bcV(BC.B), r = P > B ? 'P' : B > P ? 'B' : 'T';
+    BC.res = r; BC.busy = false; CZ().bcRoad = [r, ...(CZ().bcRoad || [])].slice(0, 40);
+    let win = 0; if (r === 'P') win = bs.p * 2; if (r === 'B') win = bs.b * 1.95; if (r === 'T') win = bs.t * 9 + bs.p + bs.b;
+    czPay('baccarat', tot, win); czRedraw();
+    czRes({ P: 'Spieler gewinnt', B: 'Bank gewinnt', T: 'Unentschieden' }[r] + ' ' + P + ':' + B + (win ? ' · +' + fmtT(win) : ''), win > tot ? 'win' : win ? 'push' : 'lose');
+  };
+  setTimeout(step, 250);
+};
+
+/* ---------- Slot: Wild Fruits ---------- */
+const SLS = ['🍒', '🍋', '🍊', '🍇', '🔔', '⭐', '7️⃣', '💎'], SLW = [7, 6, 5, 5, 3, 2, 1, 1], SLP = [8, 12, 16, 20, 40, 80, 200, 500];
+const SLL = [[1, 1, 1], [0, 0, 0], [2, 2, 2], [0, 1, 2], [2, 1, 0]], SLC = ['#FFD60A', '#FF453A', '#30D158', '#0A84FF', '#BF5AF2'];
+const SLT = SLW.reduce((a, b) => a + b);
+const SL = { grid: [[0, 1, 2], [3, 4, 5], [6, 0, 1]], spin: false, wins: [] };
+function slPick() { let r = rnd() * SLT; for (let i = 0; i < SLW.length; i++) if ((r -= SLW[i]) < 0) return i; return 0; }
+function slLine(s) {
+  const nw = s.filter(x => x !== 7);
+  if (!nw.length) return { m: SLP[7], sym: 7, n: 3 };
+  const t = nw[0]; if (nw.every(x => x === t)) return { m: SLP[t], sym: t, n: 3 };
+  if ((s[0] === 0 || s[0] === 7) && (s[1] === 0 || s[1] === 7) && (s[0] === 0 || s[1] === 0)) return { m: 2, sym: 0, n: 2 };
+  return null;
+}
+GAMES.slots = {
+  n: 'Wild Fruits',
+  rules: '3 Walzen, 5 Gewinnlinien (drei waagerecht, zwei diagonal). Der Einsatz verteilt sich gleichmäßig auf die 5 Linien.<br><br>💎 ist Wild und ersetzt jedes Symbol.<br><br><b>Gewinn pro Linie (× Linieneinsatz)</b><br>' + SLS.map((s, i) => s + s + s + ' → ' + SLP[i] + '×').join('<br>') + '<br>🍒🍒 links → 2×<br><br>Theoretische Auszahlungsquote (simuliert, 2 Mio. Drehungen): ca. 93 %.',
+  draw() {
+    let s = '<div class="cz-stage" style="background:radial-gradient(120% 80% at 50% 0%,#3b2106,#140a02)"><div class="sl-m">';
+    for (let c = 0; c < 3; c++) s += '<div class="sl-r"><div class="sl-s" id="slS' + c + '">' + SL.grid[c].map((x, r) => '<div class="sl-c' + (SL.wins.some(w => SLL[w.l][c] === r && (w.n === 3 || c < 2)) ? ' win' : '') + '">' + SLS[x] + '</div>').join('') + '</div></div>';
+    s += '<svg class="sl-l" viewBox="0 0 300 252" preserveAspectRatio="none">' + SL.wins.map(w => '<polyline stroke="' + SLC[w.l] + '" points="' + SLL[w.l].map((r, c) => (c * 100 + 50) + ',' + (r * 84 + 42)).join(' ') + '"/>').join('') + '</svg></div><div class="cres" id="cRes"></div></div>';
+    s += betBar('slots', { label: 'Einsatz (5 Linien)', lock: SL.spin });
+    s += '<button class="b pri big wide" data-a="slSpin"' + (SL.spin ? ' disabled' : '') + '>Drehen</button>';
+    return s;
+  }
+};
+A.slSpin = () => {
+  if (SL.spin) return; const bet = czBet('slots'); if (!czTake(bet)) return;
+  const ng = [0, 1, 2].map(() => [slPick(), slPick(), slPick()]);
+  SL.spin = true; SL.wins = []; czRedraw(); audioUnlock(); haptic(1);
+  const H = 84, N = 22;
+  for (let c = 0; c < 3; c++) {
+    const el = $('#slS' + c); if (!el) continue;
+    const mid = Array.from({ length: N }, () => slPick());
+    const strip = [...ng[c], ...mid, ...SL.grid[c]];
+    el.innerHTML = strip.map(x => '<div class="sl-c">' + SLS[x] + '</div>').join('');
+    el.style.transition = 'none'; el.style.transform = 'translateY(' + (-(strip.length - 3) * H) + 'px)';
+    void el.offsetHeight;
+    el.style.transition = 'transform ' + (1.1 + c * .45) + 's cubic-bezier(.2,.75,.25,1.06)'; el.style.transform = 'translateY(0)';
+    setTimeout(() => { blip(300 + c * 90, .07); haptic(1); }, (1.1 + c * .45) * 1000);
+  }
+  setTimeout(() => {
+    SL.grid = ng; SL.spin = false;
+    let m = 0; SL.wins = [];
+    SLL.forEach((L, l) => { const w = slLine(L.map((r, c) => ng[c][r])); if (w) { m += w.m; SL.wins.push({ l, ...w }); } });
+    const win = bet * m / 5;
+    czPay('slots', bet, win); czRedraw();
+    czRes(win ? SL.wins.map(w => SLS[w.sym].repeat(w.n)).join(' ') + ' · +' + fmtT(win) : 'Kein Gewinn', win > bet ? 'win' : win ? 'push' : 'lose');
+  }, (1.1 + 2 * .45) * 1000 + 150);
+};
+
+/* Multiplikator nach dem Standardverfahren: 1 % Bankvorteil, Verteilung 0,99/(1−U) */
+const edgeMult = () => Math.max(1, Math.floor(99 / (1 - rnd())) / 100);
+function cvSetup(cv, h) { const dpr = window.devicePixelRatio || 1, w = cv.clientWidth; cv.width = w * dpr; cv.height = h * dpr; cv.style.height = h + 'px'; const x = cv.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0); return { x, w, h }; }
+
+/* ---------- Crash ---------- */
+const CR = { ph: 'idle', t0: 0, cp: 0, bet: 0, cash: 0, raf: 0, m: 1 };
+const crM = t => Math.exp(.11 * t);
+GAMES.crash = {
+  n: 'Crash or Cash',
+  rules: 'Die Rakete startet bei 1,00× und der Multiplikator steigt immer schneller. Irgendwann explodiert sie – zufällig, jede Runde neu.<br><br>Tippe <b>Auszahlen</b>, bevor sie explodiert: Du bekommst Einsatz × aktuellen Multiplikator. Explodiert sie vorher, ist der Einsatz weg.<br><br>Optional: automatisch auszahlen bei einem Zielwert.<br>Verteilung wie bei Online-Crash-Spielen: 1 % Bankvorteil, in 1 % der Runden explodiert sie sofort bei 1,00×.',
+  draw() {
+    const auto = CZ().bets.crashAuto || 0, h = CZ().crh || [];
+    return '<div class="cz-stage" style="background:linear-gradient(180deg,#141a2e,#07090f);padding:10px"><div style="position:relative"><canvas class="cv" id="crCv"></canvas><div class="crm" id="crM">' + (CR.ph === 'idle' ? '1,00×' : fmt(CR.m, 2) + '×') + '</div></div>' +
+      '<div class="pill-row">' + h.slice(0, 10).map(v => '<i style="color:' + (v >= 2 ? 'var(--acc)' : v >= 1.5 ? 'var(--yl)' : '#FF6961') + '">' + fmt(v, 2) + '×</i>').join('') + '</div><div class="cres" id="cRes"></div></div>' +
+      betBar('crash', { lock: CR.ph === 'run' }) +
+      '<div class="fld" style="border:0"><span>Auto-Auszahlung<small>' + (auto ? 'bei ' + fmt(auto, 2) + '×' : 'aus') + '</small></span><div class="stp"><button data-a="crAuto" data-d="-1">−</button><div class="v"><b>' + (auto ? fmt(auto, 2) + '×' : 'aus') + '</b></div><button data-a="crAuto" data-d="1">+</button></div></div>' +
+      '<button class="b pri big wide" id="crBtn" data-a="crGo">' + (CR.ph === 'run' ? 'Auszahlen' : 'Start') + '</button>';
+  },
+  mount() { crPaint(); }
+};
+const CRA = [0, 1.2, 1.5, 2, 3, 5, 10, 25, 100];
+A.crAuto = d => { if (CR.ph === 'run') return; const a = CZ().bets.crashAuto || 0; const i = CRA.findIndex(x => x >= a); CZ().bets.crashAuto = CRA[clamp((i < 0 ? 0 : i) + (+d.d), 0, CRA.length - 1)]; save(); czRedraw(); };
+function crPaint() {
+  const cv = $('#crCv'); if (!cv) return;
+  const { x, w, h } = cvSetup(cv, 230);
+  const t = CR.ph === 'idle' ? 0 : (CR.ph === 'run' ? (performance.now() - CR.t0) / 1000 : CR.tEnd);
+  const tm = Math.max(8, t * 1.15), mm = Math.max(2, crM(t) * 1.15);
+  const X = tt => 30 + tt / tm * (w - 44), Y = m => h - 24 - (m - 1) / (mm - 1) * (h - 44);
+  x.strokeStyle = 'rgba(255,255,255,.08)'; x.fillStyle = 'rgba(255,255,255,.4)'; x.font = '600 10px -apple-system,sans-serif';
+  for (let k = 0; k <= 4; k++) { const m = 1 + (mm - 1) * k / 4; x.beginPath(); x.moveTo(30, Y(m)); x.lineTo(w - 10, Y(m)); x.stroke(); x.fillText(fmt(m, 1) + '×', 0, Y(m) + 3); }
+  if (t > 0) {
+    const g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, '#FF9F0A'); g.addColorStop(1, CR.ph === 'boom' ? '#FF453A' : '#FFD60A');
+    x.beginPath(); x.moveTo(X(0), Y(1)); for (let k = 1; k <= 60; k++) { const tt = t * k / 60; x.lineTo(X(tt), Y(crM(tt))); }
+    x.lineWidth = 4; x.strokeStyle = g; x.lineCap = 'round'; x.stroke();
+    x.lineTo(X(t), h - 24); x.lineTo(X(0), h - 24); x.closePath(); const f = x.createLinearGradient(0, 0, 0, h); f.addColorStop(0, 'rgba(255,159,10,.35)'); f.addColorStop(1, 'rgba(255,159,10,0)'); x.fillStyle = f; x.fill();
+  }
+  const px = X(t), py = Y(crM(t)), ang = t > 0 ? Math.atan2(Y(crM(t)) - Y(crM(Math.max(0, t - .3))), X(t) - X(Math.max(0, t - .3))) : -0.5;
+  x.save(); x.translate(px, py); x.rotate(ang + Math.PI / 4); x.font = '30px serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(CR.ph === 'boom' ? '💥' : '🚀', 0, 0); x.restore();
+}
+function crLoop() {
+  if (CR.ph !== 'run') return;
+  const t = (performance.now() - CR.t0) / 1000, m = crM(t); CR.m = Math.min(m, CR.cp);
+  const auto = CZ().bets.crashAuto || 0;
+  if (auto && CR.m >= auto && auto <= CR.cp) { CR.m = auto; return crCash(); }
+  if (m >= CR.cp) {
+    CR.ph = 'boom'; CR.tEnd = Math.log(CR.cp) / .11; CR.m = CR.cp;
+    CZ().crh = [CR.cp, ...(CZ().crh || [])].slice(0, 20); czPay('crash', CR.bet, 0); haptic(2);
+    czRedraw(); const el = $('#crM'); if (el) el.className = 'crm boom'; czRes('Explodiert bei ' + fmt(CR.cp, 2) + '×', 'lose'); return;
+  }
+  const el = $('#crM'); if (el) el.textContent = fmt(CR.m, 2) + '×';
+  const b = $('#crBtn'); if (b) b.textContent = 'Auszahlen ' + fmtT(CR.bet * CR.m);
+  crPaint(); CR.raf = requestAnimationFrame(crLoop);
+}
+function crCash() {
+  if (CR.ph !== 'run') return;
+  CR.ph = 'cashed'; const m = Math.floor(CR.m * 100) / 100, win = CR.bet * m;
+  czPay('crash', CR.bet, win);
+  // die Rakete fliegt im Hintergrund weiter bis zum Absturzpunkt
+  CZ().crh = [CR.cp, ...(CZ().crh || [])].slice(0, 20); save();
+  CR.tEnd = (performance.now() - CR.t0) / 1000; czRedraw(); const el = $('#crM'); if (el) { el.className = 'crm ok'; el.textContent = fmt(m, 2) + '×'; }
+  czRes('Ausgezahlt bei ' + fmt(m, 2) + '× · +' + fmtT(win) + ' (Absturz bei ' + fmt(CR.cp, 2) + '×)', 'win');
+}
+A.crGo = () => {
+  if (CR.ph === 'run') return crCash();
+  const bet = czBet('crash'); if (!czTake(bet)) return;
+  CR.ph = 'run'; CR.bet = bet; CR.cp = edgeMult(); CR.t0 = performance.now(); CR.m = 1; audioUnlock(); haptic(1);
+  czRedraw(); cancelAnimationFrame(CR.raf); CR.raf = requestAnimationFrame(crLoop);
+};
+
+/* ---------- Plinko ---------- */
+const PLM = { low: [10, 3, 1.6, 1.4, 1.1, 1, .5, 1, 1.1, 1.4, 1.6, 3, 10], med: [33, 11, 4, 2, 1.1, .6, .3, .6, 1.1, 2, 4, 11, 33], high: [170, 24, 8.1, 2, .7, .2, .2, .2, .7, 2, 8.1, 24, 170] };
+const PL = { balls: [], raf: 0, flash: {} };
+const PLR = 12;
+function plRisk() { return CZ().bets.plRisk || 'med'; }
+function plCol(m) { return m >= 10 ? '#FF2D55' : m >= 3 ? '#FF6B3D' : m >= 1.5 ? '#FF9F0A' : m >= 1 ? '#FFC53D' : '#FFD60A'; }
+GAMES.plinko = {
+  n: 'Plinko',
+  rules: 'Die Kugel fällt durch 12 Reihen Stifte und springt an jedem Stift zufällig nach links oder rechts (je 50 %). Das Fach unten bestimmt den Multiplikator.<br><br>Die äußeren Fächer sind selten (1 zu 4096), die Mitte häufig. Höheres Risiko = extremere Ränder, kleinere Mitte.<br><br>Auszahlungsquote aller drei Tabellen: ca. 99 % (berechnet über die Binomialverteilung).',
+  draw() {
+    const r = plRisk();
+    return '<div class="cz-stage" style="background:linear-gradient(180deg,#10162a,#070a14);padding:8px"><canvas class="cv" id="plCv"></canvas><div class="cres" id="cRes"></div></div>' + betBar('plinko') +
+      '<div class="grid3">' + [['low', 'Niedrig'], ['med', 'Mittel'], ['high', 'Hoch']].map(([k, l]) => '<button class="chip' + (r === k ? ' on' : '') + '" data-a="plR" data-v="' + k + '"' + (PL.balls.length ? ' disabled' : '') + '>' + l + '</button>').join('') + '</div>' +
+      '<button class="b pri big wide" style="margin-top:10px" data-a="plDrop">Kugel werfen</button>';
+  },
+  mount() { plPaint(); }
+};
+A.plR = d => { if (PL.balls.length) return; CZ().bets.plRisk = d.v; save(); czRedraw(); };
+function plGeo(w, h) { const sx = (w - 16) / (PLR + 2), top = 26, sy = (h - top - 46) / PLR; return { sx, sy, top, cx: w / 2 }; }
+function plPaint() {
+  const cv = $('#plCv'); if (!cv) return;
+  const { x, w, h } = cvSetup(cv, 320), G = plGeo(w, h), M = PLM[plRisk()];
+  for (let r = 0; r < PLR; r++) for (let j = 0; j <= r + 2; j++) { x.beginPath(); x.arc(G.cx + (j - (r + 2) / 2) * G.sx, G.top + r * G.sy, 3.2, 0, 7); x.fillStyle = 'rgba(255,255,255,.85)'; x.fill(); }
+  const by = G.top + PLR * G.sy + 6;
+  M.forEach((m, k) => {
+    const cx = G.cx + (k - PLR / 2) * G.sx, fl = PL.flash[k] ? Math.max(0, PL.flash[k] - performance.now()) / 400 : 0;
+    x.fillStyle = plCol(m); const bw = G.sx - 3, bh = 26, yy = by + fl * 6;
+    x.beginPath(); if (x.roundRect) x.roundRect(cx - bw / 2, yy, bw, bh, 6); else x.rect(cx - bw / 2, yy, bw, bh); x.fill();
+    x.fillStyle = '#1a1000'; x.font = '800 ' + (G.sx < 26 ? 8.5 : 10) + 'px -apple-system,sans-serif'; x.textAlign = 'center'; x.fillText(m >= 100 ? Math.round(m) : fmt(m, 1), cx, yy + 17);
+  });
+  for (const b of PL.balls) {
+    const r = Math.min(PLR, Math.floor(b.p)), f = b.p - r;
+    const k0 = b.path.slice(0, r).reduce((a, v) => a + v, 0), k1 = k0 + (b.path[r] || 0);
+    const x0 = G.cx + (k0 - r / 2) * G.sx, x1 = G.cx + (k1 - (r + 1) / 2) * G.sx;
+    const y0 = G.top + r * G.sy - 9, y1 = G.top + (r + 1) * G.sy - 9;
+    const bx = r >= PLR ? x0 : x0 + (x1 - x0) * f, by2 = r >= PLR ? y0 : y0 + (y1 - y0) * f - Math.sin(f * Math.PI) * G.sy * .45;
+    const gr = x.createRadialGradient(bx - 2, by2 - 2, 1, bx, by2, 8); gr.addColorStop(0, '#FFF3A6'); gr.addColorStop(1, '#F5B800');
+    x.beginPath(); x.arc(bx, by2, 7, 0, 7); x.fillStyle = gr; x.shadowColor = '#FFD60A'; x.shadowBlur = 14; x.fill(); x.shadowBlur = 0;
+  }
+}
+function plLoop(now) {
+  const dt = Math.min(.05, (now - (PL.last || now)) / 1000); PL.last = now;
+  for (const b of PL.balls) {
+    const before = Math.floor(b.p); b.p += dt * 7.5;
+    if (Math.floor(b.p) !== before && b.p < PLR) blip(900 + Math.random() * 300, .02);
+    if (b.p >= PLR && !b.done) {
+      b.done = true; const k = b.path.reduce((a, v) => a + v, 0), m = PLM[b.risk][k];
+      PL.flash[k] = performance.now() + 400; czPay('plinko', b.bet, b.bet * m, m < 2); if (m < 2) { haptic(1); blip(m >= 1 ? 700 : 260, .06); }
+      czRes(fmt(m, 1) + '× · ' + (b.bet * m >= b.bet ? '+' : '') + fmtT(b.bet * m), m > 1 ? 'win' : m === 1 ? 'push' : 'lose');
+    }
+  }
+  PL.balls = PL.balls.filter(b => !(b.done && b.p > PLR + .6));
+  plPaint();
+  if (PL.balls.length || Object.values(PL.flash).some(t => t > performance.now())) PL.raf = requestAnimationFrame(plLoop);
+  else { PL.raf = 0; PL.last = 0; if (V.page === 'cg' && V.ctx.g === 'plinko') czRedraw(); }
+}
+A.plDrop = () => {
+  const bet = czBet('plinko'); if (!czTake(bet)) return;
+  const first = !PL.balls.length;
+  PL.balls.push({ p: 0, path: Array.from({ length: PLR }, () => rint(2)), bet, risk: plRisk() }); haptic(1); audioUnlock();
+  if (first) czRedraw();
+  if (!PL.raf) { PL.last = 0; PL.raf = requestAnimationFrame(plLoop); }
+};
+
+/* ---------- Mines ---------- */
+const nCk = (n, k) => { let r = 1; for (let i = 1; i <= k; i++) r = r * (n - k + i) / i; return r; };
+const mnMult = (m, k) => k ? .99 * nCk(25, k) / nCk(25 - m, k) : 1;
+function mn() { return czRun('mines'); }
+GAMES.mines = {
+  n: 'Lucky Mines',
+  rules: '25 Felder, darunter versteckte Minen (Anzahl wählst du). Decke Diamanten auf: Jeder Fund erhöht den Multiplikator. Du kannst jederzeit auszahlen. Triffst du eine Mine, ist der Einsatz verloren.<br><br>Multiplikator = 0,99 × faire Quote. Mehr Minen = schnelleres Wachstum, höheres Risiko.',
+  draw() {
+    const st = mn(), mines = CZ().bets.mnN || 3, play = st && st.ph === 'play';
+    let s = '<div class="cz-stage" style="background:linear-gradient(180deg,#1b1e2e,#0d0f18)"><div class="mgrid" id="mnG">';
+    for (let i = 0; i < 25; i++) {
+      const o = st && st.open.includes(i), isM = st && st.mines.includes(i), show = st && st.ph === 'end';
+      if (o) s += '<button class="mt gem" disabled>💎</button>';
+      else if (show && isM) s += '<button class="mt bomb' + (st.hit === i ? '' : ' dim') + '" disabled>💣</button>';
+      else if (show) s += '<button class="mt dim" disabled>💎</button>';
+      else s += '<button class="mt" data-a="mnT" data-i="' + i + '"' + (play ? '' : ' disabled') + '></button>';
+    }
+    const k = st ? st.open.length : 0, m = st ? st.n : mines;
+    s += '</div><div class="row" style="margin-top:12px;justify-content:space-between"><span class="sm mu">Aktuell <b class="n" style="color:#fff">' + fmt(mnMult(m, k), 2) + '×</b></span><span class="sm mu">Nächster Fund <b class="n" style="color:var(--acc)">' + fmt(mnMult(m, k + 1), 2) + '×</b></span></div><div class="cres" id="cRes"></div></div>';
+    if (play) s += '<button class="b pri big wide" data-a="mnCash"' + (k ? '' : ' disabled') + '>Auszahlen ' + (k ? fmtT(st.bet * mnMult(m, k)) : '') + '</button>';
+    else s += betBar('mines') + '<div class="fld" style="border:0"><span>Minen</span>' + '<div class="stp"><button data-a="mnN" data-d="-1">−</button><div class="v"><b>' + mines + '</b><small>von 25</small></div><button data-a="mnN" data-d="1">+</button></div></div><button class="b pri big wide" data-a="mnGo">Spielen</button>';
+    return s;
+  },
+  mount() { const st = mn(); if (st && st.ph === 'end' && st.msg) czRes(st.msg.t, st.msg.c); }
+};
+A.mnN = d => { CZ().bets.mnN = clamp((CZ().bets.mnN || 3) + (+d.d), 1, 24); save(); czRedraw(); };
+A.mnGo = () => {
+  const bet = czBet('mines'), n = CZ().bets.mnN || 3; if (!czTake(bet)) return;
+  czSetRun('mines', { ph: 'play', bet, n, mines: shuffle([...Array(25).keys()]).slice(0, n), open: [] }); haptic(1); czRedraw();
+};
+A.mnT = d => {
+  const st = mn(); if (!st || st.ph !== 'play') return; const i = +d.i; if (st.open.includes(i)) return;
+  if (st.mines.includes(i)) {
+    st.ph = 'end'; st.hit = i; st.msg = { t: 'Mine! Einsatz verloren', c: 'lose' }; save(); czPay('mines', st.bet, 0); haptic(3); blip(120, .15); czRedraw();
+    const g = $('#mnG'); if (g) g.classList.add('shake'); return;
+  }
+  st.open.push(i); save(); haptic(1); blip(600 + st.open.length * 40, .07);
+  if (st.open.length === 25 - st.n) return A.mnCash();
+  czRedraw();
+};
+A.mnCash = () => {
+  const st = mn(); if (!st || st.ph !== 'play' || !st.open.length) return;
+  const m = mnMult(st.n, st.open.length), win = st.bet * m; st.ph = 'end'; st.msg = { t: fmt(m, 2) + '× · +' + fmtT(win), c: 'win' }; save();
+  czPay('mines', st.bet, win); czRedraw();
+};
+
+/* ---------- Hi-Lo ---------- */
+function hl() { return czRun('hilo'); }
+function hlOpts(r) {
+  return {
+    hi: r === 13 ? { l: 'Gleich', p: 1 / 13, f: n => n === r } : r === 1 ? { l: 'Höher', p: 12 / 13, f: n => n > r } : { l: 'Höher oder gleich', p: (14 - r) / 13, f: n => n >= r },
+    lo: r === 1 ? { l: 'Gleich', p: 1 / 13, f: n => n === r } : r === 13 ? { l: 'Tiefer', p: 12 / 13, f: n => n < r } : { l: 'Tiefer oder gleich', p: r / 13, f: n => n <= r }
+  };
+}
+GAMES.hilo = {
+  n: 'Hi-Lo',
+  rules: 'Eine Karte liegt offen. Tippe, ob die nächste Karte höher oder tiefer ist (Ass ist die niedrigste, König die höchste; gleich zählt mit). Jeder Treffer multipliziert deinen Gewinn mit 0,99 ÷ Wahrscheinlichkeit.<br><br>Du kannst jederzeit auszahlen oder eine Karte überspringen. Ein Fehler kostet den Einsatz. Jede Karte wird aus einem vollen Deck gezogen.',
+  draw() {
+    const st = hl(), play = st && st.ph === 'play';
+    const c = st ? st.card : 11, r = cRank(c), o = hlOpts(r);
+    let s = '<div class="cz-stage felt" style="text-align:center"><div style="display:flex;justify-content:center;gap:6px;min-height:40px;margin-bottom:8px;flex-wrap:wrap">' + (st ? st.hist.slice(-8).map(x => '<span class="tag" style="background:rgba(0,0,0,.35);color:#fff">' + RK[cRank(x)] + SU[cSuit(x)] + '</span>').join('') : '') + '</div>' +
+      '<div style="display:flex;justify-content:center">' + cardH(c, st ? 'hl' + st.id + st.hist.length : null, 0, true).replace('pc ', 'pc flip ') + '</div>' +
+      '<div class="row" style="margin-top:14px;justify-content:space-between"><span class="sm" style="color:rgba(255,255,255,.7)">Gewinn <b class="n" style="color:#fff">' + (st ? fmt(st.mult, 2) + '×' : '–') + '</b></span><span class="sm" style="color:rgba(255,255,255,.7)">' + (st ? fmtT(st.bet * st.mult) + ' Chips' : '') + '</span></div><div class="cres" id="cRes"></div></div>';
+    if (play) {
+      const b = (k, col) => '<button class="b big" style="flex-direction:column;gap:2px;background:' + col + '" data-a="hlG" data-k="' + k + '"><span>' + (k === 'hi' ? '▲ ' : '▼ ') + o[k].l + '</span><small style="font:600 12px var(--rnd);opacity:.85">' + fmt(o[k].p * 100, 1) + ' % · ' + fmt(.99 / o[k].p, 2) + '×</small></button>';
+      s += '<div class="btns" style="grid-template-columns:1fr 1fr">' + b('hi', '#1f6f3a') + b('lo', '#8a1f24') + '<button class="b" data-a="hlSkip">Überspringen</button><button class="b pri" data-a="hlCash"' + (st.steps ? '' : ' disabled') + '>Auszahlen</button></div>';
+    } else s += betBar('hilo') + '<button class="b pri big wide" data-a="hlGo">Spielen</button>';
+    return s;
+  },
+  mount() { const st = hl(); if (st && st.ph === 'end' && st.msg) czRes(st.msg.t, st.msg.c); }
+};
+A.hlGo = () => { const bet = czBet('hilo'); if (!czTake(bet)) return; czSetRun('hilo', { id: uid(), ph: 'play', bet, card: rint(52), mult: 1, steps: 0, hist: [] }); haptic(1); czRedraw(); };
+A.hlSkip = () => { const st = hl(); if (!st || st.ph !== 'play') return; st.hist.push(st.card); st.card = rint(52); save(); czRedraw(); };
+A.hlG = d => {
+  const st = hl(); if (!st || st.ph !== 'play') return;
+  const o = hlOpts(cRank(st.card))[d.k], nc = rint(52), ok = o.f(cRank(nc));
+  st.hist.push(st.card); st.card = nc;
+  if (ok) { st.mult *= .99 / o.p; st.steps++; haptic(1); blip(700 + st.steps * 50, .07); save(); czRedraw(); czRes('Richtig! ' + fmt(st.mult, 2) + '×', 'win'); }
+  else { st.ph = 'end'; st.msg = { t: 'Falsch – Einsatz verloren', c: 'lose' }; save(); czPay('hilo', st.bet, 0); czRedraw(); }
+};
+A.hlCash = () => { const st = hl(); if (!st || st.ph !== 'play' || !st.steps) return; const win = st.bet * st.mult; st.ph = 'end'; st.msg = { t: fmt(st.mult, 2) + '× · +' + fmtT(win), c: 'win' }; save(); czPay('hilo', st.bet, win); czRedraw(); };
+
+/* ---------- Dice ---------- */
+const DC = { last: null, busy: false };
+GAMES.dice = {
+  n: 'Dice',
+  rules: 'Es wird eine Zahl von 0,00 bis 99,99 gewürfelt. Wähle eine Grenze und ob der Wurf darüber oder darunter liegen soll. Je unwahrscheinlicher, desto höher der Multiplikator: 99 ÷ Gewinnchance in %.',
+  draw() {
+    const t = CZ().bets.dcT ?? 50, over = CZ().bets.dcO !== false, ch = over ? 100 - t : t, m = 99 / ch;
+    return '<div class="cz-stage" style="background:linear-gradient(180deg,#1b2233,#0c0f18)"><div class="dbar' + (over ? '' : ' under') + '" style="--p:' + t + '%">' + (DC.last ? '<div class="dmark ' + (DC.last.win ? 'w' : 'l') + '" id="dcM" style="left:' + DC.last.r + '%">' + fmt(DC.last.r, 2) + '</div>' : '') + '</div>' +
+      '<input class="rng" type="range" min="2" max="98" step="1" value="' + t + '" data-f="dcT"' + (DC.busy ? ' disabled' : '') + '>' +
+      '<div class="tiles" style="grid-template-columns:repeat(3,1fr)"><div class="tile"><div class="k">' + (over ? 'Über' : 'Unter') + '</div><div class="v" id="dcTv" style="font-size:22px">' + fmt(t, 2) + '</div></div><div class="tile"><div class="k">Chance</div><div class="v" id="dcCh" style="font-size:22px">' + fmt(ch, 0) + ' %</div></div><div class="tile"><div class="k">Multipl.</div><div class="v" id="dcMu" style="font-size:22px">' + fmt(m, 2) + '×</div></div></div>' +
+      '<div class="cres" id="cRes"></div></div>' + betBar('dice') +
+      '<div class="btns" style="grid-template-columns:1fr 1.6fr"><button class="b" data-a="dcFlip">' + (over ? 'Auf Unter' : 'Auf Über') + ' wechseln</button><button class="b pri big" data-a="dcRoll">Würfeln</button></div>';
+  }
+};
+F.dcT = v => {
+  CZ().bets.dcT = +v; const over = CZ().bets.dcO !== false, ch = over ? 100 - v : +v;
+  const b = document.querySelector('.dbar'); if (b) b.style.setProperty('--p', v + '%');
+  $('#dcTv').textContent = fmt(+v, 2); $('#dcCh').textContent = fmt(ch, 0) + ' %'; $('#dcMu').textContent = fmt(99 / ch, 2) + '×'; save();
+};
+A.dcFlip = () => { CZ().bets.dcO = CZ().bets.dcO === false; save(); czRedraw(); };
+A.dcRoll = () => {
+  if (DC.busy) return; const bet = czBet('dice'); if (!czTake(bet)) return;
+  const t = CZ().bets.dcT ?? 50, over = CZ().bets.dcO !== false, r = rint(10000) / 100, ch = over ? 100 - t : t;
+  const win = over ? r > t : r < t; DC.busy = true; haptic(1); blip(500, .05);
+  DC.last = { r: DC.last ? DC.last.r : 50, win }; czRedraw();
+  requestAnimationFrame(() => { const mk = $('#dcM'); if (mk) { mk.style.left = r + '%'; mk.textContent = fmt(r, 2); } });
+  setTimeout(() => { DC.last = { r, win }; DC.busy = false; const w = win ? bet * 99 / ch : 0; czPay('dice', bet, w); czRedraw(); czRes(fmt(r, 2) + (win ? ' · +' + fmtT(w) : ' · daneben'), win ? 'win' : 'lose'); }, 650);
+};
+
+/* ---------- Limbo ---------- */
+const LB = { busy: false, last: null };
+const LBT = [1.1, 1.25, 1.5, 2, 3, 5, 10, 25, 50, 100, 1000];
+GAMES.limbo = {
+  n: 'Limbo',
+  rules: 'Wähle einen Ziel-Multiplikator. Dann wird ein zufälliger Multiplikator gezogen. Liegt er auf oder über deinem Ziel, gewinnst du Einsatz × Ziel.<br><br>Gewinnchance = 99 % ÷ Ziel. Bei 2× also 49,5 %.',
+  draw() {
+    const t = CZ().bets.lbT || 2;
+    return '<div class="cz-stage" style="background:radial-gradient(90% 80% at 50% 30%,#2a1330,#0b0710)"><div class="bigm n" id="lbN" style="color:' + (LB.last ? (LB.last.win ? 'var(--acc)' : '#FF453A') : '#fff') + '">' + (LB.last ? fmt(LB.last.r, 2) : '1,00') + '×</div>' +
+      '<div class="sm mu" style="text-align:center">Ziel ' + fmt(t, 2) + '× · Chance ' + fmt(99 / t, 2) + ' %</div><div class="cres" id="cRes"></div></div>' + betBar('limbo') +
+      '<label class="lb">Ziel-Multiplikator</label><div class="scrollx">' + LBT.map(v => '<button class="chip n' + (v === t ? ' on' : '') + '" data-a="lbT" data-v="' + v + '">' + fmt(v, 2) + '×</button>').join('') + '<button class="chip" data-a="lbK">…</button></div>' +
+      '<button class="b pri big wide" style="margin-top:10px" data-a="lbGo">Spielen</button>';
+  }
+};
+A.lbT = d => { if (LB.busy) return; CZ().bets.lbT = +d.v; save(); czRedraw(); };
+A.lbK = () => keypad('Ziel-Multiplikator', CZ().bets.lbT || 2, v => { CZ().bets.lbT = clamp(r2(v), 1.01, 1e6); save(); czRedraw(); }, { dec: true, unit: '×' });
+A.lbGo = () => {
+  if (LB.busy) return; const bet = czBet('limbo'), t = CZ().bets.lbT || 2; if (!czTake(bet)) return;
+  const r = Math.min(1e6, edgeMult()), win = r >= t; LB.busy = true; LB.last = null; czRedraw(); haptic(1);
+  const el = $('#lbN'), t0 = performance.now(), D = 900;
+  const f = now => { const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 4), v = 1 + (r - 1) * e; if (el) el.textContent = fmt(v, 2) + '×'; if (k < 1) requestAnimationFrame(f); else done(); };
+  const done = () => { LB.busy = false; LB.last = { r, win }; czPay('limbo', bet, win ? bet * t : 0); czRedraw(); czRes(win ? '+' + fmtT(bet * t) : 'Unter dem Ziel', win ? 'win' : 'lose'); };
+  requestAnimationFrame(f);
+};
+
+/* ---------- Tower ---------- */
+const TWD = { easy: { t: 4, b: 1, l: 'Leicht' }, med: { t: 3, b: 1, l: 'Mittel' }, hard: { t: 2, b: 1, l: 'Schwer' }, pro: { t: 3, b: 2, l: 'Experte' } };
+const TWL = 8;
+const twMult = (d, k) => k ? .99 * Math.pow(TWD[d].t / (TWD[d].t - TWD[d].b), k) : 1;
+function tw() { return czRun('tower'); }
+GAMES.tower = {
+  n: 'Tower',
+  rules: 'Klettere Etage für Etage nach oben. In jeder Reihe verstecken sich Bomben. Wählst du ein sicheres Feld, steigt der Multiplikator und du kommst eine Etage höher. Zahle jederzeit aus – eine Bombe kostet den Einsatz.<br><br>Leicht: 4 Felder, 1 Bombe · Mittel: 3 Felder, 1 Bombe · Schwer: 2 Felder, 1 Bombe · Experte: 3 Felder, 2 Bomben.',
+  draw() {
+    const st = tw(), d = st ? st.d : (CZ().bets.twD || 'med'), D = TWD[d], play = st && st.ph === 'play';
+    let s = '<div class="cz-stage" style="background:linear-gradient(180deg,#221a0e,#0e0b06)"><div class="tw">';
+    for (let L = TWL - 1; L >= 0; L--) {
+      const on = play && st.lvl === L, row = st ? st.rows[L] : null, pick = st ? st.picks[L] : null, show = st && (st.ph === 'end' || L < st.lvl);
+      s += '<div class="twr' + (on ? ' on' : '') + '"><b>' + fmt(twMult(d, L + 1), 2) + '×</b><div class="twc" style="grid-template-columns:repeat(' + D.t + ',1fr)">';
+      for (let i = 0; i < D.t; i++) {
+        const bomb = row && row.includes(i);
+        if (pick === i) s += '<button class="mt ' + (bomb ? 'bomb' : 'gem') + '" disabled>' + (bomb ? '💥' : '💎') + '</button>';
+        else if (show && st.ph === 'end') s += '<button class="mt dim" disabled>' + (bomb ? '💣' : '💎') + '</button>';
+        else s += '<button class="mt" data-a="twT" data-i="' + i + '"' + (on ? '' : ' disabled') + '></button>';
+      }
+      s += '</div></div>';
+    }
+    s += '</div><div class="cres" id="cRes"></div></div>';
+    if (play) s += '<button class="b pri big wide" data-a="twCash"' + (st.lvl ? '' : ' disabled') + '>Auszahlen ' + (st.lvl ? fmtT(st.bet * twMult(d, st.lvl)) : '') + '</button>';
+    else s += betBar('tower') + '<div class="grid4">' + Object.keys(TWD).map(k => '<button class="chip' + (d === k ? ' on' : '') + '" data-a="twD" data-v="' + k + '" style="padding:0">' + TWD[k].l + '</button>').join('') + '</div><button class="b pri big wide" style="margin-top:10px" data-a="twGo">Spielen</button>';
+    return s;
+  },
+  mount() { const st = tw(); if (st && st.ph === 'end' && st.msg) czRes(st.msg.t, st.msg.c); }
+};
+A.twD = d => { CZ().bets.twD = d.v; if (tw() && tw().ph !== 'play') czSetRun('tower', null); save(); czRedraw(); };
+A.twGo = () => {
+  const bet = czBet('tower'), d = CZ().bets.twD || 'med', D = TWD[d]; if (!czTake(bet)) return;
+  czSetRun('tower', { ph: 'play', bet, d, lvl: 0, picks: [], rows: Array.from({ length: TWL }, () => shuffle([...Array(D.t).keys()]).slice(0, D.b)) }); haptic(1); czRedraw();
+};
+A.twT = d => {
+  const st = tw(); if (!st || st.ph !== 'play') return; const i = +d.i; st.picks[st.lvl] = i;
+  if (st.rows[st.lvl].includes(i)) { st.ph = 'end'; st.msg = { t: 'Bombe! Einsatz verloren', c: 'lose' }; save(); czPay('tower', st.bet, 0); haptic(3); czRedraw(); return; }
+  st.lvl++; haptic(1); blip(500 + st.lvl * 80, .07); save();
+  if (st.lvl >= TWL) return A.twCash();
+  czRedraw();
+};
+A.twCash = () => { const st = tw(); if (!st || st.ph !== 'play' || !st.lvl) return; const m = twMult(st.d, st.lvl), w = st.bet * m; st.ph = 'end'; st.msg = { t: 'Etage ' + st.lvl + ' · ' + fmt(m, 2) + '× · +' + fmtT(w), c: 'win' }; save(); czPay('tower', st.bet, w); czRedraw(); };
+
+/* ---------- Glücksrad ---------- */
+const WHC = { low: [[0, 6], [1.2, 22], [1.5, 2]], med: [[0, 18], [1.5, 6], [2, 3], [3, 1], [3.5, 1], [7.5, 1]], high: [[0, 26], [5, 2], [9.7, 1], [10, 1]] };
+function whSegs(r) { const nz = [], z = []; WHC[r].forEach(([m, c]) => { for (let i = 0; i < c; i++) (m ? nz : z).push(m); }); nz.sort((a, b) => a - b); const out = []; const zi = z.length / Math.max(1, nz.length); let zc = 0; nz.forEach((m, i) => { out.push(m); const want = Math.round((i + 1) * zi); while (zc < want && zc < z.length) { out.push(0); zc++; } }); while (zc++ < z.length) out.push(0); return out; }
+const whCol = m => m === 0 ? '#3A3A3C' : m < 1.6 ? '#1EEAEF' : m < 2.5 ? '#A6F53B' : m < 4 ? '#FFD60A' : m < 8 ? '#FF9F0A' : '#FA114F';
+const WH = { rot: 0, spin: false, hit: null };
+GAMES.wheel = {
+  n: 'Glücksrad',
+  rules: 'Das Rad hat 30 Felder. Wo der Zeiger stehen bleibt, bestimmt den Multiplikator auf deinen Einsatz.<br><br>Niedrig: meistens kleine Gewinne. Mittel: ausgewogen. Hoch: fast immer 0, selten bis 10×.<br>Auszahlungsquote: 97–99 % je nach Risiko.',
+  draw() {
+    const r = CZ().bets.whR || 'med', seg = whSegs(r), n = seg.length, a = 360 / n;
+    const P = (rr, d) => { const t = d * Math.PI / 180; return (150 + rr * Math.sin(t)).toFixed(2) + ' ' + (150 - rr * Math.cos(t)).toFixed(2); };
+    let g = '<circle cx="150" cy="150" r="148" fill="#F5C542"/>';
+    seg.forEach((m, i) => { const c = i * a; g += '<path d="M150 150 L' + P(140, c - a / 2) + ' A140 140 0 0 1 ' + P(140, c + a / 2) + 'Z" fill="' + whCol(m) + '" stroke="#111" stroke-width="1"/>' + (m ? '<text x="150" y="30" transform="rotate(' + c + ' 150 150)" font-size="11" font-weight="800" text-anchor="middle" fill="#111" font-family="-apple-system,sans-serif">' + fmt(m, 1) + '</text>' : ''); });
+    g += '<circle cx="150" cy="150" r="42" fill="#1C1C1E" stroke="#F5C542" stroke-width="4"/>';
+    const legend = [...new Set(seg)].sort((x, y) => x - y).map(m => '<i style="background:' + whCol(m) + ';color:#111">' + fmt(m, 2) + '×</i>').join('');
+    return '<div class="cz-stage" style="background:radial-gradient(90% 70% at 50% 40%,#23202e,#0a090f)"><div class="rlw"><div class="ptr"></div><svg class="wh" id="whW" viewBox="0 0 300 300" style="transform:rotate(' + WH.rot + 'deg)">' + g + '</svg><div class="ctr" style="width:78px;height:78px;font-size:22px" id="whC">' + (WH.hit != null && !WH.spin ? fmt(WH.hit, 2) + '×' : '') + '</div></div>' +
+      '<div class="pill-row">' + legend + '</div><div class="cres" id="cRes"></div></div>' + betBar('wheel', { lock: WH.spin }) +
+      '<div class="grid3">' + [['low', 'Niedrig'], ['med', 'Mittel'], ['high', 'Hoch']].map(([k, l]) => '<button class="chip' + (r === k ? ' on' : '') + '" data-a="whR" data-v="' + k + '"' + (WH.spin ? ' disabled' : '') + '>' + l + '</button>').join('') + '</div>' +
+      '<button class="b pri big wide" style="margin-top:10px" data-a="whGo"' + (WH.spin ? ' disabled' : '') + '>Drehen</button>';
+  }
+};
+A.whR = d => { if (WH.spin) return; CZ().bets.whR = d.v; WH.hit = null; save(); czRedraw(); };
+A.whGo = () => {
+  if (WH.spin) return; const bet = czBet('wheel'); if (!czTake(bet)) return;
+  const r = CZ().bets.whR || 'med', seg = whSegs(r), i = rint(seg.length), a = 360 / seg.length, m = seg[i];
+  const jitter = (rnd() - .5) * a * .7, target = -i * a + jitter;
+  const nr = WH.rot + 360 * 5 + ((((target - WH.rot) % 360) + 360) % 360);
+  WH.spin = true; WH.hit = null; czRedraw(); haptic(1);
+  requestAnimationFrame(() => requestAnimationFrame(() => { const w = $('#whW'); if (w) w.style.transform = 'rotate(' + nr + 'deg)'; }));
+  setTimeout(() => { WH.rot = nr % 360; WH.spin = false; WH.hit = m; czPay('wheel', bet, bet * m); czRedraw(); czRes(m ? fmt(m, 2) + '× · +' + fmtT(bet * m) : 'Leider 0×', m > 1 ? 'win' : m ? 'push' : 'lose'); }, 5150);
+};
+
+/* ---------- Keno ---------- */
+const KT = { 1: [0, 3.84], 2: [0, 1.8, 4.5], 3: [0, 1, 3, 9], 4: [0, .5, 2, 6, 35], 5: [0, .25, 1.35, 4, 14, 90], 6: [0, 0, 1.2, 2.3, 6.5, 55, 450], 7: [0, 0, .7, 1.8, 4.8, 20, 150, 700], 8: [0, 0, .5, 1.3, 4, 10, 50, 300, 1000], 9: [0, 0, .4, 1, 2.8, 6, 25, 150, 500, 1000], 10: [0, 0, .3, .8, 2.2, 4, 15, 80, 400, 800, 1000] };
+const KN = { busy: false, drawn: [] };
+function knSel() { if (!CZ().bets.knSel) CZ().bets.knSel = []; return CZ().bets.knSel; }
+GAMES.keno = {
+  n: 'Keno',
+  rules: 'Wähle 1 bis 10 Zahlen aus 40. Dann werden 10 Zahlen gezogen. Je mehr Treffer, desto höher der Gewinn – die Tabelle unten zeigt die Multiplikatoren für deine Anzahl gewählter Zahlen.<br><br>Die Tabellen sind über die hypergeometrische Verteilung auf 95–97 % Auszahlungsquote abgestimmt.',
+  draw() {
+    const sel = knSel(), hits = KN.drawn.filter(n => sel.includes(n)).length;
+    let s = '<div class="cz-stage" style="background:linear-gradient(180deg,#1d1330,#0c0816)"><div class="kg">';
+    for (let n = 1; n <= 40; n++) { const sl = sel.includes(n), dr = KN.drawn.includes(n); s += '<button class="kn' + (sl && dr ? ' hit' : dr ? ' drw' : sl ? ' sel' : '') + '" data-a="knT" data-n="' + n + '"' + (KN.busy ? ' disabled' : '') + '>' + n + '</button>'; }
+    s += '</div>';
+    const T = KT[sel.length];
+    s += T ? '<div class="ktab">' + T.map((m, h) => '<div class="' + (KN.drawn.length === 10 && h === hits ? 'on' : '') + '">' + fmt(m, 2) + '×<small>' + h + ' Tr.</small></div>').join('') + '</div>' : '<p class="sm mu" style="text-align:center;margin:12px 0 0">Wähle 1 bis 10 Zahlen.</p>';
+    s += '<div class="cres" id="cRes"></div></div>' + betBar('keno', { lock: KN.busy, extra: '<span class="chipv">' + sel.length + '/10 gewählt</span>' }) +
+      '<div class="btns" style="grid-template-columns:1fr 1fr 1.4fr"><button class="b" data-a="knRnd"' + (KN.busy ? ' disabled' : '') + '>Zufall</button><button class="b" data-a="knClr"' + (KN.busy ? ' disabled' : '') + '>Leeren</button><button class="b pri" data-a="knGo"' + (KN.busy || !sel.length ? ' disabled' : '') + '>Ziehen</button></div>';
+    return s;
+  }
+};
+A.knT = d => { if (KN.busy) return; const s = knSel(), n = +d.n, i = s.indexOf(n); if (i >= 0) s.splice(i, 1); else if (s.length < 10) s.push(n); else { toast('Maximal 10 Zahlen.'); return; } KN.drawn = []; save(); haptic(1); czRedraw(); };
+A.knRnd = () => { if (KN.busy) return; CZ().bets.knSel = shuffle([...Array(40).keys()].map(x => x + 1)).slice(0, 10); KN.drawn = []; save(); czRedraw(); };
+A.knClr = () => { if (KN.busy) return; CZ().bets.knSel = []; KN.drawn = []; save(); czRedraw(); };
+A.knGo = () => {
+  if (KN.busy) return; const sel = [...knSel()]; if (!sel.length) return; const bet = czBet('keno'); if (!czTake(bet)) return;
+  const draw = shuffle([...Array(40).keys()].map(x => x + 1)).slice(0, 10);
+  KN.busy = true; KN.drawn = []; czRedraw(); let i = 0;
+  const step = () => {
+    if (i < 10) { const n = draw[i++]; KN.drawn.push(n); if (sel.includes(n)) { haptic(1); blip(900, .08); } else blip(420, .03); czRedraw(); setTimeout(step, 230); return; }
+    KN.busy = false; const h = draw.filter(n => sel.includes(n)).length, m = KT[sel.length][h];
+    czPay('keno', bet, bet * m); czRedraw(); czRes(h + ' Treffer · ' + (m ? fmt(m, 2) + '× · +' + fmtT(bet * m) : 'kein Gewinn'), m > 1 ? 'win' : m ? 'push' : 'lose');
+  };
+  setTimeout(step, 200);
+};
+
+/* ---------- Münzwurf ---------- */
+const CN = { rot: 0, busy: false };
+GAMES.coin = {
+  n: 'Coin Flip',
+  rules: 'Kopf oder Zahl – 50 % Chance, Gewinn 1,98× (1 % Bankvorteil).',
+  draw() {
+    return '<div class="cz-stage" style="background:radial-gradient(80% 70% at 50% 40%,#2e2710,#0d0b05)"><div class="coin-wrap"><div class="coin" id="cnC" style="transform:rotateY(' + CN.rot + 'deg)"><div>K</div><div class="z">Z</div></div></div><div class="cres" id="cRes"></div></div>' + betBar('coin', { lock: CN.busy }) +
+      '<div class="btns" style="grid-template-columns:1fr 1fr"><button class="b pri big" data-a="cnGo" data-v="0"' + (CN.busy ? ' disabled' : '') + '>Kopf</button><button class="b big" style="background:#8e939b;color:#111" data-a="cnGo" data-v="1"' + (CN.busy ? ' disabled' : '') + '>Zahl</button></div>';
+  }
+};
+A.cnGo = d => {
+  if (CN.busy) return; const bet = czBet('coin'); if (!czTake(bet)) return;
+  const r = rint(2), pick = +d.v; CN.busy = true; czRedraw(); haptic(1);
+  const cur = CN.rot % 360, nr = CN.rot + 1800 + ((r ? 180 : 0) - cur + 360) % 360;
+  requestAnimationFrame(() => requestAnimationFrame(() => { const c = $('#cnC'); if (c) c.style.transform = 'rotateY(' + nr + 'deg)'; }));
+  setTimeout(() => { CN.rot = nr; CN.busy = false; const w = r === pick ? bet * 1.98 : 0; czPay('coin', bet, w); czRedraw(); czRes((r ? 'Zahl' : 'Kopf') + (w ? ' · +' + fmtT(w) : ' · verloren'), w ? 'win' : 'lose'); }, 1700);
+};
+
+/* ---------- Rubbellos ---------- */
+const SCP = [[1, .18], [2, .1], [5, .04], [10, .015], [25, .004], [100, .001]];
+function scTicket(price) {
+  let u = rnd(), prize = 0; for (const [m, p] of SCP) { if (u < p) { prize = m; break; } u -= p; }
+  const vals = SCP.map(x => x[0]), cells = [];
+  if (prize) cells.push(prize, prize, prize);
+  const cnt = {}; if (prize) cnt[prize] = 3;
+  while (cells.length < 9) { const v = vals[rint(vals.length)]; if ((cnt[v] || 0) >= 2 || v === prize) continue; cnt[v] = (cnt[v] || 0) + 1; cells.push(v); }
+  return { price, prize, cells: shuffle(cells), done: false };
+}
+GAMES.scratch = {
+  n: 'Rubbellos',
+  rules: 'Kaufe ein Los zum gewählten Preis und rubbel die 9 Felder frei. Drei gleiche Beträge gewinnen diesen Betrag (als Vielfaches des Lospreises, bis 100×).<br>Etwa jedes dritte Los gewinnt, Auszahlungsquote 93 %.',
+  draw() {
+    const st = czRun('scratch');
+    if (!st) return '<div class="cz-stage" style="text-align:center"><div style="font-size:70px;margin:10px 0">🎟️</div><p class="mu">Drei gleiche Beträge gewinnen – bis zu 100× des Lospreises.</p></div>' + betBar('scratch', { label: 'Lospreis' }) + '<button class="b pri big wide" data-a="scBuy">Los kaufen</button>';
+    const cnt = {}; st.cells.forEach(v => cnt[v] = (cnt[v] || 0) + 1);
+    let s = '<div class="cz-stage" style="background:#140c28"><div class="scx"><div class="scg" id="scG">' + st.cells.map(v => '<div class="' + (st.done && st.prize && v === st.prize ? 'win' : '') + '">' + fmtT(v * st.price) + '<small>' + v + '×</small></div>').join('') + '</div>' + (st.done ? '' : '<canvas id="scCv"></canvas>') + '</div><div class="cres" id="cRes"></div></div>';
+    s += st.done ? betBar('scratch', { label: 'Lospreis' }) + '<button class="b pri big wide" data-a="scBuy">Neues Los kaufen</button>' : '<button class="b wide" data-a="scAll">Alles aufdecken</button>';
+    return s;
+  },
+  mount() {
+    const st = czRun('scratch'); if (!st) return;
+    if (st.done) { czRes(st.prize ? 'Gewonnen: ' + fmtT(st.prize * st.price) : 'Leider nichts', st.prize ? 'win' : 'lose'); return; }
+    const cv = $('#scCv'), g = $('#scG'); if (!cv || !g) return;
+    const w = g.clientWidth, h = g.clientHeight, dpr = window.devicePixelRatio || 1;
+    cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + 'px'; cv.style.height = h + 'px';
+    const x = cv.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const gr = x.createLinearGradient(0, 0, w, h); gr.addColorStop(0, '#d9d9df'); gr.addColorStop(.5, '#f4f4f7'); gr.addColorStop(1, '#b9b9c2');
+    x.fillStyle = gr; x.fillRect(0, 0, w, h);
+    x.fillStyle = 'rgba(80,60,140,.55)'; x.font = '800 20px -apple-system,sans-serif'; x.textAlign = 'center';
+    for (let yy = 30; yy < h; yy += 56) x.fillText('RUBBELN ★ RUBBELN', w / 2, yy);
+    x.globalCompositeOperation = 'destination-out';
+    let last = null, n = 0;
+    const at = e => { const r = cv.getBoundingClientRect(), t = e.touches ? e.touches[0] : e; return [t.clientX - r.left, t.clientY - r.top]; };
+    const move = e => {
+      e.preventDefault(); const p = at(e); x.lineWidth = 44; x.lineCap = 'round';
+      x.beginPath(); x.moveTo(...(last || p)); x.lineTo(...p); x.stroke(); last = p;
+      if (++n % 12 === 0) { if (n % 36 === 0) haptic(1); const d = x.getImageData(0, 0, cv.width, cv.height).data; let clr = 0; for (let i = 3; i < d.length; i += 64) if (d[i] === 0) clr++; if (clr / (d.length / 64) > .62) A.scAll(); }
+    };
+    cv.addEventListener('pointerdown', e => { last = at(e); cv.setPointerCapture(e.pointerId); cv.onpointermove = move; });
+    cv.addEventListener('pointerup', () => { last = null; cv.onpointermove = null; });
+  }
+};
+A.scBuy = () => { const price = czBet('scratch'); if (!czTake(price)) return; czSetRun('scratch', scTicket(price)); haptic(1); czRedraw(); };
+A.scAll = () => { const st = czRun('scratch'); if (!st || st.done) return; st.done = true; save(); czPay('scratch', st.price, st.prize * st.price); czRedraw(); };
 
 /* ============================================================
    Ereignisse und Start
