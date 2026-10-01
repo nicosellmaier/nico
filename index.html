@@ -472,6 +472,7 @@ input.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;b
 .scx canvas{position:absolute;left:12px;top:12px;touch-action:none;border-radius:12px}
 .exfig{display:block}
 .mmap{display:block}
+.exhero{padding:6px;background:#0c0c0e}.mcard{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:10px;align-items:center}.mleg{display:flex;gap:8px;align-items:flex-start;margin:5px 0;line-height:1.2}.mleg i{width:10px;height:10px;border-radius:3px;flex:none;margin-top:3px}.mleg b{font-size:13px}.mleg small{display:block;color:var(--mu);font-size:11px}.mlh{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);margin-top:4px}@media (prefers-reduced-motion:no-preference){.mmap .mon{animation:mpulse 2.6s ease-in-out infinite}}@keyframes mpulse{50%{fill-opacity:.62}}
 </style>
 </head>
 <body>
@@ -1658,7 +1659,7 @@ function drawPick() {
   if (o.back) h += '<button class="b wide" style="margin-bottom:8px" data-a="pickDo" data-id="' + o.back + '">Zurück zu ' + esc(exName(o.back)) + '</button>';
   if (pri.length) h += '<label class="lb">Hinterlegte Alternativen</label><div class="lst">' + pri.map(id => '<div class="li tap" data-a="pickDo" data-id="' + id + '"><div class="grow"><b>' + esc(exName(id)) + '</b><span>' + esc(MUS[lib(id).m] || '') + ' · ' + EQ[lib(id).equip] + ' · zuletzt ' + (lastOf(id) ? fmt(modeLoad(workSets(lastOf(id).e))) + ' kg' : '–') + '</span></div></div>').join('') + '</div>';
   const sg = (o.sugg || []).filter(k => EXDB[k]);
-  if (sg.length) h += '<label class="lb">Vorschläge · gleiche Muskeln, passende Bewegung</label><div class="lst">' + sg.map(k => { const e = EXDB[k], a = dbAlts(o.suggFrom || k, 40).find(x => x.k === k); return '<div class="li tap" data-a="pickDo" data-id="db:' + k + '"><div style="width:46px;flex:none">' + exFigure(e.pat, e.eq) + '</div><div class="grow"><b>' + esc(e.n) + '</b><span>' + esc(EQ[e.eq] + (a && a.why.length ? ' · ' + a.why.join(' · ') : '')) + '</span></div>' + (gymOk(k) ? '<span class="tag gr">FF</span>' : '') + '</div>'; }).join('') + '</div>';
+  if (sg.length) h += '<label class="lb">Vorschläge · gleiche Muskeln, passende Bewegung</label><div class="lst">' + sg.map(k => { const e = EXDB[k], a = dbAlts(o.suggFrom || k, 40).find(x => x.k === k); return '<div class="li tap" data-a="pickDo" data-id="db:' + k + '"><div style="width:46px;flex:none">' + exFigure(e.k) + '</div><div class="grow"><b>' + esc(e.n) + '</b><span>' + esc(EQ[e.eq] + (a && a.why.length ? ' · ' + a.why.join(' · ') : '')) + '</span></div>' + (gymOk(k) ? '<span class="tag gr">FF</span>' : '') + '</div>'; }).join('') + '</div>';
   h += '<div class="chips" style="margin:8px 0"><button class="chip' + (!f ? ' on' : '') + '" data-a="pickF" data-v="">Alle</button>' + mus.map(m => '<button class="chip' + (f === m ? ' on' : '') + '" data-a="pickF" data-v="' + m + '">' + esc(MUS[m] || m) + '</button>').join('') + '</div>';
   const list = all.filter(L => !f || L.m === f).sort((a, b) => a.n.localeCompare(b.n, 'de'));
   h += '<div class="lst">' + (o.allowNew ? '<div class="li tap" data-a="pickNew"><div class="grow"><b class="brc">+ Neue Übung anlegen</b></div></div>' : '') + list.map(L => '<div class="li tap" data-a="pickDo" data-id="' + L.id + '"><div class="grow"><b>' + esc(L.n) + '</b><span>' + esc(MUS[L.m] || L.m) + ' · ' + EQ[L.equip] + '</span></div></div>').join('') + '</div>';
@@ -1961,7 +1962,7 @@ A.libDel = () => ask('Übung aus der Bibliothek löschen?', 'Löschen', () => { 
 function libEditor(id) {
   const L = S.lib[id]; const P = L.prog;
   const E = L.db && EXDB[L.db];
-  let h = '<h2>Ausführung</h2><div class="card">' + (E ? '<div class="row"><div style="width:110px;flex:none">' + exFigure(E.pat, E.eq) + '</div><div class="grow"><b>' + esc(E.n) + '</b><div class="sm mu">' + PATS[E.pat].n + ' · ' + lenTxt(E.len) + '</div><div class="row" style="margin-top:6px;gap:6px"><button class="b sm" data-a="exHow" data-id="' + id + '">Anleitung</button><button class="b sm gh" data-a="libDbLink">Ändern</button></div></div></div>' : '<p class="sm mu" style="margin-top:0">Noch nicht mit der Übungsdatenbank verknüpft.</p><button class="b wide" data-a="libDbLink">Mit Datenbank verknüpfen</button>') + '</div>';
+  let h = '<h2>Ausführung</h2><div class="card">' + (E ? '<div class="row"><div style="width:110px;flex:none">' + exFigure(E.k) + '</div><div class="grow"><b>' + esc(E.n) + '</b><div class="sm mu">' + PATS[E.pat].n + ' · ' + lenTxt(E.len) + '</div><div class="row" style="margin-top:6px;gap:6px"><button class="b sm" data-a="exHow" data-id="' + id + '">Anleitung</button><button class="b sm gh" data-a="libDbLink">Ändern</button></div></div></div>' : '<p class="sm mu" style="margin-top:0">Noch nicht mit der Übungsdatenbank verknüpft.</p><button class="b wide" data-a="libDbLink">Mit Datenbank verknüpfen</button>') + '</div>';
   h += '<h2>Übung</h2><div class="card">' +
     '<label class="lb" style="margin-top:0">Name</label><input class="in" data-f="libN" value="' + esc(L.n) + '">' +
     '<label class="lb">Ausführungsvariante</label><input class="in" data-f="libVar" value="' + esc(L.variant) + '" placeholder="z. B. enger Griff, Sitz Stufe 4">' +
@@ -3514,113 +3515,491 @@ function dbAlts(key, n) {
   return out.sort((x, y) => y.s - x.s).slice(0, n || 8);
 }
 /* ---------- Grafik: animierte Figur ---------- */
-const DIR = d => [Math.sin(d * Math.PI / 180), -Math.cos(d * Math.PI / 180)];
-const pp = (a, d, l) => { const v = DIR(d); return [a[0] + v[0] * l, a[1] + v[1] * l]; };
-function joints(P) {
-  let hp, kn, an, kn2, an2;
-  if (P.r === 'f') { an = P.p; kn = pp(an, P.leg[0], 32); hp = pp(kn, P.leg[1], 32); }
-  else { hp = P.p; kn = pp(hp, P.leg[0], 32); an = pp(kn, P.leg[1], 32); }
-  if (P.leg2) { kn2 = pp(hp, P.leg2[0], 32); an2 = pp(kn2, P.leg2[1], 32); }
-  const nk = pp(hp, P.t, 42), hd = pp(nk, P.t, 11);
-  const ua = P.ar ? P.t + P.ua : P.ua, fa = P.ar ? P.t + P.fa : P.fa;
-  const sh = [nk[0], nk[1] - (P.sy || 0)], el = pp(sh, ua, 22), wr = pp(el, fa, 22);
-  return { hp, kn, an, kn2, an2, nk, hd, sh, el, wr, ua, fa };
+/* ============================================================
+   Animations-Engine: Gelenkwinkel + inverse Kinematik
+   Richtung d: 0 = oben, 90 = vorn (rechts), 180 = unten, 270 = hinten
+   ============================================================ */
+const GL = { T: 44, UA: 26, FA: 23, TH: 36, SH: 35, FT: 13 };
+const GND = 168;
+function Dv(d) { const r = d * Math.PI / 180; return [Math.sin(r), -Math.cos(r)]; }
+const vAdd = (a, b, s) => [a[0] + b[0] * (s == null ? 1 : s), a[1] + b[1] * (s == null ? 1 : s)];
+const vAng = (a, b) => Math.atan2(b[0] - a[0], -(b[1] - a[1])) * 180 / Math.PI;
+function ik2(a, c, l1, l2, pref) {
+  let dx = c[0] - a[0], dy = c[1] - a[1], d = Math.hypot(dx, dy) || .01;
+  const mx = l1 + l2 - .05, mn = Math.abs(l1 - l2) + .5;
+  if (d > mx) { dx *= mx / d; dy *= mx / d; d = mx; } else if (d < mn) { dx *= mn / d; dy *= mn / d; d = mn; }
+  const ux = dx / d, uy = dy / d, ca = clamp((l1 * l1 + d * d - l2 * l2) / (2 * l1 * d), -1, 1), sa = Math.sqrt(1 - ca * ca);
+  const k1 = [a[0] + l1 * (ux * ca - uy * sa), a[1] + l1 * (ux * sa + uy * ca)];
+  const k2 = [a[0] + l1 * (ux * ca + uy * sa), a[1] + l1 * (-ux * sa + uy * ca)];
+  const p = pref || [1, 0], m = [a[0] + dx / 2, a[1] + dy / 2];
+  const s1 = (k1[0] - m[0]) * p[0] + (k1[1] - m[1]) * p[1], s2 = (k2[0] - m[0]) * p[0] + (k2[1] - m[1]) * p[1];
+  const k = s1 >= s2 ? k1 : k2;
+  return [k, [a[0] + dx, a[1] + dy]];
 }
-function jointsFront(P) {
-  const hp = P.r === 'f' ? [P.p[0], P.p[1] - 64] : P.p, nk = [hp[0], hp[1] - 44], hd = [hp[0], hp[1] - 57];
-  const s1 = [hp[0] + 13, nk[1] + 3 - (P.sy || 0)], s2 = [hp[0] - 13, nk[1] + 3 - (P.sy || 0)];
-  const e1 = pp(s1, P.ua, 22), w1 = pp(e1, P.fa, 22), e2 = [2 * s2[0] - pp(s2, P.ua, 22)[0] + 0, pp(s2, P.ua, 22)[1]];
-  e2[0] = s2[0] - (e1[0] - s1[0]); const w2 = [e2[0] - (w1[0] - e1[0]), w1[1]];
-  const h1 = [hp[0] + 7, hp[1]], h2 = [hp[0] - 7, hp[1]];
-  const k1 = pp(h1, P.leg[0] === 0 ? 180 : P.leg[0], 32), a1 = pp(k1, P.leg[1] === 0 ? 180 : P.leg[1], 32);
-  const k2 = [h2[0] - (k1[0] - h1[0]), k1[1]], a2 = [h2[0] - (a1[0] - h1[0]), a1[1]];
-  return { hp, nk, hd, s1, s2, e1, w1, e2, w2, h1, h2, k1, a1, k2, a2 };
+/* Seitenansicht: Pose → Gelenke */
+function solveSide(P) {
+  const t = P.t || 0, J = {};
+  if (P.toe) { // Zehenballen fix (Wadenheben)
+    J.toe = P.toe; J.an = vAdd(P.toe, Dv(P.fo), -GL.FT * .78);
+    J.kn = vAdd(J.an, Dv(P.k == null ? 180 : P.k), -GL.SH); J.hp = vAdd(J.kn, Dv(P.q == null ? 180 : P.q), -GL.TH);
+    J.nk = vAdd(J.hp, Dv(t), GL.T);
+  } else if (P.kn) { // Knie fix (kniend)
+    J.kn = P.kn; J.hp = vAdd(P.kn, Dv(P.q), -GL.TH); J.an = vAdd(P.kn, Dv(P.k), GL.SH); J.nk = vAdd(J.hp, Dv(t), GL.T);
+  } else {
+    if (P.nk) { J.nk = P.nk; J.hp = vAdd(P.nk, Dv(t), -GL.T); } else { J.hp = P.hp; J.nk = vAdd(P.hp, Dv(t), GL.T); }
+    if (P.line) { J.kn = vAdd(J.hp, Dv(t), -GL.TH); J.an = vAdd(J.kn, Dv(t), -GL.SH); }
+    else if (P.an) { const r = ik2(J.hp, P.an, GL.TH, GL.SH, P.kd || [1, 0]); J.kn = r[0]; J.an = r[1]; }
+    else { J.kn = vAdd(J.hp, Dv(P.q), GL.TH); J.an = vAdd(J.kn, Dv(P.k), GL.SH); }
+  }
+  // ferne Seite (Bein)
+  if (P.an2) { const r = ik2(J.hp, P.an2, GL.TH, GL.SH, P.kd2 || [1, 0]); J.kn2 = r[0]; J.an2 = r[1]; }
+  else if (P.q2 != null) { J.kn2 = vAdd(J.hp, Dv(P.q2), GL.TH); J.an2 = vAdd(J.kn2, Dv(P.k2), GL.SH); }
+  else { J.kn2 = J.kn; J.an2 = J.an; }
+  // Rumpf-Koordinaten
+  J.u = Dv(t); J.n = [-J.u[1], J.u[0]];
+  J.sh = vAdd(J.nk, J.u, -(3 - (P.sy || 0)));
+  const at = (q) => q && q.j ? vAdd(vAdd(J[q.j], J.n, q.to[0]), J.u, q.to[1]) : q;
+  // Arme
+  const arm = (wr, ed, u, f, ra) => {
+    if (wr) { const W = at(wr); return ik2(J.sh, W, GL.UA, GL.FA, ed || [0, 1]); }
+    const uu = ra ? t + u : u, ff = ra ? t + f : f; const el = vAdd(J.sh, Dv(uu), GL.UA); return [el, vAdd(el, Dv(ff), GL.FA)];
+  };
+  [J.el, J.wr] = arm(P.wr, P.ed, P.u, P.f, P.ra);
+  if (P.wr2 || P.u2 != null) [J.el2, J.wr2] = arm(P.wr2, P.ed2 || P.ed, P.u2 ?? P.u, P.f2 ?? P.f, P.ra);
+  else { J.el2 = J.el; J.wr2 = J.wr; }
+  const hd = (el, wr, ha) => vAdd(wr, Dv(ha != null ? ha : vAng(el, wr)), 6.5);
+  J.hd1 = hd(J.el, J.wr, P.ha); J.hd2 = hd(J.el2, J.wr2, P.ha);
+  J.head = vAdd(J.nk, Dv(P.hd != null ? (P.hdr ? t + P.hd : P.hd) : t), 12.5);
+  const foot = (kn, an, fo) => { const d = fo != null ? fo : vAng(kn, an) - 90; return [vAdd(an, Dv(d), -GL.FT * .25), vAdd(an, Dv(d), GL.FT * .8)]; };
+  [J.heel, J.toeP] = P.toe ? [vAdd(J.an, Dv(P.fo), -GL.FT * .25), P.toe] : foot(J.kn, J.an, P.fo);
+  [J.heel2, J.toe2] = foot(J.kn2, J.an2, P.fo2 != null ? P.fo2 : (P.an2 || P.q2 != null ? null : P.fo));
+  J.P = P;
+  return J;
 }
-/* Animation der Figuren: 1 s konzentrisch, kurz halten, 1,7 s exzentrisch (eigene Zeitsteuerung, funktioniert in jedem Browser) */
-const FIGREG = {}; let FIGRAF = 0;
-const easeIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-function figPhase(ms) { const u = (ms % 3400) / 3400; if (u < .32) return easeIO(u / .32); if (u < .44) return 1; if (u < .94) return 1 - easeIO((u - .44) / .5); return 0; }
+/* Interpolation zwischen Schlüsselposen (auch Arrays) */
+function lerpPose(A, B, k) {
+  const o = {};
+  for (const key of new Set([...Object.keys(A), ...Object.keys(B)])) {
+    const a = A[key], b = B[key];
+    if (a == null) { o[key] = b; continue; } if (b == null) { o[key] = a; continue; }
+    if (typeof a === 'number') o[key] = a + (b - a) * k;
+    else if (Array.isArray(a)) o[key] = a.map((x, i) => typeof x === 'number' ? x + (b[i] - x) * k : x);
+    else if (typeof a === 'object' && a.j) o[key] = { j: a.j, to: a.to.map((x, i) => x + (b.to[i] - x) * k) };
+    else o[key] = k < .5 ? a : b;
+  }
+  return o;
+}
+/* Zeichnen */
+const FC = { near: '#E8E8ED', torso: '#D9D9DE', far: '#86868C', load: '#FF9F0A', frame: '#4A4A50', pad: '#6C6C72', seat: '#58585E', cable: '#A1A1A6' };
+const f1 = x => x.toFixed(1);
+function limb(p1, p2, w1, w2, c) {
+  const dx = p2[0] - p1[0], dy = p2[1] - p1[1], l = Math.hypot(dx, dy) || 1, nx = -dy / l, ny = dx / l;
+  return '<path d="M' + f1(p1[0] + nx * w1 / 2) + ' ' + f1(p1[1] + ny * w1 / 2) + 'L' + f1(p2[0] + nx * w2 / 2) + ' ' + f1(p2[1] + ny * w2 / 2) + 'L' + f1(p2[0] - nx * w2 / 2) + ' ' + f1(p2[1] - ny * w2 / 2) + 'L' + f1(p1[0] - nx * w1 / 2) + ' ' + f1(p1[1] - ny * w1 / 2) + 'Z" fill="' + c + '"/>' +
+    '<circle cx="' + f1(p1[0]) + '" cy="' + f1(p1[1]) + '" r="' + f1(w1 / 2) + '" fill="' + c + '"/><circle cx="' + f1(p2[0]) + '" cy="' + f1(p2[1]) + '" r="' + f1(w2 / 2) + '" fill="' + c + '"/>';
+}
+function smoothPath(pts) {
+  let d = 'M' + f1((pts[0][0] + pts[1][0]) / 2) + ' ' + f1((pts[0][1] + pts[1][1]) / 2);
+  for (let i = 1; i <= pts.length; i++) { const p = pts[i % pts.length], q = pts[(i + 1) % pts.length]; d += 'Q' + f1(p[0]) + ' ' + f1(p[1]) + ' ' + f1((p[0] + q[0]) / 2) + ' ' + f1((p[1] + q[1]) / 2); }
+  return d + 'Z';
+}
+function torsoSide(J, c) {
+  const S = [[-.1, 5, 9.5], [.08, 8, 9.5], [.35, 9, 7.5], [.62, 11, 8], [.86, 9.5, 8.5], [1, 6, 6.5]];
+  const fr = S.map(([s, f]) => vAdd(vAdd(J.hp, J.u, s * GL.T), J.n, f)), bk = S.map(([s, , b]) => vAdd(vAdd(J.hp, J.u, s * GL.T), J.n, -b)).reverse();
+  return '<path d="' + smoothPath([...fr, ...bk]) + '" fill="' + c + '"/>';
+}
+function equipItem(q, J, P) {
+  const c = q.c, at = (j, to, off) => { let p = J[j]; if (to) p = vAdd(vAdd(p, J.n, to[0]), J.u, to[1]); if (off) p = vAdd(p, off); return p; };
+  switch (q.k) {
+    case 'r': return '<rect x="' + q.x + '" y="' + q.y + '" width="' + q.w + '" height="' + q.h + '" rx="' + (q.rx ?? 3) + '" fill="' + (c || FC.frame) + '"' + (q.rot ? ' transform="rotate(' + q.rot + ' ' + (q.ox ?? q.x) + ' ' + (q.oy ?? q.y) + ')"' : '') + '/>';
+    case 'l': return '<line x1="' + q.a[0] + '" y1="' + q.a[1] + '" x2="' + q.b[0] + '" y2="' + q.b[1] + '" stroke="' + (c || FC.frame) + '" stroke-width="' + (q.w || 6) + '" stroke-linecap="round"/>';
+    case 'plate': { const p = at(q.at, q.to, q.off), r = q.r || 13; return '<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + r + '" fill="#2C2C2E" stroke="' + FC.load + '" stroke-width="3.2"/><circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + (r * .32).toFixed(1) + '" fill="' + FC.load + '"/>'; }
+    case 'db': { const p = at(q.at, q.to, q.off), d = vAng(J[q.el || 'el'], J[q.at]); const a = vAdd(p, Dv(d + 90), 5), b = vAdd(p, Dv(d + 90), -5); return limb(a, b, 3, 3, '#8E8E93') + '<circle cx="' + f1(a[0]) + '" cy="' + f1(a[1]) + '" r="5.5" fill="' + FC.load + '"/><circle cx="' + f1(b[0]) + '" cy="' + f1(b[1]) + '" r="5.5" fill="' + FC.load + '"/>'; }
+    case 'grip': { const p = at(q.at, q.to, q.off); return '<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + (q.r || 3.5) + '" fill="' + (c || FC.load) + '"/>'; }
+    case 'cable': {
+      const p = at(q.at, q.to, q.off), f = q.from, colX = q.colX ?? f[0];
+      return '<line x1="' + colX + '" y1="' + Math.min(f[1], 6) + '" x2="' + colX + '" y2="' + GND + '" stroke="' + FC.frame + '" stroke-width="7"/>' +
+        '<rect x="' + (colX - 7) + '" y="' + (GND - 34) + '" width="14" height="26" rx="2" fill="#3A3A3C" stroke="' + FC.frame + '"/>' +
+        '<circle cx="' + f[0] + '" cy="' + f[1] + '" r="4.5" fill="#2C2C2E" stroke="' + FC.cable + '" stroke-width="2"/>' +
+        '<line x1="' + f[0] + '" y1="' + f[1] + '" x2="' + f1(p[0]) + '" y2="' + f1(p[1]) + '" stroke="' + FC.cable + '" stroke-width="1.6"/>' +
+        '<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="3.5" fill="' + FC.load + '"/>';
+    }
+    case 'lever': { const p = at(q.at, q.to, q.off); return '<line x1="' + q.piv[0] + '" y1="' + q.piv[1] + '" x2="' + f1(p[0]) + '" y2="' + f1(p[1]) + '" stroke="' + FC.frame + '" stroke-width="5" stroke-linecap="round"/><circle cx="' + q.piv[0] + '" cy="' + q.piv[1] + '" r="4" fill="' + FC.frame + '"/>' + (q.pad ? '<circle cx="' + f1(p[0]) + '" cy="' + f1(p[1]) + '" r="' + q.pad + '" fill="' + FC.load + '"/>' : ''); }
+    case 'tpad': { const a = vAdd(vAdd(J.hp, J.u, q.s1 * GL.T), J.n, q.side * (q.gap || 12)), b = vAdd(vAdd(J.hp, J.u, q.s2 * GL.T), J.n, q.side * (q.gap || 12)); return limb(a, b, 8, 8, c || FC.pad); }
+    case 'sled': { const p = at(q.at, q.to, q.off), a = vAdd(p, Dv(q.dir + 90), q.len / 2), b = vAdd(p, Dv(q.dir + 90), -q.len / 2), bb = vAdd(p, Dv(q.dir), 5); return limb(a, b, 5, 5, FC.load) + '<circle cx="' + f1(bb[0]) + '" cy="' + f1(bb[1]) + '" r="' + (q.plates ? 9 : 0) + '" fill="#2C2C2E" stroke="' + FC.load + '" stroke-width="2.5"/>'; }
+    case 'land': { const p = at(q.at, q.to, q.off); return '<line x1="' + q.piv[0] + '" y1="' + q.piv[1] + '" x2="' + f1(p[0]) + '" y2="' + f1(p[1]) + '" stroke="#8E8E93" stroke-width="3.5"/>' + '<circle cx="' + f1(p[0] - 9) + '" cy="' + f1(p[1] + 4) + '" r="11" fill="#2C2C2E" stroke="' + FC.load + '" stroke-width="3"/>'; }
+    case 'wheel': { const p = at(q.at, q.to, q.off); return '<circle cx="' + f1(p[0]) + '" cy="' + f1(GND - 9) + '" r="9" fill="#2C2C2E" stroke="' + FC.load + '" stroke-width="3"/>'; }
+    case 'post': return '<line x1="' + q.x + '" y1="' + (q.y || 20) + '" x2="' + q.x + '" y2="' + GND + '" stroke="' + FC.frame + '" stroke-width="5"/>';
+  }
+  return '';
+}
+function drawSide(J, S) {
+  let back = '', mid = '', front = '';
+  for (const q of S.eq || []) { const s = equipItem(q, J, J.P); if (q.z === 'f') front += s; else if (q.z === 'm') mid += s; else if (q.k === 'r' || q.k === 'l' || q.k === 'post' || q.z === 'b') back += s; else front += s; }
+  let g = back;
+  // ferne Seite
+  g += limb(J.hp, J.kn2, 12, 9, FC.far) + limb(J.kn2, J.an2, 9, 6, FC.far) + limb(J.heel2, J.toe2, 5, 4, FC.far);
+  g += limb(J.sh, J.el2, 8, 6.5, FC.far) + limb(J.el2, J.wr2, 6.5, 5, FC.far) + limb(J.wr2, J.hd2, 5, 4, FC.far);
+  g += mid;
+  g += torsoSide(J, FC.torso);
+  g += limb(J.nk, vAdd(J.head, Dv(vAng(J.nk, J.head)), -6), 6.5, 6.5, FC.torso);
+  g += '<circle cx="' + f1(J.head[0]) + '" cy="' + f1(J.head[1]) + '" r="8.2" fill="' + FC.near + '"/>';
+  const hb = vAdd(J.head, Dv(vAng(J.nk, J.head) - 75), -4.5);
+  g += '<circle cx="' + f1(hb[0]) + '" cy="' + f1(hb[1]) + '" r="5.2" fill="#B9B9BF"/>';
+  g += limb(J.hp, J.kn, 13, 9.5, FC.near) + limb(J.kn, J.an, 9.5, 6.5, FC.near) + limb(J.heel, J.toeP, 5.5, 4.5, FC.near);
+  g += limb(J.sh, J.el, 8.5, 7, FC.near) + limb(J.el, J.wr, 7, 5.5, FC.near) + limb(J.wr, J.hd1, 5.5, 4.5, FC.near);
+  return g + front;
+}
+/* Vorderansicht (beidseitig, Frontalebene) */
+function solveFront(P) {
+  const J = { P }, t = P.t || 0, hc = P.hc;
+  J.u = Dv(t); J.n = [-J.u[1], J.u[0]];
+  J.nk = vAdd(hc, J.u, GL.T); J.head = vAdd(J.nk, J.u, 14);
+  const sw = 16 * Math.cos((P.rot || 0) * Math.PI / 180);
+  J.shR = vAdd(vAdd(J.nk, J.n, sw), J.u, -3 + (P.sy || 0)); J.shL = vAdd(vAdd(J.nk, J.n, -sw), J.u, -3 + (P.sy || 0));
+  J.hpR = vAdd(hc, J.n, 8); J.hpL = vAdd(hc, J.n, -8);
+  const arm = (sh, s, wr, eu, ef) => { if (wr) return ik2(sh, wr, GL.UA, GL.FA, P.ed ? [P.ed[0] * s, P.ed[1]] : [s, 0]); const e = vAdd(sh, Dv(180 - s * eu + t), GL.UA); return [e, vAdd(e, Dv(180 - s * ef + t), GL.FA)]; };
+  [J.elR, J.wrR] = arm(J.shR, 1, P.wrR, P.eu, P.ef);
+  [J.elL, J.wrL] = arm(J.shL, -1, P.wrL, P.eu2 ?? P.eu, P.ef2 ?? P.ef);
+  if (P.seat) {
+    const ab = (P.abd || 0) * Math.PI / 180;
+    for (const [s, h] of [[1, 'R'], [-1, 'L']]) { const hp = J['hp' + h]; const kn = [hp[0] + s * (6 + Math.sin(ab) * 26), hp[1] + 9]; J['kn' + h] = kn; J['an' + h] = [kn[0] - s * Math.sin(ab) * 6, kn[1] + 33]; }
+  } else {
+    for (const [s, h, el] of [[1, 'R', P.el || 0], [-1, 'L', P.el2 ?? P.el ?? 0]]) { const hp = J['hp' + h]; J['kn' + h] = vAdd(hp, Dv(180 - s * el + t), GL.TH); J['an' + h] = vAdd(J['kn' + h], Dv(180 - s * el + t), GL.SH); }
+  }
+  return J;
+}
+function drawFront(J, S) {
+  let back = '', front = '';
+  for (const q of S.eq || []) { const s = equipFront(q, J); if (q.z === 'f' || q.k === 'db' || q.k === 'bar' || q.k === 'kpad' || q.k === 'cab') front += s; else back += s; }
+  let g = back;
+  for (const h of ['R', 'L']) { g += limb(J['hp' + h], J['kn' + h], 13, 9.5, FC.near) + limb(J['kn' + h], J['an' + h], 9.5, 6.5, FC.near); const a = J['an' + h], s = h === 'R' ? 1 : -1; g += limb(a, [a[0] + s * 6, a[1] + 3], 5, 4.5, FC.near); }
+  const tw = [vAdd(J.shR, J.n, 2), vAdd(vAdd(J.hpR, J.u, 18), J.n, 3), vAdd(J.hpR, J.n, 5), vAdd(J.hpL, J.n, -5), vAdd(vAdd(J.hpL, J.u, 18), J.n, -3), vAdd(J.shL, J.n, -2), vAdd(J.nk, J.u, 1)];
+  g += '<path d="' + smoothPath(tw) + '" fill="' + FC.torso + '"/>';
+  g += limb(J.nk, J.head, 7, 7, FC.torso) + '<circle cx="' + f1(J.head[0]) + '" cy="' + f1(J.head[1]) + '" r="8.5" fill="' + FC.near + '"/>';
+  for (const h of ['R', 'L']) g += limb(J['sh' + h], J['el' + h], 8.5, 7, FC.near) + limb(J['el' + h], J['wr' + h], 7, 5.5, FC.near) + '<circle cx="' + f1(J['wr' + h][0]) + '" cy="' + f1(J['wr' + h][1] + 2) + '" r="3.5" fill="' + FC.near + '"/>';
+  return g + front;
+}
+function equipFront(q, J) {
+  switch (q.k) {
+    case 'r': case 'l': case 'post': return equipItem(q, J, J.P);
+    case 'db': return ['R', 'L'].filter(h => !q.side || q.side === h).map(h => { const w = J['wr' + h]; return '<rect x="' + f1(w[0] - 9) + '" y="' + f1(w[1] - 3) + '" width="18" height="6" rx="2" fill="#8E8E93"/><rect x="' + f1(w[0] - 11) + '" y="' + f1(w[1] - 6) + '" width="5" height="12" rx="2" fill="' + FC.load + '"/><rect x="' + f1(w[0] + 6) + '" y="' + f1(w[1] - 6) + '" width="5" height="12" rx="2" fill="' + FC.load + '"/>'; }).join('');
+    case 'bar': { const a = J.wrL, b = J.wrR; return '<line x1="' + f1(a[0] - 30) + '" y1="' + f1(a[1]) + '" x2="' + f1(b[0] + 30) + '" y2="' + f1(b[1]) + '" stroke="#8E8E93" stroke-width="3.5"/><rect x="' + f1(a[0] - 34) + '" y="' + f1(a[1] - 14) + '" width="6" height="28" rx="2" fill="' + FC.load + '"/><rect x="' + f1(b[0] + 28) + '" y="' + f1(b[1] - 14) + '" width="6" height="28" rx="2" fill="' + FC.load + '"/>'; }
+    case 'cab': return ['R', 'L'].filter(h => !q.side || q.side === h).map(h => { const w = J['wr' + h], f = h === 'R' ? q.fromR : q.fromL; return '<circle cx="' + f[0] + '" cy="' + f[1] + '" r="4" fill="#2C2C2E" stroke="' + FC.cable + '" stroke-width="2"/><line x1="' + f[0] + '" y1="' + f[1] + '" x2="' + f1(w[0]) + '" y2="' + f1(w[1]) + '" stroke="' + FC.cable + '" stroke-width="1.6"/><circle cx="' + f1(w[0]) + '" cy="' + f1(w[1]) + '" r="3.5" fill="' + FC.load + '"/>'; }).join('');
+    case 'kpad': return ['R', 'L'].map(h => { const k = J['kn' + h], s = h === 'R' ? 1 : -1; return '<rect x="' + f1(k[0] + s * (q.inside ? -12 : 7) - 3) + '" y="' + f1(k[1] - 9) + '" width="6" height="18" rx="3" fill="' + FC.load + '"/>'; }).join('');
+    case 'seatF': return '<rect x="' + (J.P.hc[0] - 24) + '" y="' + (J.P.hc[1] + 4) + '" width="48" height="8" rx="3" fill="' + FC.seat + '"/><rect x="' + (J.P.hc[0] - 22) + '" y="' + (J.P.hc[1] - 50) + '" width="44" height="52" rx="6" fill="#3A3A3E"/><rect x="' + (J.P.hc[0] - 3) + '" y="' + (J.P.hc[1] + 12) + '" width="6" height="' + (GND - J.P.hc[1] - 12) + '" fill="' + FC.frame + '"/>';
+  }
+  return '';
+}
+/* Aufsicht (von oben, z. B. Fliegende, Rotation) */
+function solveTop(P) {
+  const J = { P }, r = (P.rot || 0);
+  J.c = P.c; const fw = Dv(r), lt = Dv(r + 90);
+  J.fw = fw; J.lt = lt;
+  J.shR = vAdd(P.c, lt, 19); J.shL = vAdd(P.c, lt, -19);
+  const arm = (sh, s, au, af) => { const e = vAdd(sh, Dv(r + s * au), GL.UA); return [e, vAdd(e, Dv(r + s * af), GL.FA)]; };
+  if (P.wrR) { [J.elR, J.wrR] = ik2(J.shR, P.wrR, GL.UA, GL.FA, P.edR || lt); [J.elL, J.wrL] = ik2(J.shL, P.wrL, GL.UA, GL.FA, P.edL || [-lt[0], -lt[1]]); }
+  else { [J.elR, J.wrR] = arm(J.shR, 1, P.au, P.af); [J.elL, J.wrL] = arm(J.shL, -1, P.au2 ?? P.au, P.af2 ?? P.af); }
+  return J;
+}
+function drawTop(J, S) {
+  let back = '', front = '';
+  for (const q of S.eq || []) { let s = ''; if (q.k === 'tdb') s = ['R', 'L'].map(h => { const w = J['wr' + h]; return '<circle cx="' + f1(w[0]) + '" cy="' + f1(w[1]) + '" r="6" fill="' + FC.load + '"/>'; }).join(''); else if (q.k === 'tcab') s = ['R', 'L'].filter(h => !q.side || q.side === h).map(h => { const w = J['wr' + h], f = h === 'R' ? q.fromR : q.fromL; return '<rect x="' + (f[0] - 6) + '" y="' + (f[1] - 6) + '" width="12" height="12" rx="2" fill="' + FC.frame + '"/><line x1="' + f[0] + '" y1="' + f[1] + '" x2="' + f1(w[0]) + '" y2="' + f1(w[1]) + '" stroke="' + FC.cable + '" stroke-width="1.6"/><circle cx="' + f1(w[0]) + '" cy="' + f1(w[1]) + '" r="3.5" fill="' + FC.load + '"/>'; }).join(''); else if (q.k === 'tlev') s = ['R', 'L'].map(h => { const w = J['wr' + h], p = h === 'R' ? q.pivR : q.pivL; return '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + f1(w[0]) + '" y2="' + f1(w[1]) + '" stroke="' + FC.frame + '" stroke-width="5" stroke-linecap="round"/><circle cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="' + FC.frame + '"/><circle cx="' + f1(w[0]) + '" cy="' + f1(w[1]) + '" r="5" fill="' + FC.load + '"/>'; }).join(''); else s = equipItem(q, J, J.P); if (q.z === 'f' || q.k[0] === 't') front += s; else back += s; }
+  let g = back;
+  const r = J.P.rot || 0, c = J.c;
+  g += '<ellipse cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" rx="23" ry="11" fill="' + FC.torso + '" transform="rotate(' + r + ' ' + f1(c[0]) + ' ' + f1(c[1]) + ')"/>';
+  for (const h of ['R', 'L']) g += limb(J['sh' + h], J['el' + h], 8.5, 7, FC.near) + limb(J['el' + h], J['wr' + h], 7, 5.5, FC.near);
+  const hd = vAdd(c, J.fw, -1);
+  g += '<circle cx="' + f1(hd[0]) + '" cy="' + f1(hd[1]) + '" r="9" fill="' + FC.near + '"/>';
+  const ns = vAdd(hd, J.fw, 8); g += '<circle cx="' + f1(ns[0]) + '" cy="' + f1(ns[1]) + '" r="2.4" fill="#B9B9BF"/>';
+  return g + front;
+}
+/* Pose zu Zeitpunkt + SVG */
+function animPose(S, k) { return lerpPose(S.fr[0], S.fr[1], k); }
+function animSvg(key, k, big) {
+  const S = ANIM[key]; if (!S) return '';
+  const P = animPose(S, k);
+  const body = S.v === 'f' ? drawFront(solveFront(P), S) : S.v === 't' ? drawTop(solveTop(P), S) : drawSide(solveSide(P), S);
+  const floor = S.v === 't' ? '' : '<line x1="4" y1="' + GND + '" x2="236" y2="' + GND + '" stroke="#3A3A3C" stroke-width="2"/>';
+  return floor + body;
+}
+/* Zeitsteuerung: konzentrisch 1 s, halten, exzentrisch 2 s, halten */
+const easeIO2 = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+function animK(S, ms) {
+  const down = !!S.down, a = down ? 2 : 1, h1 = S.hb ?? .35, b = down ? 1 : 2, h2 = S.ha ?? .45, T = (a + h1 + b + h2) * 1000, u = ms % T / 1000;
+  if (u < a) return easeIO2(u / a); if (u < a + h1) return 1; if (u < a + h1 + b) return 1 - easeIO2((u - a - h1) / b); return 0;
+}
+let FIGRAF = 0;
+function exFigure(key, big) {
+  const e = EXDB[key], an = e ? e.an : key, S = ANIM[an];
+  if (!S) return '';
+  const vb = S.v === 't' ? '20 10 200 150' : '0 -14 240 186';
+  if (!big) return '<svg class="exfig" viewBox="' + vb + '" width="100%">' + animSvg(an, S.thumb ?? 1) + '</svg>';
+  figLoop();
+  return '<svg class="exfig anim" data-an="' + an + '" viewBox="' + vb + '" width="100%" role="img" aria-label="Ausführung">' + animSvg(an, 0) + '</svg>';
+}
 function figLoop() {
   if (FIGRAF) return;
   const step = now => {
-    const figs = document.querySelectorAll('svg.exfig[data-f]');
+    const figs = document.querySelectorAll('svg.exfig.anim');
     if (!figs.length) { FIGRAF = 0; return; }
-    const k = fxOn() ? figPhase(now) : 0, L = (a, b) => a + (b - a) * k;
-    figs.forEach(svg => {
-      const reg = FIGREG[svg.dataset.f]; if (!reg) return;
-      svg.querySelectorAll('[data-i]').forEach(el => {
-        const r = reg[+el.dataset.i]; if (!r) return;
-        if (r.t === 'p') el.setAttribute('points', r.a.map((pt, i) => L(pt[0], r.b[i][0]).toFixed(1) + ',' + L(pt[1], r.b[i][1]).toFixed(1)).join(' '));
-        else if (r.t === 'c') { el.setAttribute('cx', L(r.a[0], r.b[0]).toFixed(1)); el.setAttribute('cy', L(r.a[1], r.b[1]).toFixed(1)); }
-        else { el.setAttribute('x2', L(r.a[0], r.b[0]).toFixed(1)); el.setAttribute('y2', L(r.a[1], r.b[1]).toFixed(1)); }
-      });
-    });
+    figs.forEach(svg => { const S = ANIM[svg.dataset.an]; svg.innerHTML = animSvg(svg.dataset.an, fxOn() ? animK(S, now) : (S.thumb ?? 1)); });
     FIGRAF = requestAnimationFrame(step);
   };
   FIGRAF = requestAnimationFrame(step);
 }
-const ptsS = a => a.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
-function exFigure(pat, eq, big) {
-  const P = PATS[pat]; if (!P) return '';
-  const front = P.view === 'front', A = front ? jointsFront(P.A) : joints(P.A), B = front ? jointsFront(P.B) : joints(P.B);
-  const fid = pat + '_' + eq, reg = []; FIGREG[fid] = reg;
-  const line = (fa, fb, w, col) => { reg.push({ t: 'p', a: fa, b: fb }); return '<polyline data-i="' + (reg.length - 1) + '" points="' + ptsS(fa) + '" fill="none" stroke="' + (col || '#E5E5EA') + '" stroke-width="' + (w || 7) + '" stroke-linecap="round" stroke-linejoin="round"/>'; };
-  const circ = (a, b, r, fill, extra) => { reg.push({ t: 'c', a, b }); return '<circle data-i="' + (reg.length - 1) + '" cx="' + a[0].toFixed(1) + '" cy="' + a[1].toFixed(1) + '" r="' + r + '" fill="' + fill + '"' + (extra || '') + '/>'; };
-  let g = '<line x1="10" y1="151" x2="190" y2="151" stroke="#3A3A3C" stroke-width="2"/>';
-  const acc = '#A6F53B';
-  // Requisiten im Hintergrund
-  for (const pr of P.props) {
-    if (pr === 'bench') g += '<rect x="34" y="112" width="92" height="7" rx="3" fill="#48484A"/><rect x="44" y="119" width="5" height="32" fill="#3A3A3C"/><rect x="112" y="119" width="5" height="32" fill="#3A3A3C"/>';
-    if (pr === 'bench2') g += '<rect x="30" y="116" width="44" height="7" rx="3" fill="#48484A"/><rect x="40" y="123" width="5" height="28" fill="#3A3A3C"/>';
-    if (pr === 'incl') g += '<line x1="70" y1="122" x2="112" y2="68" stroke="#48484A" stroke-width="8" stroke-linecap="round"/><rect x="62" y="118" width="30" height="7" rx="3" fill="#48484A"/><rect x="74" y="125" width="5" height="26" fill="#3A3A3C"/>';
-    if (pr === 'seat') g += '<rect x="' + (A.hp[0] - 26) + '" y="' + (A.hp[1] + 4) + '" width="44" height="7" rx="3" fill="#48484A"/><rect x="' + (A.hp[0] - 8) + '" y="' + (A.hp[1] + 11) + '" width="5" height="' + (150 - A.hp[1] - 11) + '" fill="#3A3A3C"/>';
-    if (pr === 'seatL') g += '<line x1="40" y1="128" x2="90" y2="128" stroke="#48484A" stroke-width="7" stroke-linecap="round"/><line x1="44" y1="126" x2="30" y2="80" stroke="#48484A" stroke-width="7" stroke-linecap="round"/>';
-    if (pr === 'barTop') g += '<line x1="60" y1="' + (A.wr[1] - 2).toFixed(1) + '" x2="150" y2="' + (A.wr[1] - 2).toFixed(1) + '" stroke="#8E8E93" stroke-width="4" stroke-linecap="round"/>';
-    if (pr === 'bars') g += '<line x1="80" y1="' + (B.wr[1] + 2).toFixed(1) + '" x2="150" y2="' + (B.wr[1] + 2).toFixed(1) + '" stroke="#8E8E93" stroke-width="4" stroke-linecap="round"/>';
-    if (pr === 'step') g += '<rect x="80" y="146" width="44" height="6" fill="#48484A"/>';
-    if (pr === 'pad45') g += '<line x1="104" y1="104" x2="66" y2="142" stroke="#48484A" stroke-width="8" stroke-linecap="round"/>';
-    if (pr === 'cableT' || pr === 'cableF' || pr === 'cableM' || pr === 'cableA') {
-      const an = pr === 'cableT' ? [A.sh ? A.sh[0] + 14 : 114, 8] : pr === 'cableF' ? [190, A.wr[1]] : pr === 'cableM' ? [190, 52] : [40, 140];
-      const ta = pr === 'cableA' ? A.an : (front ? A.w1 : A.wr), tb = pr === 'cableA' ? B.an : (front ? B.w1 : B.wr);
-      reg.push({ t: 'l', a: ta, b: tb }); g += '<rect x="' + (an[0] - 4) + '" y="' + (an[1] - 4) + '" width="8" height="8" rx="2" fill="#8E8E93"/><line data-i="' + (reg.length - 1) + '" x1="' + an[0] + '" y1="' + an[1] + '" x2="' + ta[0].toFixed(1) + '" y2="' + ta[1].toFixed(1) + '" stroke="#8E8E93" stroke-width="1.6"/>';
-    }
-  }
-  // Figur
-  if (front) {
-    g += line([A.hp, A.nk], [B.hp, B.nk], 9) + line([A.s2, A.s1], [B.s2, B.s1], 7);
-    g += line([A.h1, A.k1, A.a1], [B.h1, B.k1, B.a1]) + line([A.h2, A.k2, A.a2], [B.h2, B.k2, B.a2]);
-    g += line([A.s1, A.e1, A.w1], [B.s1, B.e1, B.w1], 6, acc) + line([A.s2, A.e2, A.w2], [B.s2, B.e2, B.w2], 6, acc);
-    g += circ(A.hd, B.hd, 8, '#E5E5EA');
-    if (P.props.includes('dbW')) { g += circ(A.w1, B.w1, 5, '#FF9F0A') + circ(A.w2, B.w2, 5, '#FF9F0A'); }
-  } else {
-    if (A.kn2) g += line([A.hp, A.kn2, A.an2], [B.hp, B.kn2, B.an2], 7, '#8E8E93');
-    g += line([A.hp, A.nk], [B.hp, B.nk], 9) + line([A.hp, A.kn, A.an], [B.hp, B.kn, B.an]);
-    g += line([A.sh, A.el, A.wr], [B.sh, B.el, B.wr], 6, acc);
-    g += circ(A.hd, B.hd, 8, '#E5E5EA');
-    const lh = eq === 'lh' || (eq !== 'kh' && P.props.includes('barW'));
-    if (P.props.includes('barW') || P.props.includes('dbW')) g += lh && eq === 'lh' ? circ(A.wr, B.wr, 10, 'none', ' stroke="#FF9F0A" stroke-width="5"') : circ(A.wr, B.wr, 5.5, '#FF9F0A');
-    if (P.props.includes('barN') && eq === 'lh') g += circ(A.nk, B.nk, 10, 'none', ' stroke="#FF9F0A" stroke-width="5"');
-    if (P.props.includes('barH')) g += circ([A.hp[0], A.hp[1] - 7], [B.hp[0], B.hp[1] - 7], 10, 'none', ' stroke="#FF9F0A" stroke-width="5"');
-    if (P.props.includes('padA')) g += circ(A.an, B.an, 6, '#FF9F0A');
-    if (P.props.includes('plateA')) g += circ(A.an, B.an, 9, 'none', ' stroke="#FF9F0A" stroke-width="5"');
-  }
-  figLoop();
-  return '<svg class="exfig" data-f="' + fid + '" viewBox="0 0 200 160" width="100%" role="img" aria-label="Ausführung ' + P.n + '">' + g + '</svg>';
-}
-/* ---------- Grafik: Muskelkarte vorne/hinten ---------- */
-const MREG = {
-  F: { brust: ['M33 40q12-6 17 2v12q-10 4-17-1z', 'M67 40q-12-6-17 2v12q10 4 17-1z'], schulter: ['M24 38a7 7 0 0 1 10-3l-1 10-10 1z', 'M76 38a7 7 0 0 0-10-3l1 10 10 1z'], seitschulter: ['M21 41l4-6 3 9-6 4z', 'M79 41l-4-6-3 9 6 4z'], bizeps: ['M23 50l7-1 0 16-7 1z', 'M77 50l-7-1 0 16 7 1z'], unterarm: ['M21 68l7-1 -1 18-6 0z', 'M79 68l-7-1 1 18 6 0z'], core: ['M40 56h20v30h-20z'], quads: ['M35 92h12l-1 34h-9z', 'M65 92h-12l1 34h9z'], waden: ['M37 132h8l-1 22h-6z', 'M63 132h-8l1 22h6z'], beine: [] , trapez: ['M43 30l7 -3 7 3-7 4z'] },
-  B: { trapez: ['M38 32l12-6 12 6-12 16z'], hintschulter: ['M24 38a7 7 0 0 1 10-3l-1 9-10 1z', 'M76 38a7 7 0 0 0-10-3l1 9 10 1z'], ruecken: ['M34 46l14 4v20l-12-6z', 'M66 46l-14 4v20l12-6z'], trizeps: ['M23 50l7-1 0 16-7 1z', 'M77 50l-7-1 0 16 7 1z'], unterarm: ['M21 68l7-1 -1 18-6 0z', 'M79 68l-7-1 1 18 6 0z'], glutes: ['M36 86h13v12h-13z', 'M64 86h-13v12h13z'], hams: ['M36 100h11l-1 26h-9z', 'M64 100h-11l1 26h9z'], waden: ['M37 130h8l-1 22h-6z', 'M63 130h-8l1 22h6z'], core: [] }
+/* ============================================================
+   Bewegungsdefinitionen je Übung (Schlüsselposen A → B)
+   down: A→B ist die exzentrische (absenkende) Phase
+   ============================================================ */
+const AN0 = [120, 163];
+const EQ_ = {
+  bench: (x1, x2, top) => [{ k: 'r', x: x1, y: top, w: x2 - x1, h: 7, c: FC.seat }, { k: 'r', x: x1 + 6, y: top + 7, w: 5, h: GND - top - 7 }, { k: 'r', x: x2 - 11, y: top + 7, w: 5, h: GND - top - 7 }],
+  seat: (x, y, w) => [{ k: 'r', x, y, w, h: 7, c: FC.seat }, { k: 'r', x: x + w / 2 - 3, y: y + 7, w: 6, h: GND - y - 7 }],
+  back: (a, b) => [{ k: 'l', a, b, w: 9, c: '#3E3E43' }],
+  rails: x => [{ k: 'l', a: [x, -6], b: [x, GND], w: 4, c: '#5A5A60' }],
+  rack: (x, y) => [{ k: 'l', a: [x, 0], b: [x, GND], w: 5, c: '#4A4A50' }, { k: 'l', a: [x - 8, y], b: [x + 8, y], w: 4, c: '#6A6A70' }],
+  bar: y => [{ k: 'l', a: [70, y], b: [190, y], w: 4, c: '#8E8E93' }]
 };
-const MALIAS = { beine: ['quads', 'hams', 'glutes', 'waden'], schulter: ['schulter', 'seitschulter'] };
-function muscleMap(m, m2) {
-  const lvl = {}; const set = (k, v) => { (MALIAS[k] || [k]).forEach(x => { if (!lvl[x] || lvl[x] < v) lvl[x] = v; }); };
-  (m2 || []).forEach(k => set(k, 1)); set(m, 2);
-  const body = '<circle cx="50" cy="16" r="9" fill="#2C2C2E"/><path d="M34 30h32l8 8 6 46-6 2-6-36-2 38 4 66h-12l-4-58-4 58h-12l4-66-2-38-6 36-6-2 6-46z" fill="#2C2C2E"/>';
-  const side = (V) => { let g = body; for (const k in MREG[V]) if (lvl[k]) MREG[V][k].forEach(d => g += '<path d="' + d + '" fill="' + (lvl[k] === 2 ? '#A6F53B' : '#1EEAEF') + '" opacity="' + (lvl[k] === 2 ? .95 : .7) + '"/>'); return g; };
-  return '<svg viewBox="0 0 210 170" width="100%" class="mmap"><g transform="translate(0,4)">' + side('F') + '</g><g transform="translate(110,4)">' + side('B') + '</g><text x="50" y="168" text-anchor="middle" font-size="9" fill="#8E8E93">vorne</text><text x="160" y="168" text-anchor="middle" font-size="9" fill="#8E8E93">hinten</text></svg>';
+const ANIM = {
+  /* ---------------- Brust ---------------- */
+  bench_bb: { v: 's', down: true, eq: [...EQ_.bench(60, 150, 129), ...EQ_.rack(80, 66), { k: 'plate', at: 'wr' }], fr: [{ hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [84, 72], ed: [.4, 1] }, { hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [98, 105], ed: [.4, 1] }], cues: ['Schulterblätter zurück und nach unten ziehen, leichter Bogen im oberen Rücken', 'Stange kontrolliert zur unteren Brust, Ellbogen ca. 45–70° vom Körper', 'Füße fest in den Boden drücken, Stange leicht schräg Richtung Schulter hochdrücken'] },
+  bench_db: { v: 's', down: true, eq: [...EQ_.bench(60, 150, 129), { k: 'db', at: 'wr' }], fr: [{ hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [86, 72], ed: [.4, 1] }, { hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [96, 112], ed: [.4, 1] }], cues: ['Hanteln über der Brust, Handflächen zeigen Richtung Füße', 'Tief absenken bis zur deutlichen Dehnung in der Brust', 'Im leichten Bogen nach oben drücken, oben nicht zusammenschlagen'] },
+  incline_bb: { v: 's', down: true, eq: [...EQ_.seat(118, 132, 34), ...EQ_.back([150, 136], [96, 60]), ...EQ_.rack(94, 30), { k: 'plate', at: 'wr' }], fr: [{ hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [116, 40], ed: [.6, 1] }, { hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [128, 76], ed: [.6, 1] }], cues: ['Bank auf 30–45°, Schulterblätter zusammen', 'Stange zur oberen Brust unterhalb des Schlüsselbeins senken', 'Senkrecht über die Schultern drücken'] },
+  incline_db: { v: 's', down: true, eq: [...EQ_.seat(118, 132, 34), ...EQ_.back([150, 136], [96, 60]), { k: 'db', at: 'wr' }], fr: [{ hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [116, 42], ed: [.6, 1] }, { hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [126, 82], ed: [.6, 1] }], cues: ['Bank auf 30–45°, Hanteln auf Höhe der oberen Brust', 'Tief in die Dehnung absenken, Ellbogen unter den Handgelenken', 'Nach oben-innen drücken'] },
+  incline_smith: { v: 's', down: true, eq: [...EQ_.seat(118, 132, 34), ...EQ_.back([150, 136], [96, 60]), ...EQ_.rails(122), { k: 'plate', at: 'wr' }], fr: [{ hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [120, 40], ed: [.6, 1] }, { hp: [140, 124], t: -36, an: [172, 163], kd: [0, -1], wr: [124, 78], ed: [.6, 1] }], cues: ['Bank so stellen, dass die Stange die obere Brust trifft', 'Geführte Bahn: senkrecht absenken und drücken', 'Sicherheitshaken oben einhängen'] },
+  chestpress_m: { v: 's', eq: [...EQ_.seat(84, 128, 44), ...EQ_.back([90, 128], [84, 48]), { k: 'lever', piv: [128, 6], at: 'wr', pad: 0 }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 124], t: -6, q: 90, k: 178, wr: [124, 74], ed: [-1, .4] }, { hp: [104, 124], t: -6, q: 90, k: 178, wr: [154, 78], ed: [-1, .4] }], cues: ['Sitz so einstellen, dass die Griffe auf Brustmitte liegen', 'Rücken an der Lehne, Schulterblätter zurück', 'Nach vorn drücken, Ellbogen nicht ganz durchstrecken'] },
+  incline_m: { v: 's', eq: [...EQ_.seat(84, 128, 44), ...EQ_.back([92, 128], [78, 50]), { k: 'lever', piv: [70, 150], at: 'wr', z: 'b' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 124], t: -14, q: 90, k: 178, wr: [118, 66], ed: [-1, .5] }, { hp: [104, 124], t: -14, q: 90, k: 178, wr: [142, 36], ed: [-1, .5] }], cues: ['Griffe auf Höhe der oberen Brust', 'Schräg nach oben-vorn drücken', 'Langsam zurück bis zur Dehnung'] },
+  decline_m: { v: 's', eq: [...EQ_.seat(84, 128, 44), ...EQ_.back([92, 128], [84, 48]), { k: 'lever', piv: [86, 10], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 124], t: -6, q: 90, k: 178, wr: [124, 84], ed: [-1, .2] }, { hp: [104, 124], t: -6, q: 90, k: 178, wr: [152, 104], ed: [-1, .2] }], cues: ['Griffe auf Höhe der unteren Brust', 'Nach vorn-unten drücken', 'Brust bleibt hoch, Schultern unten'] },
+  pecdeck: { v: 't', eq: [{ k: 'tlev', pivR: [146, 104], pivL: [94, 104] }], fr: [{ c: [120, 100], au: 100, af: 92 }, { c: [120, 100], au: 22, af: 0 }], cues: ['Griffe auf Schulterhöhe, Ellbogen leicht gebeugt fixiert', 'Arme im Bogen vor der Brust zusammenführen', 'Langsam öffnen bis zur Dehnung, Schultern bleiben hinten'] },
+  cablefly: { v: 't', eq: [{ k: 'tcab', fromR: [214, 112], fromL: [26, 112] }], fr: [{ c: [120, 100], au: 98, af: 88 }, { c: [120, 100], au: 20, af: -2 }], cues: ['Rollen etwa auf Schulterhöhe, ein Schritt vor', 'Mit leicht gebeugten Ellbogen im Bogen nach vorn-unten zusammenführen', 'Kontrolliert öffnen, Brust bleibt raus'] },
+  cablefly_low: { v: 'f', eq: [{ k: 'cab', fromR: [214, 160], fromL: [26, 160] }], fr: [{ hc: [120, 94], wrR: [166, 134], wrL: [74, 134] }, { hc: [120, 94], wrR: [127, 52], wrL: [113, 52] }], cues: ['Rollen unten, Handflächen nach oben', 'Von unten-außen nach oben-innen bis auf Kinnhöhe führen', 'Zielt auf den oberen Brustanteil'] },
+  dbfly: { v: 't', eq: [{ k: 'tdb' }, { k: 'r', x: 104, y: 70, w: 32, h: 90, c: '#3A3A3E' }], fr: [{ c: [120, 92], au: 96, af: 90 }, { c: [120, 92], au: 18, af: 0 }], cues: ['Rücklings auf der Bank, Ellbogen leicht gebeugt', 'Weit zur Seite öffnen bis zur Dehnung', 'Im Bogen über der Brust zusammenführen'] },
+  dip_chest: { v: 's', down: true, eq: [{ k: 'l', a: [104, 98], b: [176, 98], w: 5, c: '#8E8E93' }, { k: 'l', a: [168, 98], b: [168, GND], w: 5 }], fr: [{ nk: [124, 50], t: 18, q: 200, k: 250, wr: [130, 98], ed: [-1, 0] }, { nk: [118, 78], t: 30, q: 205, k: 255, wr: [130, 98], ed: [-1, -.3] }], cues: ['Oberkörper leicht nach vorn neigen', 'Tief absenken bis die Schultern unter den Ellbogen sind', 'Hochdrücken, Schultern weg von den Ohren'] },
+  dip_assist: { v: 's', down: true, eq: [{ k: 'l', a: [104, 98], b: [176, 98], w: 5, c: '#8E8E93' }, { k: 'lever', piv: [70, 150], at: 'kn', pad: 6 }], fr: [{ nk: [124, 50], t: 14, q: 185, k: 260, wr: [130, 98], ed: [-1, 0] }, { nk: [118, 78], t: 24, q: 190, k: 262, wr: [130, 98], ed: [-1, -.3] }], cues: ['Knie auf das Polster, Gewicht unterstützt', 'Leicht nach vorn geneigt tief absenken', 'Kontrolliert hochdrücken'] },
+  pushup: { v: 's', down: true, eq: [], fr: [{ nk: [150, 116], t: 66, line: 1, wr: [150, 163], ed: [-1, 0], fo: 120 }, { nk: [146, 146], t: 81, line: 1, wr: [150, 163], ed: [-1, -.2], fo: 130 }], cues: ['Hände etwas breiter als schulterbreit, Körper bildet eine Linie', 'Brust bis knapp über den Boden, Ellbogen ca. 45° vom Körper', 'Bauch und Gesäß fest, kein Durchhängen'] },
+  pushup_def: { v: 's', down: true, eq: [{ k: 'r', x: 140, y: 152, w: 22, h: 16, c: FC.seat }], fr: [{ nk: [150, 104], t: 64, line: 1, wr: [150, 152], ed: [-1, 0], fo: 120 }, { nk: [146, 142], t: 80, line: 1, wr: [150, 152], ed: [-1, -.2], fo: 130 }], cues: ['Hände auf Erhöhungen für mehr Bewegungsweite', 'Brust unter Handhöhe absenken', 'Körperspannung halten'] },
+  /* ---------------- Rücken ---------------- */
+  pullup: { v: 's', eq: [...EQ_.bar(-4)], fr: [{ nk: [122, 45], t: -3, q: 172, k: 232, wr: [126, -4], ed: [-.2, 1] }, { nk: [118, 12], t: -10, q: 168, k: 236, wr: [126, -4], ed: [-.3, 1] }], cues: ['Aus dem toten Hang starten, Schultern aktiv nach unten', 'Brust zur Stange ziehen, Ellbogen nach unten-hinten', 'Kontrolliert ganz herunterlassen'] },
+  chinup: { v: 's', eq: [...EQ_.bar(-4)], fr: [{ nk: [122, 45], t: -2, q: 172, k: 232, wr: [126, -4], ed: [1, 1] }, { nk: [120, 12], t: -6, q: 168, k: 236, wr: [126, -4], ed: [1, .8] }], cues: ['Untergriff schulterbreit', 'Ellbogen vor dem Körper nach unten ziehen', 'Kinn über die Stange, langsam ablassen'] },
+  pullup_assist: { v: 's', eq: [...EQ_.bar(-4), { k: 'lever', piv: [60, 150], at: 'kn', pad: 6 }], fr: [{ nk: [122, 45], t: -3, q: 182, k: 262, wr: [126, -4], ed: [-.2, 1] }, { nk: [118, 12], t: -8, q: 184, k: 262, wr: [126, -4], ed: [-.3, 1] }], cues: ['Knie auf das Polster, Gegengewicht wählen', 'Wie beim Klimmzug: Brust zur Stange', 'Unten komplett strecken'] },
+  latpull: { v: 's', eq: [...EQ_.seat(94, 132, 40), { k: 'r', x: 126, y: 104, w: 18, h: 7, c: FC.pad }, { k: 'cable', from: [130, 2], colX: 200, at: 'wr' }], fr: [{ hp: [112, 128], t: -10, q: 88, k: 178, wr: [130, 30], ed: [.2, 1] }, { hp: [112, 128], t: -20, q: 88, k: 178, wr: [128, 72], ed: [-.2, 1] }], cues: ['Oberschenkel unter dem Polster fixieren, breiter Griff', 'Leicht zurücklehnen, Stange zur oberen Brust ziehen', 'Oben komplett strecken für die Dehnung im Latissimus'] },
+  latpull_close: { v: 's', eq: [...EQ_.seat(94, 132, 40), { k: 'r', x: 126, y: 104, w: 18, h: 7, c: FC.pad }, { k: 'cable', from: [132, 2], colX: 200, at: 'wr' }], fr: [{ hp: [112, 128], t: -10, q: 88, k: 178, wr: [132, 30], ed: [.6, 1] }, { hp: [112, 128], t: -22, q: 88, k: 178, wr: [134, 80], ed: [.6, 1] }], cues: ['Enger V-Griff, Handflächen zueinander', 'Ellbogen nah am Körper nach unten ziehen', 'Oben weit nach oben strecken'] },
+  latpull_m: { v: 's', eq: [...EQ_.seat(94, 132, 40), { k: 'r', x: 126, y: 104, w: 18, h: 7, c: FC.pad }, { k: 'lever', piv: [96, 4], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [112, 128], t: -8, q: 88, k: 178, wr: [140, 32], ed: [.2, 1] }, { hp: [112, 128], t: -14, q: 88, k: 178, wr: [140, 76], ed: [-.2, 1] }], cues: ['Sitz so, dass die Griffe gerade erreichbar sind', 'Im Bogen zur Brust ziehen, Brust raus', 'Oben komplett in die Dehnung'] },
+  latpull_sa: { v: 's', eq: [...EQ_.seat(94, 132, 40), { k: 'cable', from: [126, 2], colX: 200, at: 'wr' }], fr: [{ hp: [112, 128], t: -4, q: 88, k: 178, wr: [126, 28], ed: [.2, 1], u2: 175, f2: 120 }, { hp: [112, 128], t: -10, q: 88, k: 178, wr: [120, 86], ed: [-.4, 1], u2: 175, f2: 120 }], cues: ['Einarmig, Griff von oben', 'Ellbogen zur Hüfte ziehen', 'Oben Schulter bewusst mitgehen lassen für maximale Dehnung'] },
+  cablerow: { v: 's', down: false, eq: [{ k: 'r', x: 70, y: 134, w: 64, h: 7, c: FC.seat }, { k: 'r', x: 156, y: 126, w: 6, h: 30, c: FC.pad }, { k: 'cable', from: [196, 138], colX: 204, at: 'wr' }], fr: [{ hp: [96, 128], t: 18, an: [156, 140], kd: [0, -1], wr: [160, 118], ed: [0, 1] }, { hp: [96, 128], t: -4, an: [156, 140], kd: [0, -1], wr: [122, 112], ed: [-1, .3] }], cues: ['Aufrecht sitzen, Knie leicht gebeugt', 'Griff zum Bauch ziehen, Ellbogen nah am Körper nach hinten', 'Vorn kontrolliert in die Dehnung, Rücken bleibt gerade'] },
+  row_m: { v: 's', eq: [...EQ_.seat(84, 132, 40), { k: 'r', x: 136, y: 56, w: 8, h: 44, rx: 4, c: FC.pad }, { k: 'lever', piv: [176, 150], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 128], t: 6, q: 90, k: 178, wr: [160, 82], ed: [0, 1] }, { hp: [104, 128], t: 2, q: 90, k: 178, wr: [126, 84], ed: [-1, .2] }], cues: ['Brust am Polster, Sitzhöhe so, dass die Griffe auf Brusthöhe sind', 'Ellbogen nach hinten ziehen, Schulterblätter zusammen', 'Vorn Schultern nach vorn gleiten lassen für Dehnung'] },
+  bbrow: { v: 's', eq: [{ k: 'plate', at: 'wr' }], fr: [{ hp: [102, 100], an: AN0, t: 70, wr: [142, 138], ed: [0, 1] }, { hp: [102, 100], an: AN0, t: 70, wr: [126, 110], ed: [-1, -.5] }], cues: ['Hüfte nach hinten, Oberkörper ca. 45° oder flacher, Rücken neutral', 'Stange zum Bauchnabel ziehen, Ellbogen nach hinten', 'Kein Schwung aus der Hüfte'] },
+  pendlay: { v: 's', eq: [{ k: 'plate', at: 'wr' }], fr: [{ hp: [100, 112], an: AN0, t: 86, wr: [140, 154], ed: [0, 1] }, { hp: [100, 112], an: AN0, t: 86, wr: [124, 120], ed: [-1, -.5] }], cues: ['Oberkörper fast waagerecht', 'Jede Wiederholung startet am Boden', 'Explosiv zur unteren Brust ziehen'] },
+  dbrow: { v: 's', eq: [...EQ_.bench(76, 150, 128), { k: 'db', at: 'wr' }], fr: [{ hp: [100, 110], t: 84, an: [118, 163], kd: [1, 0], q2: 182, k2: 272, wr: [136, 152], ed: [0, 1], wr2: [148, 126], ed2: [1, 0] }, { hp: [100, 110], t: 84, an: [118, 163], kd: [1, 0], q2: 182, k2: 272, wr: [112, 118], ed: [-1, -.6], wr2: [148, 126], ed2: [1, 0] }], cues: ['Hand und Knie auf der Bank, Rücken flach', 'Hantel Richtung Hüfte ziehen, Ellbogen nah am Körper', 'Unten Schulter nach vorn sinken lassen'] },
+  tbar: { v: 's', eq: [{ k: 'land', piv: [26, 164], at: 'wr' }], fr: [{ hp: [102, 102], an: AN0, t: 64, wr: [142, 140], ed: [0, 1] }, { hp: [102, 102], an: AN0, t: 64, wr: [128, 112], ed: [-1, -.4] }], cues: ['Über der Stange stehen, Brust raus', 'Griff zur Brust ziehen', 'Kontrolliert ablassen'] },
+  straightpd: { v: 's', eq: [{ k: 'cable', from: [176, 4], colX: 196, at: 'wr' }], fr: [{ hp: [114, 94], an: AN0, t: 26, u: 40, f: 36 }, { hp: [114, 94], an: AN0, t: 26, u: 172, f: 168 }], cues: ['Leicht vorgebeugt, Arme fast gestreckt', 'Aus der Schulter im Bogen zu den Oberschenkeln ziehen', 'Oben weit in die Dehnung'] },
+  dbpullover: { v: 's', down: true, eq: [...EQ_.bench(66, 150, 129), { k: 'db', at: 'wr' }], fr: [{ hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], u: 8, f: 6 }, { hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], u: 262, f: 258 }], cues: ['Rücklings, Hantel mit beiden Händen über der Brust', 'Mit leicht gebeugten Armen hinter den Kopf absenken', 'Bis zur Dehnung im Latissimus, dann zurück'] },
+  deadlift: { v: 's', eq: [{ k: 'plate', at: 'wr', r: 15 }], fr: [{ hp: [98, 124], an: AN0, t: 60, u: 188, f: 188 }, { hp: [120, 92], an: AN0, t: 1, u: 182, f: 182 }], cues: ['Stange über dem Mittelfuß, Schienbeine nah dran', 'Rücken neutral, Brust raus, Latissimus anspannen', 'Mit den Beinen den Boden wegdrücken, Hüfte und Schultern steigen gleich schnell'] },
+  rackpull: { v: 's', eq: [...EQ_.rack(170, 128), { k: 'plate', at: 'wr', r: 15 }], fr: [{ hp: [104, 106], an: AN0, t: 42, u: 186, f: 186 }, { hp: [120, 92], an: AN0, t: 1, u: 182, f: 182 }], cues: ['Stange auf Kniehöhe in den Sicherungen', 'Rücken neutral, Hüfte nach vorn strecken', 'Oben aufrecht, nicht nach hinten lehnen'] },
+  hyperext: { v: 's', eq: [{ k: 'l', a: [120, 112], b: [98, 134], w: 9, c: FC.pad }, { k: 'l', a: [104, 128], b: [96, 168], w: 5 }, { k: 'r', x: 50, y: 152, w: 20, h: 6, c: FC.seat }], fr: [{ hp: [112, 104], q: 225, k: 225, t: 165, ra: 1, u: 170, f: 25 }, { hp: [112, 104], q: 225, k: 225, t: 45, ra: 1, u: 170, f: 25 }], down: false, cues: ['Polster knapp unter dem Hüftknochen', 'Aus der Hüfte absenken, Rücken neutral', 'Bis in eine Linie mit den Beinen aufrichten, nicht überstrecken'] },
+  backext_m: { v: 's', eq: [...EQ_.seat(84, 134, 44), { k: 'tpad', s1: .55, s2: .95, side: -1 }], fr: [{ hp: [104, 130], t: 30, q: 88, k: 178, ra: 1, u: 170, f: 25 }, { hp: [104, 130], t: -12, q: 88, k: 178, ra: 1, u: 170, f: 25 }], cues: ['Polster am oberen Rücken, Füße fixiert', 'Aus der Hüfte nach hinten strecken', 'Langsam nach vorn zurück'] },
+  /* ---------------- Schultern ---------------- */
+  ohp_bb: { v: 's', eq: [{ k: 'plate', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: -2, wr: [132, 50], ed: [1, .6] }, { hp: [120, 92], an: AN0, t: 0, wr: [121, 0], ed: [1, .4] }], cues: ['Stange auf den vorderen Schultern, Gesäß und Bauch fest', 'Senkrecht nach oben drücken, Kopf kurz zurücknehmen', 'Oben Kopf unter die Stange, nicht ins Hohlkreuz'] },
+  ohp_db: { v: 's', eq: [...EQ_.seat(94, 132, 32), ...EQ_.back([100, 132], [96, 58]), { k: 'db', at: 'wr' }], fr: [{ hp: [112, 128], t: -2, q: 88, k: 178, wr: [126, 82], ed: [.2, 1] }, { hp: [112, 128], t: -2, q: 88, k: 178, wr: [118, 36], ed: [.2, 1] }], cues: ['Rücken an der Lehne, Hanteln auf Ohrhöhe', 'Nach oben drücken, Hanteln oben fast zusammen', 'Langsam bis knapp unter Kinnhöhe absenken'] },
+  ohp_m: { v: 's', eq: [...EQ_.seat(94, 132, 32), ...EQ_.back([100, 132], [94, 50]), { k: 'lever', piv: [80, 4], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [112, 128], t: -4, q: 88, k: 178, wr: [128, 80], ed: [.2, 1] }, { hp: [112, 128], t: -4, q: 88, k: 178, wr: [126, 38], ed: [.2, 1] }], cues: ['Griffe auf Schulterhöhe', 'Nach oben drücken, Rücken bleibt an der Lehne', 'Kontrolliert zurück'] },
+  arnold: { v: 's', eq: [...EQ_.seat(94, 132, 32), ...EQ_.back([100, 132], [96, 58]), { k: 'db', at: 'wr' }], fr: [{ hp: [112, 128], t: -2, q: 88, k: 178, wr: [124, 72], ed: [1, .4] }, { hp: [112, 128], t: -2, q: 88, k: 178, wr: [118, 34], ed: [-.2, 1] }], cues: ['Start: Hanteln vor dem Gesicht, Handflächen zu dir', 'Beim Drücken Arme nach außen öffnen und drehen', 'Oben Handflächen nach vorn'] },
+  latraise: { v: 'f', eq: [{ k: 'db' }], fr: [{ hc: [120, 92], eu: 12, ef: 10, el: 4 }, { hc: [120, 92], eu: 88, ef: 84, el: 4 }], cues: ['Leicht vorgebeugt, Ellbogen minimal gebeugt', 'Arme seitlich bis Schulterhöhe heben, Ellbogen führt', 'Langsam absenken, Spannung halten'] },
+  latraise_cable: { v: 'f', eq: [{ k: 'cab', fromR: [70, 160], fromL: [70, 160], side: 'R' }, { k: 'post', x: 70, y: 0 }], fr: [{ hc: [124, 92], eu: -8, ef: -12, eu2: 20, ef2: 60, el: 4 }, { hc: [124, 92], eu: 88, ef: 84, eu2: 20, ef2: 60, el: 4 }], cues: ['Seitlich zur Rolle, Kabel vor dem Körper', 'Startposition vor dem Körper: Spannung schon in der Dehnung', 'Seitlich bis Schulterhöhe heben'] },
+  latraise_m: { v: 'f', eq: [{ k: 'seatF' }, { k: 'kpad', inside: false }], fr: [{ hc: [120, 112], seat: 1, abd: 6, eu: 16, ef: 120 }, { hc: [120, 112], seat: 1, abd: 6, eu: 86, ef: 150 }], cues: ['Polster an den Oberarmen, Drehachse auf Schulterhöhe', 'Arme seitlich heben bis waagerecht', 'Kontrolliert ablassen'] },
+  latraise_lean: { v: 'f', eq: [{ k: 'db', side: 'R' }, { k: 'post', x: 62, y: 20 }], fr: [{ hc: [118, 92], t: -12, eu: 8, ef: 6, wrL: [64, 60], el: 8 }, { hc: [118, 92], t: -12, eu: 92, ef: 88, wrL: [64, 60], el: 8 }], cues: ['Mit einer Hand an der Stange festhalten und zur Seite lehnen', 'Freier Arm hebt seitlich bis über Schulterhöhe', 'Startet mit mehr Spannung als normales Seitheben'] },
+  frontraise: { v: 's', eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 176, f: 176 }, { hp: [120, 92], an: AN0, t: 0, u: 92, f: 90 }], cues: ['Stabil stehen, Bauch fest', 'Arme gestreckt nach vorn bis Schulterhöhe heben', 'Langsam absenken'] },
+  facepull: { v: 's', eq: [{ k: 'cable', from: [204, 44], colX: 210, at: 'wr' }], fr: [{ hp: [116, 92], an: [116, 163], t: -6, wr: [164, 52], ed: [0, 1] }, { hp: [116, 92], an: [116, 163], t: -8, wr: [130, 38], ed: [-1, -.6] }], cues: ['Seil auf Augenhöhe, Daumen zeigen nach hinten', 'Zum Gesicht ziehen, Ellbogen hoch und weit', 'Hände am Ende nach außen-oben drehen'] },
+  revpec: { v: 't', eq: [{ k: 'tlev', pivR: [146, 60], pivL: [94, 60] }], fr: [{ c: [120, 100], au: 22, af: 4 }, { c: [120, 100], au: 102, af: 98 }], cues: ['Brust ans Polster, Griffe auf Schulterhöhe', 'Arme mit leicht gebeugten Ellbogen nach hinten-außen öffnen', 'Schultern unten lassen, nicht mit dem Trapez ziehen'] },
+  revfly_db: { v: 't', eq: [{ k: 'tdb' }], fr: [{ c: [120, 100], au: 14, af: 4 }, { c: [120, 100], au: 96, af: 92 }], cues: ['Vorgebeugt, Rücken flach, Arme hängen', 'Seitlich nach außen-oben heben', 'Kleine Gewichte, saubere Bewegung'] },
+  revfly_cable: { v: 't', eq: [{ k: 'tcab', fromR: [36, 60], fromL: [204, 60] }], fr: [{ c: [120, 100], au: 14, af: -6 }, { c: [120, 100], au: 100, af: 96 }], cues: ['Kabel über Kreuz greifen, Rollen auf Schulterhöhe', 'Arme nach außen-hinten ziehen', 'Langsam zurück'] },
+  shrug_bb: { v: 'f', eq: [{ k: 'bar' }], fr: [{ hc: [120, 92], eu: 7, ef: 7, sy: 0, el: 3 }, { hc: [120, 92], eu: 7, ef: 7, sy: 9, el: 3 }], ha: .8, cues: ['Arme hängen gestreckt', 'Schultern gerade nach oben zu den Ohren ziehen', 'Oben 1 s halten, nicht kreisen'] },
+  shrug_db: { v: 'f', eq: [{ k: 'db' }], fr: [{ hc: [120, 92], eu: 10, ef: 10, sy: 0, el: 3 }, { hc: [120, 92], eu: 10, ef: 10, sy: 9, el: 3 }], ha: .8, cues: ['Hanteln seitlich, Handflächen zum Körper', 'Schultern senkrecht hochziehen', 'Kontrolliert ablassen bis zur Dehnung'] },
+  shrug_cable: { v: 'f', eq: [{ k: 'cab', fromR: [178, 160], fromL: [62, 160] }], fr: [{ hc: [120, 92], eu: 12, ef: 12, sy: 0, el: 3 }, { hc: [120, 92], eu: 12, ef: 12, sy: 9, el: 3 }], ha: .8, cues: ['Kabel von unten seitlich', 'Schultern nach oben-hinten ziehen', 'Oben halten, langsam ablassen'] }
+};
+Object.assign(ANIM, {
+  /* ---------------- Arme ---------------- */
+  curl_bb: { v: 's', eq: [{ k: 'plate', at: 'wr', r: 11 }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 178, f: 176 }, { hp: [120, 92], an: AN0, t: 0, u: 172, f: 22 }], cues: ['Schulterbreiter Untergriff, Ellbogen am Körper', 'Stange ohne Schwung nach oben curlen', 'Unten komplett strecken'] },
+  curl_db: { v: 's', eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 178, f: 176 }, { hp: [120, 92], an: AN0, t: 0, u: 170, f: 18 }], cues: ['Hanteln seitlich, beim Hochcurlen Handfläche nach oben drehen', 'Ellbogen bleiben ruhig an der Seite', 'Langsam bis zur vollen Streckung'] },
+  hammer: { v: 's', eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 178, f: 176 }, { hp: [120, 92], an: AN0, t: 0, u: 172, f: 20 }], cues: ['Neutralgriff: Daumen zeigen nach oben', 'Ellbogen fixiert, Hantel zur Schulter', 'Trainiert zusätzlich Brachialis und Unterarm'] },
+  curl_cable: { v: 's', eq: [{ k: 'cable', from: [176, 160], colX: 186, at: 'wr' }], fr: [{ hp: [116, 92], an: [116, 163], t: 0, u: 176, f: 168 }, { hp: [116, 92], an: [116, 163], t: 0, u: 168, f: 20 }], cues: ['Rolle unten, einen kleinen Schritt zurück', 'Ellbogen am Körper, gleichmäßige Spannung', 'Oben kurz halten'] },
+  curl_incline: { v: 's', eq: [...EQ_.seat(112, 132, 34), ...EQ_.back([142, 136], [88, 58]), { k: 'db', at: 'wr' }], fr: [{ hp: [134, 126], t: -38, an: [168, 163], kd: [0, -1], u: 182, f: 182 }, { hp: [134, 126], t: -38, an: [168, 163], kd: [0, -1], u: 184, f: 40 }], cues: ['Bank auf ca. 45°, Arme hängen hinter dem Körper', 'Ellbogen bleiben hinten, nur der Unterarm bewegt sich', 'Unten volle Dehnung des Bizeps'] },
+  preacher: { v: 's', eq: [...EQ_.seat(88, 134, 36), { k: 'l', a: [111, 101], b: [135, 125], w: 10, c: FC.pad }, { k: 'l', a: [131, 125], b: [131, GND], w: 5 }, { k: 'plate', at: 'wr', r: 11 }], fr: [{ hp: [106, 128], t: 12, q: 90, k: 180, u: 136, f: 150 }, { hp: [106, 128], t: 12, q: 90, k: 180, u: 136, f: 6 }], cues: ['Oberarme flach auf dem Polster, Achsel am Polsterrand', 'Hochcurlen ohne die Ellbogen abzuheben', 'Unten fast strecken, Dehnung bewusst kontrollieren'] },
+  preacher_m: { v: 's', eq: [...EQ_.seat(88, 134, 36), { k: 'l', a: [111, 101], b: [135, 125], w: 10, c: FC.pad }, { k: 'l', a: [131, 125], b: [131, GND], w: 5 }, { k: 'lever', piv: [133, 107], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [106, 128], t: 12, q: 90, k: 180, u: 136, f: 150 }, { hp: [106, 128], t: 12, q: 90, k: 180, u: 136, f: 6 }], cues: ['Ellbogen auf Höhe der Drehachse', 'Griffe zur Schulter curlen', 'Langsam bis fast gestreckt'] },
+  bayesian: { v: 's', eq: [{ k: 'cable', from: [44, 158], colX: 34, at: 'wr' }], fr: [{ hp: [124, 92], an: [134, 163], an2: [104, 163], kd2: [1, 0], t: 6, u: 206, f: 214 }, { hp: [124, 92], an: [134, 163], an2: [104, 163], kd2: [1, 0], t: 6, u: 200, f: 30 }], cues: ['Rücken zur Rolle, Arm hinter dem Körper', 'Ellbogen bleibt hinten, nach vorn-oben curlen', 'Maximale Dehnung des Bizeps unten'] },
+  wristcurl: { v: 's', eq: [...EQ_.seat(84, 132, 40), { k: 'db', at: 'wr' }], fr: [{ hp: [104, 126], t: 18, q: 88, k: 182, u: 150, f: 90, ha: 160 }, { hp: [104, 126], t: 18, q: 88, k: 182, u: 150, f: 90, ha: 40 }], cues: ['Unterarme auf den Oberschenkeln, Handgelenk frei', 'Nur das Handgelenk beugen', 'Unten Hantel in die Finger abrollen lassen'] },
+  pushdown: { v: 's', eq: [{ k: 'cable', from: [138, 2], colX: 196, at: 'wr' }], fr: [{ hp: [118, 92], an: [118, 163], t: 10, u: 176, f: 40 }, { hp: [118, 92], an: [118, 163], t: 10, u: 176, f: 176 }], cues: ['Oberarme fest am Körper, leicht vorgebeugt', 'Nach unten strecken, Seil am Ende auseinanderziehen', 'Langsam zurück bis ca. 90° im Ellbogen'] },
+  ohext_cable: { v: 's', eq: [{ k: 'cable', from: [60, 24], colX: 40, at: 'wr' }], fr: [{ hp: [122, 92], an: [140, 163], an2: [108, 163], kd2: [1, 0], t: 24, u: 18, f: 200 }, { hp: [122, 92], an: [140, 163], an2: [108, 163], kd2: [1, 0], t: 24, u: 20, f: 22 }], cues: ['Rücken zur Rolle, Seil über dem Kopf, Ausfallschritt', 'Ellbogen zeigen nach vorn, tief hinter den Kopf in die Dehnung', 'Nur die Unterarme strecken nach vorn-oben'] },
+  ohext_db: { v: 's', eq: [...EQ_.seat(94, 132, 32), ...EQ_.back([100, 132], [96, 58]), { k: 'db', at: 'wr' }], fr: [{ hp: [112, 128], t: -2, q: 88, k: 178, u: 6, f: 190 }, { hp: [112, 128], t: -2, q: 88, k: 178, u: 6, f: 8 }], cues: ['Hantel mit beiden Händen über dem Kopf', 'Ellbogen nah am Kopf, tief hinter den Kopf absenken', 'Nach oben strecken, Oberarme bleiben ruhig'] },
+  skull: { v: 's', down: true, eq: [...EQ_.bench(60, 150, 129), { k: 'plate', at: 'wr', r: 10 }], fr: [{ hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], u: -14, f: -10 }, { hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], u: -16, f: 236 }], cues: ['Rücklings, Oberarme leicht Richtung Kopf geneigt', 'SZ-Stange zur Stirn oder hinter den Kopf absenken', 'Nur im Ellbogen strecken'] },
+  cgbp: { v: 's', down: true, eq: [...EQ_.bench(60, 150, 129), ...EQ_.rack(80, 66), { k: 'plate', at: 'wr' }], fr: [{ hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [86, 72], ed: [1, 1] }, { hp: [134, 121], t: -90, an: [168, 163], kd: [0, -1], wr: [100, 106], ed: [1, .7] }], cues: ['Griff etwa schulterbreit', 'Ellbogen nah am Körper zur unteren Brust', 'Mit dem Trizeps nach oben drücken'] },
+  dip_tri: { v: 's', down: true, eq: [{ k: 'l', a: [104, 88], b: [176, 88], w: 5, c: '#8E8E93' }, { k: 'l', a: [168, 88], b: [168, GND], w: 5 }], fr: [{ nk: [126, 40], t: 4, q: 165, k: 262, wr: [130, 88], ed: [-1, 0] }, { nk: [124, 64], t: 8, q: 162, k: 266, wr: [130, 88], ed: [-1, -.2] }], cues: ['Oberkörper aufrecht', 'Ellbogen nach hinten beugen bis ca. 90°', 'Oben komplett strecken'] },
+  dip_seated: { v: 's', eq: [...EQ_.seat(84, 132, 40), ...EQ_.back([92, 132], [90, 56]), { k: 'lever', piv: [70, 100], at: 'wr', z: 'b' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 128], t: -4, q: 88, k: 178, wr: [118, 92], ed: [-1, -.2] }, { hp: [104, 128], t: -4, q: 88, k: 178, wr: [116, 126], ed: [-1, 0] }], cues: ['Griffe seitlich, Ellbogen nach hinten', 'Nach unten drücken bis die Arme gestreckt sind', 'Schultern bleiben unten'] },
+  tri_m: { v: 's', eq: [...EQ_.seat(84, 132, 40), { k: 'l', a: [112, 92], b: [136, 74], w: 9, c: FC.pad }, { k: 'lever', piv: [128, 80], at: 'wr' }, { k: 'grip', at: 'wr' }], fr: [{ hp: [104, 128], t: 6, q: 88, k: 178, u: 130, f: 20 }, { hp: [104, 128], t: 6, q: 88, k: 178, u: 130, f: 140 }], cues: ['Oberarme auf dem Polster, Ellbogen an der Drehachse', 'Unterarme nach vorn-unten strecken', 'Langsam zurück'] },
+  /* ---------------- Beine ---------------- */
+  squat_bb: { v: 's', down: true, eq: [{ k: 'plate', at: 'nk', to: [-9, -3] }], fr: [{ hp: [120, 92], an: AN0, t: 4, ra: 1, u: 205, f: 12 }, { hp: [95, 128], an: AN0, t: 44, ra: 1, u: 205, f: 12 }], cues: ['Stange auf dem oberen Trapez, Füße schulterbreit', 'Hüfte nach hinten-unten, Knie folgen den Zehen', 'Mindestens bis Oberschenkel parallel, Rücken neutral'] },
+  squat_front: { v: 's', down: true, eq: [{ k: 'plate', at: 'nk', to: [9, -2] }], fr: [{ hp: [120, 92], an: AN0, t: 2, ra: 1, u: 82, f: 246 }, { hp: [102, 130], an: AN0, t: 20, ra: 1, u: 82, f: 246 }], cues: ['Stange vorn auf den Schultern, Ellbogen hoch', 'Oberkörper bleibt aufrecht', 'Tief zwischen die Fersen absenken'] },
+  goblet: { v: 's', down: true, eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 2, ra: 1, u: 160, f: 20 }, { hp: [102, 130], an: AN0, t: 24, ra: 1, u: 160, f: 20 }], cues: ['Hantel senkrecht vor der Brust', 'Ellbogen zwischen die Knie absenken', 'Aufrecht bleiben, Fersen am Boden'] },
+  squat_smith: { v: 's', down: true, eq: [...EQ_.rails(127), { k: 'plate', at: 'nk', to: [-9, -3] }], fr: [{ hp: [130, 92], an: [134, 163], t: -4, ra: 1, u: 205, f: 12 }, { hp: [108, 128], an: [134, 163], t: 24, ra: 1, u: 205, f: 12 }], cues: ['Füße etwas vor der Stange', 'Senkrecht absenken, Rücken am Bewegungsweg ausrichten', 'Haken zum Sichern nutzen'] },
+  squat_m: { v: 's', down: true, eq: [{ k: 'l', a: [106, 20], b: [140, GND], w: 6, c: '#4A4A50' }, { k: 'tpad', s1: .9, s2: 1.05, side: -1, gap: 7 }], fr: [{ hp: [128, 90], an: [138, 160], t: -6, u: 200, f: 330 }, { hp: [112, 126], an: [138, 160], t: 8, u: 200, f: 330 }], cues: ['Schulterpolster auflegen, Füße mittig auf der Plattform', 'Kontrolliert tief beugen', 'Durch die ganze Fußsohle hochdrücken'] },
+  hack: { v: 's', down: true, eq: [{ k: 'r', x: 130, y: 160, w: 46, h: 8, c: FC.seat, rot: -12, ox: 153, oy: 164 }, { k: 'l', a: [148, 22], b: [102, 160], w: 5, c: '#5A5A60' }, { k: 'tpad', s1: .1, s2: 1, side: -1, gap: 10 }], fr: [{ hp: [140, 90], an: [152, 159], t: -18, u: 200, f: 340, fo: 80 }, { hp: [126, 128], an: [152, 159], t: -14, u: 200, f: 340, fo: 80 }], cues: ['Rücken und Schultern fest an den Polstern', 'Tief absenken, Knie dürfen weit nach vorn', 'Nicht ganz durchstrecken'] },
+  pendulum: { v: 's', down: true, eq: [{ k: 'r', x: 128, y: 158, w: 44, h: 8, c: FC.seat }, { k: 'lever', piv: [70, 18], at: 'nk', to: [-6, 4] }, { k: 'tpad', s1: .2, s2: 1, side: -1, gap: 10 }], fr: [{ hp: [134, 88], an: [146, 157], t: -10, u: 200, f: 340 }, { hp: [118, 128], an: [146, 157], t: 2, u: 200, f: 340 }], cues: ['Schulterpolster auflegen, Füße auf der Plattform', 'Im Bogen tief absenken', 'Gleichmäßige Spannung über den ganzen Weg'] },
+  sissy: { v: 's', down: true, eq: [{ k: 'post', x: 168, y: 40 }], fr: [{ hp: [120, 92], an: [120, 158], toe: null, t: -2, wr: [168, 84], ed: [0, 1], fo: 110 }, { hp: [112, 128], an: [124, 154], kd: [1, .2], t: -34, wr: [168, 96], ed: [0, 1], fo: 128 }], cues: ['Auf den Fußballen, mit einer Hand festhalten', 'Knie weit nach vorn schieben, Hüfte bleibt gestreckt', 'Oberkörper und Oberschenkel bilden eine Linie'] },
+  squat_glute: { v: 's', down: true, eq: [{ k: 'lever', piv: [36, 120], at: 'hp', to: [-12, 0], pad: 6 }, { k: 'r', x: 104, y: 160, w: 40, h: 8, c: FC.seat }], fr: [{ hp: [120, 92], an: [124, 159], t: 6, wr: [160, 98], ed: [0, 1] }, { hp: [96, 124], an: [124, 159], t: 50, wr: [160, 104], ed: [0, 1] }], cues: ['Hüftpolster am Gesäß, Griffe vorn fassen', 'Hüfte weit nach hinten schieben, Oberkörper neigt sich vor', 'Über die Fersen und das Gesäß hochdrücken'] },
+  legpress: { v: 's', down: true, eq: [...EQ_.seat(66, 132, 46), ...EQ_.back([74, 132], [52, 70]), { k: 'sled', at: 'an', dir: 56, len: 46, off: [3, -3] }], fr: [{ hp: [90, 128], t: -32, an: [149, 87], kd: [0, -1], fo: -34, wr: [92, 136], ed: [0, 1] }, { hp: [90, 128], t: -32, an: [126, 103], kd: [0, -1], fo: -34, wr: [92, 136], ed: [0, 1] }], cues: ['Rücken und Gesäß fest an der Lehne', 'Tief ablassen, solange das Becken nicht abkippt', 'Durch die ganze Fußsohle drücken, Knie nicht durchstrecken'] },
+  legpress45: { v: 's', down: true, eq: [{ k: 'l', a: [40, 148], b: [86, 148], w: 8, c: FC.seat }, ...EQ_.back([44, 148], [16, 110]), { k: 'l', a: [92, 150], b: [214, 30], w: 4, c: '#5A5A60' }, { k: 'sled', at: 'an', dir: 45, len: 46, off: [4, -4], plates: 1 }], fr: [{ hp: [66, 142], t: -52, an: [116, 92], kd: [0, -1], fo: -45, wr: [66, 150], ed: [0, 1] }, { hp: [66, 142], t: -52, an: [96, 112], kd: [0, -1], fo: -45, wr: [66, 150], ed: [0, 1] }], cues: ['Lendenwirbel bleibt an der Lehne', 'Schlitten tief absenken bis kurz vor dem Abkippen des Beckens', 'Kraftvoll drücken, oben leicht gebeugt lassen'] },
+  lunge: { v: 's', down: true, eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [112, 98], an: [142, 163], an2: [82, 160], kd2: [0, 1], t: 2, u: 180, f: 180, fo2: 115 }, { hp: [110, 130], an: [142, 163], an2: [82, 160], kd2: [0, 1], t: 6, u: 180, f: 180, fo2: 125 }], cues: ['Großer Schritt nach vorn, Oberkörper aufrecht', 'Hinteres Knie Richtung Boden absenken', 'Aus der vorderen Ferse hochdrücken'] },
+  bulgarian: { v: 's', down: true, eq: [...EQ_.bench(46, 92, 124), { k: 'db', at: 'wr' }], fr: [{ hp: [112, 98], an: [140, 163], an2: [86, 120], kd2: [0, 1], t: 4, u: 180, f: 180, fo2: 260 }, { hp: [106, 130], an: [140, 163], an2: [86, 120], kd2: [0, 1], t: 14, u: 182, f: 182, fo2: 262 }], cues: ['Hinterer Fuß mit dem Spann auf der Bank', 'Senkrecht tief absenken, leichte Vorlage betont das Gesäß', 'Vorderes Knie stabil über dem Fuß'] },
+  split_smith: { v: 's', down: true, eq: [...EQ_.rails(118), { k: 'plate', at: 'nk', to: [-9, -3] }], fr: [{ hp: [114, 98], an: [144, 163], an2: [84, 160], kd2: [0, 1], t: 0, ra: 1, u: 205, f: 12, fo2: 115 }, { hp: [114, 130], an: [144, 163], an2: [84, 160], kd2: [0, 1], t: 2, ra: 1, u: 205, f: 12, fo2: 125 }], cues: ['Fester Split-Stand unter der Stange', 'Senkrecht absenken, hinteres Knie zum Boden', 'Vorderes Bein arbeitet'] },
+  glute_lunge: { v: 's', down: true, eq: [{ k: 'lever', piv: [26, 60], at: 'hp', to: [-12, 2], pad: 6 }, { k: 'r', x: 70, y: 152, w: 26, h: 16, c: FC.seat }], fr: [{ hp: [112, 98], an: [142, 163], an2: [84, 150], kd2: [0, 1], t: 14, wr: [150, 96], ed: [0, 1], fo2: 120 }, { hp: [108, 128], an: [142, 163], an2: [84, 150], kd2: [0, 1], t: 30, wr: [150, 104], ed: [0, 1], fo2: 125 }], cues: ['Hüftpolster am Gesäß, hinteres Bein auf der Fußstütze', 'Mit leichter Vorlage tief in den Ausfallschritt', 'Über die vordere Ferse hochdrücken'] },
+  stepup: { v: 's', eq: [{ k: 'r', x: 126, y: 128, w: 44, h: 40, c: FC.seat }, { k: 'db', at: 'wr' }], fr: [{ hp: [118, 118], an: [146, 124], an2: [100, 163], kd2: [1, 0], t: 14, u: 180, f: 180, fo2: 100 }, { hp: [144, 54], an: [146, 124], an2: [128, 118], kd2: [0, 1], t: 2, u: 180, f: 180, fo2: 150 }], cues: ['Ganzer Fuß auf der Box', 'Nur mit dem oberen Bein hochdrücken, nicht abstoßen', 'Langsam wieder absenken'] },
+  legext: { v: 's', eq: [...EQ_.seat(78, 124, 50), ...EQ_.back([84, 124], [76, 60]), { k: 'lever', piv: [132, 116], at: 'an', to: [0, 0], off: [3, 0], pad: 6 }], fr: [{ hp: [98, 118], t: -10, q: 92, k: 198, wr: [100, 128], ed: [0, 1] }, { hp: [98, 118], t: -10, q: 92, k: 96, wr: [100, 128], ed: [0, 1] }], cues: ['Kniegelenk genau auf Höhe der Drehachse', 'Beine strecken, oben 1 s halten', 'Langsam bis zur vollen Beugung zurück'] },
+  legcurl_seat: { v: 's', eq: [...EQ_.seat(78, 124, 50), ...EQ_.back([84, 124], [74, 62]), { k: 'r', x: 104, y: 104, w: 28, h: 8, c: FC.pad }, { k: 'lever', piv: [134, 116], at: 'an', off: [2, 4], pad: 6 }], fr: [{ hp: [98, 116], t: -14, q: 90, k: 92, wr: [100, 126], ed: [0, 1] }, { hp: [98, 116], t: -14, q: 90, k: 206, wr: [100, 126], ed: [0, 1] }], cues: ['Oberschenkelpolster fest, Knie an der Drehachse', 'Fersen kraftvoll unter den Sitz ziehen', 'Oberkörper leicht vorlehnen erhöht die Dehnung'] },
+  legcurl_lying: { v: 's', eq: [...EQ_.bench(60, 150, 132), { k: 'lever', piv: [64, 128], at: 'an', off: [0, -5], pad: 6 }], fr: [{ hp: [104, 124], t: 92, q: 268, k: 268, u: 174, f: 160 }, { hp: [104, 124], t: 92, q: 268, k: 382, u: 174, f: 160 }], cues: ['Bauchlage, Knie knapp über der Bankkante', 'Fersen Richtung Gesäß ziehen, Hüfte bleibt unten', 'Langsam strecken'] },
+  nordic: { v: 's', down: true, eq: [{ k: 'r', x: 58, y: 154, w: 16, h: 6, c: FC.pad }, { k: 'r', x: 84, y: 160, w: 34, h: 8, c: FC.seat }], fr: [{ kn: [100, 159], q: 180, k: 268, t: 0, u: 170, f: 120 }, { kn: [100, 159], q: 238, k: 268, t: 58, u: 150, f: 120 }], cues: ['Knien, Fersen unter dem Polster fixiert', 'Körper gerade von Knie bis Kopf langsam nach vorn sinken lassen', 'Mit den Händen abfangen, so langsam wie möglich'] },
+  rdl: { v: 's', down: true, eq: [{ k: 'plate', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 184, f: 184 }, { hp: [100, 100], an: AN0, t: 78, u: 193, f: 193 }], cues: ['Knie leicht gebeugt fixieren', 'Hüfte weit nach hinten schieben, Stange am Bein entlang', 'Bis zur deutlichen Dehnung der Beinbeuger, Rücken neutral'] },
+  rdl_db: { v: 's', down: true, eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 184, f: 184 }, { hp: [100, 100], an: AN0, t: 78, u: 190, f: 190 }], cues: ['Hanteln vor den Oberschenkeln', 'Hüfte nach hinten, Hanteln eng am Bein', 'Dehnung spüren, dann Hüfte nach vorn strecken'] },
+  sl_rdl: { v: 's', down: true, eq: [{ k: 'db', at: 'wr' }], fr: [{ hp: [120, 92], an: AN0, t: 0, u: 184, f: 184, q2: 182, k2: 184 }, { hp: [106, 98], an: AN0, t: 80, u: 186, f: 186, q2: 262, k2: 262, fo2: 172 }], cues: ['Auf einem Bein, Knie leicht gebeugt', 'Oberkörper und freies Bein bilden eine Linie', 'Becken bleibt waagerecht'] },
+  goodmorning: { v: 's', down: true, eq: [{ k: 'plate', at: 'nk', to: [-9, -3] }], fr: [{ hp: [120, 92], an: AN0, t: 2, ra: 1, u: 205, f: 12 }, { hp: [102, 98], an: AN0, t: 80, ra: 1, u: 205, f: 12 }], cues: ['Stange auf dem oberen Rücken', 'Hüfte nach hinten, Oberkörper fast waagerecht', 'Rücken neutral, Knie leicht gebeugt'] },
+  hipthrust: { v: 's', eq: [...EQ_.bench(30, 78, 126), { k: 'plate', at: 'hp', to: [11, 2] }], fr: [{ nk: [76, 122], t: -62, an: [154, 163], kd: [.3, -1], wr: { j: 'hp', to: [11, 4] }, ed: [0, -1] }, { nk: [76, 122], t: -89, an: [154, 163], kd: [.3, -1], wr: { j: 'hp', to: [11, 4] }, ed: [0, -1] }], cues: ['Schulterblätter an der Bankkante, Stange in der Hüftbeuge', 'Becken hochdrücken, oben Gesäß fest anspannen', 'Kinn Richtung Brust, Schienbeine oben senkrecht'] },
+  hipthrust_m: { v: 's', eq: [{ k: 'r', x: 30, y: 126, w: 48, h: 8, c: FC.seat }, { k: 'r', x: 40, y: 134, w: 30, h: 34 }, { k: 'lever', piv: [190, 150], at: 'hp', to: [11, 2], pad: 6 }], fr: [{ nk: [76, 122], t: -62, an: [154, 163], kd: [.3, -1], wr: [90, 140], ed: [0, 1] }, { nk: [76, 122], t: -89, an: [154, 163], kd: [.3, -1], wr: [90, 140], ed: [0, 1] }], cues: ['Rücken an der Lehne, Hüftgurt über dem Becken', 'Hüfte bis zur vollen Streckung hochdrücken', 'Oben halten, kontrolliert absenken'] },
+  bridge: { v: 's', eq: [], fr: [{ nk: [70, 160], t: -92, an: [130, 163], kd: [0, -1], u: 270, f: 270 }, { nk: [70, 160], t: -118, an: [130, 163], kd: [0, -1], u: 270, f: 270 }], cues: ['Rückenlage, Füße nah am Gesäß', 'Becken hochdrücken bis Knie, Hüfte und Schultern eine Linie bilden', 'Oben Gesäß anspannen'] },
+  kickback_cable: { v: 's', eq: [{ k: 'cable', from: [60, 160], colX: 40, at: 'an' }, { k: 'post', x: 168, y: 60 }], fr: [{ hp: [116, 96], an2: [122, 163], kd2: [1, 0], t: 36, q: 172, k: 186, wr: [168, 92], ed: [0, 1], fo: 120 }, { hp: [116, 96], an2: [122, 163], kd2: [1, 0], t: 36, q: 240, k: 240, wr: [168, 92], ed: [0, 1], fo: 160 }], cues: ['Leicht vorgebeugt am Gerät festhalten', 'Bein aus dem Gesäß nach hinten-oben strecken', 'Kein Hohlkreuz, Becken bleibt gerade'] },
+  kickback_pend: { v: 's', eq: [{ k: 'r', x: 118, y: 104, w: 34, h: 9, c: FC.pad, rot: -8, ox: 135, oy: 108 }, { k: 'r', x: 100, y: 150, w: 30, h: 8, c: FC.pad }, { k: 'lever', piv: [92, 36], at: 'kn', off: [0, 6], pad: 6 }], fr: [{ hp: [100, 118], t: 80, q2: 178, k2: 270, q: 166, k: 250, wr: [158, 140], ed: [0, 1] }, { hp: [100, 118], t: 80, q2: 178, k2: 270, q: 266, k: 330, wr: [158, 140], ed: [0, 1] }], cues: ['Knie und Brust auf den Polstern, Griffe fassen', 'Bein im Bogen nach hinten-oben drücken, Kniewinkel bleibt', 'Keine Rotation im Becken'] },
+  dual45: { v: 's', eq: [{ k: 'l', a: [122, 112], b: [100, 134], w: 9, c: FC.pad }, { k: 'r', x: 64, y: 140, w: 26, h: 7, c: FC.seat }, { k: 'tpad', s1: .8, s2: 1, side: -1, gap: 9 }], fr: [{ hp: [112, 104], q: 226, k: 136, t: 150, ra: 1, u: 170, f: 25 }, { hp: [112, 104], q: 226, k: 136, t: 42, ra: 1, u: 170, f: 25 }], cues: ['Becken auf dem Polster, Füße auf der erhöhten Platte', 'Knie gebeugt lassen – so arbeitet vor allem das Gesäß', 'Aus der Hüfte bis in eine Linie strecken'] },
+  abduct: { v: 'f', eq: [{ k: 'seatF' }, { k: 'kpad', inside: false }], fr: [{ hc: [120, 112], seat: 1, abd: 4, eu: 20, ef: 40 }, { hc: [120, 112], seat: 1, abd: 42, eu: 20, ef: 40 }], cues: ['Rücken an der Lehne, Polster außen an den Knien', 'Knie kraftvoll nach außen drücken', 'Oberkörper leicht vorlehnen betont den Gluteus maximus'] },
+  adduct: { v: 'f', down: false, eq: [{ k: 'seatF' }, { k: 'kpad', inside: true }], fr: [{ hc: [120, 112], seat: 1, abd: 44, eu: 20, ef: 40 }, { hc: [120, 112], seat: 1, abd: 4, eu: 20, ef: 40 }], cues: ['Weite Startposition für die Dehnung', 'Beine kontrolliert schließen', 'Langsam öffnen'] },
+  calf_stand: { v: 's', down: false, eq: [{ k: 'r', x: 118, y: 152, w: 30, h: 16, c: FC.seat }, { k: 'lever', piv: [56, 30], at: 'nk', to: [-2, 4], pad: 6 }], ha: 1, fr: [{ toe: [136, 151], fo: 64, k: 180, q: 180, t: 0, wr: [128, 50], ed: [-.5, 1] }, { toe: [136, 151], fo: 124, k: 180, q: 180, t: 0, wr: [128, 50], ed: [-.5, 1] }], cues: ['Fußballen auf der Kante, Knie gestreckt', 'Unten 1–2 s in der tiefen Dehnung halten', 'Über den großen Zeh ganz nach oben drücken'] },
+  calf_seated: { v: 's', down: false, eq: [...EQ_.seat(76, 134, 50), { k: 'r', x: 136, y: 156, w: 26, h: 12, c: FC.seat }, { k: 'lever', piv: [92, 108], at: 'kn', off: [0, -8], pad: 7 }], ha: 1, fr: [{ toe: [150, 155], fo: 62, k: 180, q: 90, t: 2, u: 170, f: 110 }, { toe: [150, 155], fo: 122, k: 180, q: 90, t: 2, u: 170, f: 110 }], cues: ['Polster auf den Oberschenkeln knapp über dem Knie', 'Tief absenken und unten halten', 'Trainiert vor allem den Schollenmuskel'] },
+  calf_lp: { v: 's', down: false, eq: [...EQ_.seat(66, 132, 46), ...EQ_.back([74, 132], [52, 70]), { k: 'sled', at: 'toeP', dir: 56, len: 46, off: [3, -3] }], ha: 1, fr: [{ hp: [90, 128], t: -32, q: 56, k: 56, fo: -20, wr: [92, 136], ed: [0, 1] }, { hp: [90, 128], t: -32, q: 56, k: 56, fo: 36, wr: [92, 136], ed: [0, 1] }], cues: ['Beine gestreckt, Fußballen am unteren Plattformrand', 'Fersen tief in die Dehnung sinken lassen', 'Mit den Zehen kraftvoll wegdrücken'] },
+  calf_smith: { v: 's', down: false, eq: [...EQ_.rails(128), { k: 'r', x: 118, y: 152, w: 30, h: 16, c: FC.seat }, { k: 'plate', at: 'nk', to: [-9, -3] }], ha: 1, fr: [{ toe: [136, 151], fo: 64, k: 180, q: 180, t: 0, ra: 1, u: 205, f: 12 }, { toe: [136, 151], fo: 124, k: 180, q: 180, t: 0, ra: 1, u: 205, f: 12 }], cues: ['Fußballen auf einer Erhöhung', 'Unten tief dehnen und halten', 'Kraftvoll hochdrücken'] },
+  calf_single: { v: 's', down: false, eq: [{ k: 'r', x: 118, y: 152, w: 30, h: 16, c: FC.seat }, { k: 'db', at: 'wr' }, { k: 'post', x: 170, y: 40 }], ha: 1, fr: [{ toe: [136, 151], fo: 64, k: 180, q: 180, t: 0, u: 180, f: 180, q2: 186, k2: 240, wr2: [170, 88], ed2: [0, 1] }, { toe: [136, 151], fo: 124, k: 180, q: 180, t: 0, u: 180, f: 180, q2: 186, k2: 240, wr2: [170, 84], ed2: [0, 1] }], cues: ['Einbeinig auf der Kante, mit einer Hand festhalten', 'Tief absenken und unten halten', 'Langsam und kontrolliert'] },
+  /* ---------------- Rumpf ---------------- */
+  crunch: { v: 's', eq: [], fr: [{ hp: [128, 157], t: -90, an: [162, 163], kd: [0, -1], ra: 1, u: 210, f: 14 }, { hp: [128, 157], t: -58, an: [162, 163], kd: [0, -1], ra: 1, u: 210, f: 14 }], cues: ['Rückenlage, Lendenwirbel am Boden', 'Rippen Richtung Becken einrollen', 'Beim Aufrollen ausatmen, Nacken locker'] },
+  cablecrunch: { v: 's', eq: [{ k: 'cable', from: [150, 2], colX: 196, at: 'wr' }], fr: [{ hp: [124, 122], an: [86, 160], kd: [1, 1], t: 12, ra: 1, u: 205, f: 12 }, { hp: [124, 122], an: [86, 160], kd: [1, 1], t: 96, ra: 1, u: 205, f: 12 }], cues: ['Kniend, Seil neben dem Kopf halten', 'Hüfte bleibt fest, Wirbel für Wirbel einrollen', 'Oben weit in die Streckung'] },
+  abs_m: { v: 's', eq: [...EQ_.seat(84, 132, 44), { k: 'tpad', s1: .7, s2: .95, side: 1, gap: 14 }], fr: [{ hp: [104, 128], t: -6, q: 88, k: 178, ra: 1, u: 175, f: 20 }, { hp: [104, 128], t: 42, q: 88, k: 178, ra: 1, u: 175, f: 20 }], cues: ['Brustpolster auflegen, Füße fixieren', 'Oberkörper einrollen, nicht nur aus der Hüfte beugen', 'Langsam zurück'] },
+  hangleg: { v: 's', eq: [...EQ_.bar(-4)], fr: [{ nk: [122, 44], t: -2, q: 180, k: 184, wr: [126, -4], ed: [0, 1], fo: 150 }, { nk: [122, 44], t: -16, q: 74, k: 96, wr: [126, -4], ed: [0, 1] }], cues: ['Ruhig hängen, kein Schwung', 'Becken einrollen und Beine heben', 'Langsam ablassen'] },
+  captain: { v: 's', eq: [{ k: 'l', a: [96, 46], b: [96, 130], w: 9, c: '#3E3E43' }, { k: 'l', a: [104, 70], b: [146, 70], w: 7, c: FC.pad }, { k: 'l', a: [96, 46], b: [96, GND], w: 5 }], fr: [{ nk: [108, 58], t: -2, q: 180, k: 184, u: 178, f: 90 }, { nk: [108, 58], t: -6, q: 70, k: 175, u: 178, f: 90 }], cues: ['Rücken am Polster, Unterarme aufgelegt', 'Knie zur Brust ziehen, Becken einrollen', 'Kontrolliert absenken'] },
+  plank: { v: 's', eq: [], ha: 0, hb: 2, fr: [{ nk: [150, 136], t: 78, line: 1, u: 178, f: 92, fo: 195 }, { nk: [150, 135], t: 77, line: 1, u: 179, f: 92, fo: 195 }], cues: ['Ellbogen unter den Schultern', 'Körper eine gerade Linie, Bauch und Gesäß fest', 'Ruhig weiteratmen'] },
+  sideplank: { v: 'f', eq: [], ha: 1.2, hb: 1.2, fr: [{ hc: [110, 135.5], t: 72, el: 0, wrR: [152, 165], eu2: 90, ef2: 90 }, { hc: [110, 133], t: 73, el: 0, wrR: [152, 165], eu2: 100, ef2: 100 }], cues: ['Seitlich auf dem Unterarm, Ellbogen unter der Schulter', 'Hüfte hoch, Körper in einer Linie', 'Position halten'] },
+  abwheel: { v: 's', down: true, eq: [{ k: 'wheel', at: 'wr' }], fr: [{ hp: [108, 124], an: [72, 162], kd: [0, 1], t: 58, wr: [150, 158], ed: [0, 1] }, { hp: [120, 140], an: [72, 162], kd: [0, 1], t: 82, wr: [194, 158], ed: [0, 1] }], cues: ['Knien, Rad unter den Schultern', 'Langsam nach vorn rollen, Becken eingerollt', 'Nur so weit, wie der Rücken neutral bleibt'] },
+  rotator: { v: 't', eq: [{ k: 'r', x: 92, y: 80, w: 8, h: 40, c: FC.pad }, { k: 'r', x: 140, y: 80, w: 8, h: 40, c: FC.pad }], fr: [{ c: [120, 100], rot: -38, au: 28, af: 96 }, { c: [120, 100], rot: 38, au: 28, af: 96 }], cues: ['Kniend, Schultern fest an den Seitenpolstern', 'Oberkörper kontrolliert zur Seite drehen', 'Hüfte bleibt stabil, langsam zurück'] },
+  pallof: { v: 't', eq: [{ k: 'tcab', fromR: [214, 100], side: 'R' }], fr: [{ c: [120, 100], wrR: [124, 78], wrL: [116, 78] }, { c: [120, 100], wrR: [124, 52], wrL: [116, 52] }], ha: .6, hb: 1, cues: ['Seitlich zum Kabel, Griff vor der Brust', 'Arme gerade nach vorn drücken, ohne mitzudrehen', 'Kurz halten, kontrolliert zurück'] },
+  woodchop: { v: 'f', eq: [{ k: 'cab', fromR: [214, 6], side: 'R' }], fr: [{ hc: [120, 92], rot: 30, wrR: [176, 30], wrL: [168, 34], el: 10 }, { hc: [120, 92], rot: -30, wrR: [84, 124], wrL: [80, 120], el: 10 }], cues: ['Seitlich zur oberen Rolle, breiter Stand', 'Diagonal von oben nach unten ziehen, Rumpf rotiert', 'Arme bleiben fast gestreckt'] }
+});
+/* Animation je Datenbankeintrag (sonst gleicher Schlüssel) */
+const EXAN = { bb_bench: 'bench_bb', db_bench: 'bench_db', bb_incline: 'incline_bb', db_incline: 'incline_db', sm_incline: 'incline_smith', mach_chest: 'chestpress_m', egym_chest: 'chestpress_m', hs_incline: 'incline_m', hs_decline: 'decline_m', pec_deck: 'pecdeck', egym_fly: 'pecdeck', cable_fly: 'cablefly', low_cable_fly: 'cablefly_low', db_fly: 'dbfly', dips_chest: 'dip_chest', assist_dip: 'dip_assist', deficit_pushup: 'pushup_def', assist_pullup: 'pullup_assist', egym_lat: 'latpull_m', hs_pulldown: 'latpull_m', sa_lat: 'latpull_sa', cable_row: 'cablerow', egym_row: 'row_m', hs_row: 'row_m', chest_row: 'row_m', bb_row: 'bbrow', db_row: 'dbrow', tbar_row: 'tbar', straight_pd: 'straightpd', db_pullover: 'dbpullover', rack_pull: 'rackpull', backext: 'hyperext', egym_back: 'backext_m', bb_ohp: 'ohp_bb', db_ohp: 'ohp_db', mach_ohp: 'ohp_m', egym_ohp: 'ohp_m', db_lat: 'latraise', cable_lat: 'latraise_cable', mach_lat: 'latraise_m', lean_lat: 'latraise_lean', front_raise: 'frontraise', face_pull: 'facepull', rev_pec: 'revpec', egym_revfly: 'revpec', db_revfly: 'revfly_db', cable_revfly: 'revfly_cable', bb_shrug: 'shrug_bb', db_shrug: 'shrug_db', cable_shrug: 'shrug_cable', bb_curl: 'curl_bb', db_curl: 'curl_db', incline_curl: 'curl_incline', preacher_mach: 'preacher_m', egym_biceps: 'preacher_m', cable_curl: 'curl_cable', pushdown_bar: 'pushdown', oh_ext: 'ohext_cable', db_oh_ext: 'ohext_db', dips_tri: 'dip_tri', egym_tri: 'tri_m', mach_tri: 'dip_seated', wrist_curl: 'wristcurl', bb_squat: 'squat_bb', front_squat: 'squat_front', hack_squat: 'hack', smith_squat: 'squat_smith', egym_squat: 'squat_m', gb_squat: 'squat_glute', egym_lp: 'legpress', legpress_45: 'legpress45', split_squat: 'split_smith', egym_legext: 'legext', db_rdl: 'rdl_db', good_morning: 'goodmorning', seated_curl: 'legcurl_seat', egym_curl: 'legcurl_seat', lying_curl: 'legcurl_lying', gb_hipthrust: 'hipthrust_m', egym_hipthrust: 'hipthrust_m', glute_bridge: 'bridge', gb_kickback: 'kickback_pend', cable_kickback: 'kickback_cable', gb_dual45: 'dual45', gb_abd: 'abduct', abd_mach: 'abduct', egym_abd: 'abduct', add_mach: 'adduct', egym_add: 'adduct', cable_crunch: 'cablecrunch', egym_abs: 'abs_m', hang_leg: 'hangleg', side_plank: 'sideplank', ab_wheel: 'abwheel', egym_rot: 'rotator' };
+/* Beanspruchte Muskeln: 2 = Hauptmuskel, 1 = mitarbeitend (nach EMG-Studien und anatomischer Funktion) */
+const EXMM = {
+  bb_bench: 'pecM2 pecU1 deltA1 tri1', db_bench: 'pecM2 pecU1 deltA1 tri1', bb_incline: 'pecU2 pecM1 deltA1 tri1', db_incline: 'pecU2 pecM1 deltA1 tri1', sm_incline: 'pecU2 pecM1 deltA1 tri1',
+  mach_chest: 'pecM2 pecU1 deltA1 tri1', egym_chest: 'pecM2 pecU1 deltA1 tri1', hs_incline: 'pecU2 pecM1 deltA1 tri1', hs_decline: 'pecM2 tri1 deltA1',
+  pec_deck: 'pecM2 pecU1 deltA1', egym_fly: 'pecM2 pecU1 deltA1', cable_fly: 'pecM2 pecU1 deltA1', low_cable_fly: 'pecU2 pecM1 deltA1', db_fly: 'pecM2 pecU1 deltA1',
+  dips_chest: 'pecM2 tri2 deltA1 pecU1', assist_dip: 'pecM2 tri2 deltA1', pushup: 'pecM2 tri1 deltA1 abs1', deficit_pushup: 'pecM2 tri1 deltA1 abs1',
+  pullup: 'lat2 bic1 trapM1 deltP1 forF1', chinup: 'lat2 bic2 trapM1 forF1', assist_pullup: 'lat2 bic1 trapM1 deltP1',
+  latpull: 'lat2 bic1 trapM1 deltP1', latpull_close: 'lat2 bic1 trapM1', egym_lat: 'lat2 bic1 trapM1', hs_pulldown: 'lat2 bic1 trapM1', sa_lat: 'lat2 bic1',
+  cable_row: 'lat2 trapM2 deltP1 bic1 erec1', egym_row: 'trapM2 lat2 deltP1 bic1', hs_row: 'trapM2 lat2 deltP1 bic1', chest_row: 'trapM2 lat2 deltP1 bic1',
+  bb_row: 'lat2 trapM2 deltP1 bic1 erec1 ham1', db_row: 'lat2 trapM1 deltP1 bic1', tbar_row: 'trapM2 lat2 deltP1 bic1 erec1', pendlay: 'trapM2 lat2 deltP1 bic1 erec1',
+  straight_pd: 'lat2 tri1', db_pullover: 'lat2 pecM1 tri1',
+  deadlift: 'erec2 gluMax2 ham2 quad1 trapU1 trapM1 forF1', rack_pull: 'erec2 trapU2 gluMax1 trapM1 forF1', backext: 'erec2 gluMax2 ham1', egym_back: 'erec2 gluMax1',
+  bb_ohp: 'deltA2 tri1 deltL1 pecU1 trapU1 abs1', db_ohp: 'deltA2 tri1 deltL1 pecU1', mach_ohp: 'deltA2 tri1 deltL1', egym_ohp: 'deltA2 tri1 deltL1', arnold: 'deltA2 deltL1 tri1',
+  db_lat: 'deltL2 trapU1', cable_lat: 'deltL2 trapU1', mach_lat: 'deltL2', lean_lat: 'deltL2', front_raise: 'deltA2 pecU1',
+  face_pull: 'deltP2 trapM2 trapU1', rev_pec: 'deltP2 trapM1', egym_revfly: 'deltP2 trapM1', db_revfly: 'deltP2 trapM1', cable_revfly: 'deltP2 trapM1',
+  bb_shrug: 'trapU2 forF1', db_shrug: 'trapU2 forF1', cable_shrug: 'trapU2',
+  bb_curl: 'bic2 forB1 forF1', db_curl: 'bic2 forB1', incline_curl: 'bic2 forB1', preacher: 'bic2 forB1', preacher_mach: 'bic2 forB1', cable_curl: 'bic2 forB1', bayesian: 'bic2 forB1', hammer: 'forB2 bic2 forF1', egym_biceps: 'bic2 forB1',
+  pushdown: 'tri2', pushdown_bar: 'tri2', oh_ext: 'tri2', db_oh_ext: 'tri2', skull: 'tri2', cgbp: 'tri2 pecM1 deltA1', dips_tri: 'tri2 pecM1 deltA1', egym_tri: 'tri2', mach_tri: 'tri2 pecM1', wrist_curl: 'forF2',
+  bb_squat: 'quad2 gluMax2 add1 erec1 ham1', front_squat: 'quad2 gluMax1 add1 erec1 abs1', hack_squat: 'quad2 gluMax1 add1', pendulum: 'quad2 gluMax1 add1', smith_squat: 'quad2 gluMax1 add1', egym_squat: 'quad2 gluMax1', goblet: 'quad2 gluMax1 add1 abs1', sissy: 'quad2', gb_squat: 'gluMax2 quad1 add1 ham1',
+  legpress: 'quad2 gluMax1 add1', egym_lp: 'quad2 gluMax1 add1', legpress_45: 'quad2 gluMax1 add1',
+  bulgarian: 'quad2 gluMax2 add1 gluMed1', lunge: 'quad2 gluMax2 add1 gluMed1', split_squat: 'quad2 gluMax1 add1', glute_lunge: 'gluMax2 quad1 add1', stepup: 'quad2 gluMax2 gluMed1',
+  legext: 'quad2', egym_legext: 'quad2',
+  rdl: 'ham2 gluMax2 erec1 add1 forF1', db_rdl: 'ham2 gluMax2 erec1 add1', sl_rdl: 'ham2 gluMax2 gluMed1 erec1', good_morning: 'ham2 gluMax1 erec2',
+  seated_curl: 'ham2 calf1', lying_curl: 'ham2 calf1', egym_curl: 'ham2 calf1', nordic: 'ham2 calf1',
+  hipthrust: 'gluMax2 ham1 quad1 add1', gb_hipthrust: 'gluMax2 ham1 quad1', egym_hipthrust: 'gluMax2 ham1 quad1', glute_bridge: 'gluMax2 ham1',
+  gb_kickback: 'gluMax2 ham1', cable_kickback: 'gluMax2 ham1 gluMed1', gb_dual45: 'gluMax2 ham1 erec1',
+  gb_abd: 'gluMed2 gluMax1', abd_mach: 'gluMed2 gluMax1', egym_abd: 'gluMed2 gluMax1', add_mach: 'add2', egym_add: 'add2',
+  calf_stand: 'calf2', calf_seated: 'calf2', calf_lp: 'calf2', calf_smith: 'calf2', calf_single: 'calf2',
+  crunch: 'abs2 obl1', cable_crunch: 'abs2 obl1', egym_abs: 'abs2 obl1', hang_leg: 'abs2 obl1 quad1 forF1', captain: 'abs2 obl1 quad1', plank: 'abs2 obl1 gluMax1', side_plank: 'obl2 abs1 gluMed1', ab_wheel: 'abs2 obl1 lat1', egym_rot: 'obl2 abs1', pallof: 'obl2 abs1', woodchop: 'obl2 abs1 deltA1'
+};
+/* Muskel-Codes → Anzeige, Volumen-Gruppe */
+const MUSC = {
+  pecU: ['Obere Brust', 'Pectoralis major, Pars clavicularis'], pecM: ['Brust', 'Pectoralis major, Pars sternocostalis'],
+  deltA: ['Vordere Schulter', 'Deltoideus anterior'], deltL: ['Seitliche Schulter', 'Deltoideus lateralis'], deltP: ['Hintere Schulter', 'Deltoideus posterior'],
+  bic: ['Bizeps', 'Biceps brachii, Brachialis'], tri: ['Trizeps', 'Triceps brachii'], forF: ['Unterarmbeuger', 'Flexoren, Griffkraft'], forB: ['Oberarmspeichenmuskel', 'Brachioradialis'],
+  lat: ['Latissimus', 'Latissimus dorsi, Teres major'], trapU: ['Oberer Trapez', 'Trapezius pars descendens'], trapM: ['Mittlerer Rücken', 'Trapezius mitte/unten, Rhomboiden'], erec: ['Rückenstrecker', 'Erector spinae'],
+  abs: ['Gerade Bauchmuskeln', 'Rectus abdominis'], obl: ['Schräge Bauchmuskeln', 'Obliquus externus/internus'],
+  gluMax: ['Großer Gesäßmuskel', 'Gluteus maximus'], gluMed: ['Mittlerer Gesäßmuskel', 'Gluteus medius/minimus'],
+  quad: ['Quadrizeps', 'Quadriceps femoris'], add: ['Adduktoren', 'Adductor magnus/longus'], ham: ['Beinbeuger', 'Biceps femoris, Semitendinosus'], calf: ['Waden', 'Gastrocnemius, Soleus']
+};
+for (const k in EXDB) { EXDB[k].an = ANIM[EXAN[k] || k] ? (EXAN[k] || k) : null; EXDB[k].mm = mmParse(k); }
+/* ---------- Grafik: anatomische Muskelkarte vorne/hinten ----------
+   Rechte Körperhälfte, Mittellinie x = 50; die linke Hälfte wird gespiegelt. */
+const BODY_H = 'M50 23C53 23 55 24 55.5 27.5L56 30C60 31.5 64 31.5 68 32.5C73 33.5 77 37 78.5 43L79 53C79 59 78.5 64 79 68L81.5 74C82.5 80 82.5 86 81 92L80.5 99C81 103 80 108 77 110C74.5 110 73.5 106 73.5 102L73 97C71 92 69.5 87 69 81L67.5 72C67 66 67 61 66.5 58L66 64C65.5 70 65.5 76 66.5 82L68.5 92C70 101 69.5 112 68.5 122L66.5 136C65.5 141 65 145 65.5 150C66 157 65.5 165 63.5 173L61.5 188L63 194C63 197 60 198.5 56 198.5C53 198.5 53.5 195 54 191L54 176C53 168 52.5 160 53 152L52.5 142C51.5 130 51 118 50 104Z';
+const MPATH = {
+  F: {
+    trapU: ['M53 28.5C55 30.5 60 31.5 66 32.5L59 34.5C56 33.5 54 32 53 28.5Z'],
+    deltA: ['M60 35C64 33 69 33 71 35.5C72.5 39 72 44 70 48C68.5 45 66 41 62.5 38.5Z'],
+    deltL: ['M71 35C74.5 36 77 39.5 77.8 44.5C78 48 77 51 75.5 53C74 49 72.5 45 71.8 40Z'],
+    pecU: ['M51 33.5C55 33 59 33.5 62 36C64.5 37.5 66.5 39.5 68 42L51 41.5Z'],
+    pecM: ['M51 42.5L68.5 43C69 46 68 49 65.5 51.5C62 54.5 56 55 51 54Z'],
+    bic: ['M69.5 51C72.5 50 75.5 51.5 76.5 55C77.5 59 77 64 75.5 68C73.5 69 71 68.5 69.5 66C68.5 61 68.5 55 69.5 51Z'],
+    forB: ['M75.5 70C78 70.5 80 73 80.5 77C80.8 81 80 85 79 88L76.5 80C75.5 76.5 75 73 75.5 70Z'],
+    forF: ['M69 71C71.5 70.5 74 72 75.5 75L78.5 88C79 92 78 96 76 98.5C73.5 95 71.5 89 70 83C69 79 68.5 75 69 71Z'],
+    lat: ['M66.5 56.5L68 54L68.5 60L67 66L66 61Z'],
+    abs: ['M51 56C54 55.5 57 56 59 57L59 66L58.5 76L58 86C56 88 53 89 51 89Z'],
+    obl: ['M60 57.5C62.5 57 64.5 57.5 66 59.5L65.5 67C65.5 73 66 78 67 83L64 86C62 87 60 87.5 59 87L59.5 76L60 66Z'],
+    gluMed: ['M66.5 84L68.5 91L68.5 96C67 93 65.5 89 64.5 86Z'],
+    quad: ['M57 93C60 91 64.5 89.5 67.5 91L68.5 98C69 106 68.5 114 67.5 122L65.5 135C64.5 139 61.5 141 58.5 140.5C56 136 55 128 55 120C55 110 55.5 101 57 93Z'],
+    add: ['M51 101L56.5 95C55 105 54.5 115 55 124C53.5 120 52 113 51.5 106Z'],
+    calf: ['M54 152C55.5 149 58 148 59.5 149.5C60 156 59.5 163 58.5 170C57 172 55.5 172 54.5 170C53.5 164 53.5 158 54 152Z', 'M62.5 151C64.5 153 65.5 157 65 162C64.5 166 63.5 169 62.5 171C61.8 165 61.8 158 62.5 151Z']
+  },
+  B: {
+    trapU: ['M50 26L54 27C56 30 60 31.5 67 33C63 35 58.5 36.5 55 37.5L50 39Z'],
+    trapM: ['M50 39.5L55.5 38C58 38.5 61 39.5 62.5 41.5C60 46 57 51 55.5 56L50 66Z'],
+    deltP: ['M63 35C67 33 71 33.5 74 36C76 39.5 76.5 44 75.5 48.5C72 46 68.5 43 65.5 40Z'],
+    deltL: ['M74.5 36C77 38.5 78.5 42 78.6 46.5L77.8 52C76.8 49.5 76.5 46 76.2 42.5Z'],
+    tri: ['M68.5 49C71.5 47.5 75.5 48 77.5 51C78.5 56 78.5 61 77.5 66.5C75.5 68.5 72.5 68.5 70.5 67C69 62 68 55.5 68.5 49Z'],
+    forF: ['M69.5 71C72.5 70 76 70.5 79.5 72.5C81.5 78 81.5 84 80.5 90C79 95 77.5 98 76 99C73.5 94 71.5 87 70.5 81C69.8 77 69.4 74 69.5 71Z'],
+    lat: ['M56.5 57C58.5 51 61.5 45 64.5 42.5L67 47C67.5 53 67.2 60 66.5 66C65 71 62 75.5 58 78.5L55.5 79C55 72 55.5 64 56.5 57Z'],
+    erec: ['M50.8 64L55.5 58.5C55.3 66 55.5 74 56.5 82.5C55 86 53 88 51 88.5Z'],
+    obl: ['M59 79C62.5 76 65 72 66.4 67.5C66 73 66.3 78 67 83L62 86C60.5 84 59.5 81.5 59 79Z'],
+    gluMed: ['M58.5 86L66.5 84.5C68 88 68.8 92 68.8 96C66 93 62 90 58.5 88.5Z'],
+    gluMax: ['M51 92C54 89 58 88.5 62 89.5C66 91.5 68.5 95 69 99.5C69.2 104 68.3 108.5 66.5 111.5C62 114 56 114 51.3 112.5Z'],
+    ham: ['M53.5 115.5C57 115 61 114.5 67.5 113L67.5 122L66 134C65 138.5 63 141.5 60 142.5C56.5 141 54.5 136 53.8 129C53.3 124 53.3 120 53.5 115.5Z'],
+    add: ['M51 113L53 115C52.8 121 53 126 53.5 131C52 125 51.2 119 51 113Z'],
+    calf: ['M54 150C56 146.5 59.5 145.5 61.5 147C61.8 154 61 161 59.5 166.5C57.5 168 55.5 167.5 54.5 165C53.5 160 53.4 155 54 150Z', 'M62.5 147.5C64.5 149 65.8 152.5 65.6 157.5C65.3 162 64 165.5 62.3 167C61.6 160 61.8 153.5 62.5 147.5Z']
+  }
+};
+/* zusätzliche Konturlinien (Bauchsegmente, Kniescheibe, Brustwarzen, Wirbelsäule) */
+const MLINE = {
+  F: 'M51 63.5H58.8M51 71H58.6M51 78.5H58.4M58 140.5C59.5 143 61.5 144.5 63.5 143',
+  B: 'M58 115.5L60 140M54.5 87.5L50 92'
+};
+function mmParse(k) {
+  const o = {}; const s = EXMM[k]; if (!s) return o;
+  s.split(' ').forEach(t => { const m = t.match(/^([a-zA-Z]+)(\d)$/); if (m) o[m[1]] = +m[2]; });
+  return o;
+}
+function muscleMap(lv, big) {
+  const half = (V, mirror) => {
+    let g = '<path d="' + BODY_H + '" fill="#232327"/>';
+    for (const m in MPATH[V]) {
+      const l = lv[m] || 0, fill = l === 2 ? '#A6F53B' : l === 1 ? '#1EEAEF' : '#3A3A41';
+      MPATH[V][m].forEach(d => g += '<path d="' + d + '" fill="' + fill + '" fill-opacity="' + (l === 2 ? 1 : l === 1 ? .75 : 1) + '" stroke="#18181B" stroke-width=".6"' + (l ? ' class="mon"' : '') + '/>');
+    }
+    g += '<path d="' + MLINE[V] + '" fill="none" stroke="#18181B" stroke-width=".7" stroke-linecap="round"/>';
+    return mirror ? '<g transform="matrix(-1 0 0 1 100 0)">' + g + '</g>' : g;
+  };
+  const view = (V, x) => '<g transform="translate(' + x + ',0)">' + half(V, 0) + half(V, 1) +
+    '<ellipse cx="50" cy="13.5" rx="8.5" ry="10.5" fill="' + (V === 'B' ? '#2C2C31' : '#3A3A41') + '"/>' + (V === 'B' ? '<path d="M41.8 11C42.5 4 46 2.6 50 2.6S57.5 4 58.2 11C57 15 54 16 50 16S43 15 41.8 11Z" fill="#232327"/>' : '') +
+    '<rect x="46.5" y="22" width="7" height="7" rx="2" fill="' + (V === 'B' ? '#2C2C31' : '#3A3A41') + '"/></g>';
+  return '<svg viewBox="0 0 212 214" width="100%" class="mmap" role="img" aria-label="Trainierte Muskeln">' + view('F', 0) + view('B', 110) +
+    '<text x="50" y="211" text-anchor="middle" font-size="9" fill="#8E8E93">vorne</text><text x="160" y="211" text-anchor="middle" font-size="9" fill="#8E8E93">hinten</text></svg>';
+}
+function muscleLegend(lv) {
+  const p = Object.keys(lv).filter(m => lv[m] === 2), s = Object.keys(lv).filter(m => lv[m] === 1);
+  const row = (m, c) => '<div class="mleg"><i style="background:' + c + '"></i><span><b>' + MUSC[m][0] + '</b><small>' + MUSC[m][1] + '</small></span></div>';
+  return (p.length ? '<div class="mlh">Hauptmuskeln</div>' + p.map(m => row(m, '#A6F53B')).join('') : '') + (s.length ? '<div class="mlh">Unterstützend</div>' + s.map(m => row(m, '#1EEAEF')).join('') : '');
 }
 
+const MALIAS = { beine: ['quads', 'hams', 'glutes', 'waden'], schulter: ['schulter', 'seitschulter'] };
 /* ---------- Datenbank-Ansicht ---------- */
 function dbToLib(k) {
   const e = EXDB[k]; const ex = Object.values(S.lib).find(L => L.db === k); if (ex) return ex.id;
@@ -3638,7 +4017,7 @@ VIEWS.exdb = function () {
   let h = '<input class="in" placeholder="Suchen …" data-f="dbQ" value="' + esc(V.ctx.q || '') + '">' +
     '<div class="scrollx" style="margin-top:8px"><button class="chip' + (!f ? ' on' : '') + '" data-a="dbF" data-v="">Alle</button>' + mus.map(m => '<button class="chip' + (f === m ? ' on' : '') + '" data-a="dbF" data-v="' + m + '">' + MUS[m] + '</button>').join('') + '</div>' +
     '<div class="fld swr"><span>Nur Fitness First Augsburg<small>bestätigte Bereiche + wahrscheinliche Maschinen</small></span><button class="swi' + (only ? ' on' : '') + '" data-a="dbFF"><i></i></button></div>';
-  h += '<div class="lst">' + list.map(e => '<div class="li tap" data-a="dbShow" data-k="' + e.k + '"><div style="width:52px;flex:none">' + exFigure(e.pat, e.eq) + '</div><div class="grow"><b>' + esc(e.n) + '</b><span>' + MUS[e.m] + ' · ' + EQ[e.eq] + ' · ' + lenTxt(e.len) + '</span></div><span class="mu">›</span></div>').join('') + (list.length ? '' : '<div class="li"><span class="mu">Keine Treffer.</span></div>') + '</div>';
+  h += '<div class="lst">' + list.map(e => '<div class="li tap" data-a="dbShow" data-k="' + e.k + '"><div style="width:52px;flex:none">' + exFigure(e.k) + '</div><div class="grow"><b>' + esc(e.n) + '</b><span>' + MUS[e.m] + ' · ' + EQ[e.eq] + ' · ' + lenTxt(e.len) + '</span></div><span class="mu">›</span></div>').join('') + (list.length ? '' : '<div class="li"><span class="mu">Keine Treffer.</span></div>') + '</div>';
   return h;
 };
 F.dbQ = v => { V.ctx.q = v; clearTimeout(F.dbQ.t); F.dbQ.t = setTimeout(() => { const y = window.scrollY; render(); const i = document.querySelector('[data-f="dbQ"]'); if (i) { i.focus(); i.setSelectionRange(v.length, v.length); } window.scrollTo(0, y); }, 250); };
@@ -3651,11 +4030,12 @@ function dbSheet(k, from) {
   const alts = dbAlts(k, 6), note = ENOTE[k];
   const inLib = Object.values(S.lib).find(L => L.db === k);
   sheet('<h3>' + esc(e.n) + '</h3><div class="row wrap" style="gap:6px;margin-bottom:8px">' + avTag(k) + '<span class="tag">' + EQ[e.eq] + '</span><span class="tag">' + (P.c ? 'Grundübung' : 'Isolation') + '</span></div>' +
-    '<div class="card" style="padding:6px;background:#111"><div class="grid2" style="align-items:center"><div>' + exFigure(e.pat, e.eq, 1) + '<div class="hint" style="text-align:center;margin:0">' + P.n + ' · 1 s hoch, 2 s runter</div></div><div>' + muscleMap(e.m, e.m2) + '<div class="hint" style="text-align:center;margin:0"><span style="color:#A6F53B">●</span> ' + MUS[e.m] + (e.m2.length ? ' · <span style="color:#1EEAEF">●</span> ' + e.m2.map(x => MUS[x]).join(', ') : '') + '</div></div></div></div>' +
-    '<label class="lb">Ausführung</label><div class="lst">' + P.cues.map((c, i) => '<div class="li"><b class="n" style="color:var(--acc);width:20px">' + (i + 1) + '</b><div class="grow" style="white-space:normal">' + esc(c) + '</div></div>').join('') + '</div>' +
+    '<div class="card exhero">' + exFigure(k, 1) + '<div class="hint" style="text-align:center;margin:2px 0 0">Tempo: 1 s anspannen · 2 s nachgeben</div></div>' +
+    '<label class="lb">Trainierte Muskeln</label><div class="card mcard"><div>' + muscleMap(e.mm) + '</div><div>' + muscleLegend(e.mm) + '</div></div>' +
+    '<label class="lb">Ausführung</label><div class="lst">' + ((ANIM[e.an] || {}).cues || P.cues).map((c, i) => '<div class="li"><b class="n" style="color:var(--acc);width:20px">' + (i + 1) + '</b><div class="grow" style="white-space:normal">' + esc(c) + '</div></div>').join('') + '</div>' +
     '<label class="lb">Wissenschaft</label><div class="card" style="margin-top:0"><div class="kv"><span>Dehnungsbetonung</span><b>' + '●'.repeat(e.len) + '<span class="mu">' + '●'.repeat(3 - e.len) + '</span></b></div><div class="kv"><span>Empfohlene Pause</span><b>' + (P.c ? '2–3 min' : '1–2 min') + '</b></div><div class="kv"><span>Wiederholungen</span><b>' + (P.c ? '5–12' : '8–20') + ' · RIR 0–3</b></div>' + (note ? '<p class="sm" style="margin-top:8px">' + esc(note) + '</p>' : '') + '</div>' +
     '<label class="lb">Im Fitness First Augsburg</label><div class="grid2"><button class="chip' + ((S.gymMark || {})[k] === 'yes' ? ' on' : '') + '" data-a="dbMark" data-v="yes">Gibt es</button><button class="chip' + ((S.gymMark || {})[k] === 'no' ? ' on' : '') + '" data-a="dbMark" data-v="no">Gibt es nicht</button></div>' +
-    (alts.length ? '<label class="lb">Alternativen</label><div class="lst">' + alts.map(a => '<div class="li tap" data-a="dbShow" data-k="' + a.k + '"><div class="grow"><b>' + esc(EXDB[a.k].n) + '</b><span>' + esc(a.why.join(' · ') || 'gleicher Muskel') + '</span></div>' + (gymOk(a.k) ? '' : '<span class="tag rd">nicht im Studio</span>') + '</div>').join('') + '</div>' : '') +
+    (alts.length ? '<label class="lb">Alternativen</label><div class="lst">' + alts.map(a => '<div class="li tap" data-a="dbShow" data-k="' + a.k + '"><div style="width:52px;flex:none">' + exFigure(a.k) + '</div><div class="grow"><b>' + esc(EXDB[a.k].n) + '</b><span>' + esc(a.why.join(' · ') || 'gleicher Muskel') + '</span></div>' + (gymOk(a.k) ? '' : '<span class="tag rd">nicht im Studio</span>') + '</div>').join('') + '</div>' : '') +
     '<div class="btns" style="grid-template-columns:1fr 1fr;margin-top:12px"><button class="b" data-a="closeSheet">Schließen</button>' + (V.page === 'day' ? '<button class="b pri" data-a="dbToDay">Zum Tag hinzufügen</button>' : inLib ? '<button class="b" disabled>In Bibliothek</button>' : '<button class="b pri" data-a="dbAdd">Zur Bibliothek</button>') + '</div>');
 }
 A.dbShow = d => { haptic(1); dbSheet(d.k); };
