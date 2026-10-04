@@ -473,6 +473,12 @@ input.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;b
 .exfig{display:block}
 .mmap{display:block}
 .exhero{padding:6px;background:#0c0c0e}.mcard{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:10px;align-items:center}.mleg{display:flex;gap:8px;align-items:flex-start;margin:5px 0;line-height:1.2}.mleg i{width:10px;height:10px;border-radius:3px;flex:none;margin-top:3px}.mleg b{font-size:13px}.mleg small{display:block;color:var(--mu);font-size:11px}.mlh{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--mu);margin-top:4px}@media (prefers-reduced-motion:no-preference){.mmap .mon{animation:mpulse 2.6s ease-in-out infinite}}@keyframes mpulse{50%{fill-opacity:.62}}
+.ldst{display:flex;align-items:flex-end;gap:3px;height:58px;margin:12px 0 4px}.ldst i{display:block;border-radius:4px 4px 2px 2px;background:var(--s3);transition:background .4s,transform .4s var(--spring)}.ldst i.ok{background:var(--acc)}.ldst i.cur{background:var(--pk);animation:ldp 1.6s ease-in-out infinite}@keyframes ldp{50%{opacity:.55}}
+.ldrn{display:flex;justify-content:space-between;align-items:flex-end}.ldrn b{font:700 34px var(--rnd);line-height:1}.ldrn b span{font-size:16px;color:var(--mu)}.ldwk.paused{opacity:.6}
+.ldl .ldx{gap:10px;padding-top:8px;padding-bottom:8px;transition:background .3s}.ldx .ldfig{width:64px;flex:none;border-radius:10px;background:#0c0c0e}.ldx.cur{background:rgba(250,17,79,.1)}.ldx.cur .ldfig{width:96px}
+.ldn{flex:none;min-width:58px;height:48px;border-radius:14px;border:0;background:var(--s2);color:var(--tx);font:700 24px var(--rnd);display:flex;align-items:center;justify-content:center}.ldx.cur .ldn{background:var(--pk)}.ldx.fin .ldn{background:var(--acc);color:#000}.ldx.fin .grow{opacity:.55}.ldn svg{width:24px;height:24px}
+.ldcard .row{gap:12px;align-items:center}.ldic{font-size:30px;width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#FA114F,#7a0a2a);display:flex;align-items:center;justify-content:center;flex:none}
+.ldsp{display:flex;align-items:flex-end;gap:2px;height:90px}.ldsp div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;align-items:center}.ldsp i{display:block;width:100%;background:var(--cy);border-radius:3px 3px 0 0}.ldsp span{font-size:9px;color:var(--mu)}
 </style>
 </head>
 <body>
@@ -1241,6 +1247,7 @@ function renderTimer(build) {
 }
 function timerRem() { const T = S && S.draft && S.draft.timer; return T ? T.dur - (Date.now() - T.start) / 1000 : null; }
 function tick() {
+  if (S && S.ladder) ldTick();
   const D = S && S.draft; if (!D) { if (typeof gameTick === 'function') gameTick(); return; }
   const el = $('#elapsed'), el2 = $('#elapsed2'), sec = (Date.now() - D.started) / 1000;
   if (el) el.textContent = mmss(sec);
@@ -1266,7 +1273,7 @@ A.tStop = () => { S.draft.timer = null; cancelBeep(); save(); renderTimer(); };
 const TABS = [['heute', 'Heute'], ['plan', 'Plan'], ['stats', 'Auswertung'], ['gewicht', 'Gewicht'], ['casino', 'Casino'], ['daten', 'Daten']];
 function renderNav() {
   $('#nav').innerHTML = TABS.map(([k, n]) => {
-    const on = V.tab === k, live = k === 'heute' && S.draft;
+    const on = V.tab === k, live = k === 'heute' && (S.draft || S.ladder);
     return '<button data-a="tab" data-t="' + k + '" class="' + (on ? 'on' : '') + (live ? ' live' : '') + '">' + icon(k) + '<span>' + (live ? 'Training' : n) + '</span></button>';
   }).join('');
 }
@@ -1343,6 +1350,7 @@ function ringsCard(st) {
 }
 VIEWS.heute = function () {
   if (S.draft) return vLogger();
+  if (S.ladder) return vLadder();
   const p = prog(), dl = isDeload(p), mw = mesoWeek(p);
   const ids = p.days.map(d => d.id); if (V.sel && !ids.includes(V.sel)) V.sel = null;
   const nd = V.sel || nextDayId(p), day = dayOf(p, nd);
@@ -1363,6 +1371,8 @@ VIEWS.heute = function () {
   const sw = streakWeeks();
   h += '<div class="tiles"><div class="tile"><div class="k" style="color:var(--or)">' + icon('flame') + 'Serie</div><div class="v"><span data-count="' + sw + '">' + sw + '</span><small> ' + (sw === 1 ? 'Woche' : 'Wochen') + '</small></div></div>' +
     '<div class="tile"><div class="k" style="color:var(--cy)">' + icon('bolt') + 'Tonnage Woche</div><div class="v"><span data-count="' + Math.round(st.ton) + '">' + fmtT(st.ton) + '</span><small> kg</small></div></div></div>';
+  { const lb = ldBest(ldCfg()), ll = ldLog()[ldLog().length - 1];
+    h += '<div class="card ldcard tap" data-a="openLadder"><div class="row"><div class="ldic">🕷️</div><div class="grow"><div class="eyebrow" style="color:var(--pk)">Challenge</div><b>Spider-Man-Leiter</b><div class="sm mu">1 → ' + ldCfg().top + ' → 1 · Klimmzüge, Dips, Liegestütze, Sit-ups, Squats' + (lb ? ' · Bestzeit ' + hms(lb.sec) : ll ? ' · zuletzt ' + fmtT(ll.reps) + ' Wdh.' : '') + '</div></div><span class="mu">' + icon('chevR') + '</span></div></div>'; }
   const dse = daysSinceExport();
   if (S.sessions.length && (dse == null || dse > 14))
     h += '<div class="card warn"><div class="eyebrow">Sicherung</div><p>' + (dse == null ? 'Noch keine Sicherung exportiert.' : 'Letzte Sicherung vor ' + dse + ' Tagen.') + '</p><button class="b pri wide" data-a="exportJson">Jetzt sichern</button></div>';
@@ -4132,14 +4142,192 @@ document.addEventListener('touchend', e => {
   if (dx < 0 && S.draft) { const [i, j] = el.dataset.sw.split('.').map(Number); const s = S.draft.items[i] && S.draft.items[i].sets[j]; if (!s) return; s.skip = !s.skip; if (s.skip) s.done = false; haptic(1); save(); render(); }
 }, { passive: true });
 ['touchstart', 'click'].forEach(ev => document.addEventListener(ev, audioUnlock, { once: true, passive: true }));
-document.addEventListener('visibilitychange', () => { if (!document.hidden && S) { if (S.draft) wake(true); tick(); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S) { if (S.draft || (S.ladder && !S.ladder.paused)) wake(true); tick(); } });
 window.addEventListener('error', e => { try { toast('Fehler: ' + e.message, true); } catch (x) { } });
 $('#ov').addEventListener('click', closeSheet);
+
+/* ============================================================
+   Challenge: Spider-Man-Leiter (Tom Holland, Men's Health UK)
+   Zirkel: Runde n = n Klimmzüge, 2n Dips, 3n Liegestütze, 4n Sit-ups, 5n Squats;
+   n steigt von 1 bis zur Spitze (Original 10) und fällt wieder auf 1 → 1.500 Wdh.
+   ============================================================ */
+Object.assign(ANIM, {
+  situp: { v: 's', eq: [{ k: 'r', x: 158, y: 150, w: 14, h: 7, c: FC.pad }], fr: [{ hp: [128, 157], t: -90, an: [162, 163], kd: [0, -1], ra: 1, u: 200, f: 330 }, { hp: [128, 157], t: -14, an: [162, 163], kd: [0, -1], ra: 1, u: 200, f: 330 }], cues: ['Füße fixieren oder flach am Boden, Knie gebeugt', 'Arme vor der Brust kreuzen, ganz bis zum Sitzen aufrollen', 'Kontrolliert ablegen, Schwung nur so viel wie nötig'] },
+  airsquat: { v: 's', down: true, eq: [], fr: [{ hp: [120, 92], an: AN0, t: 3, u: 180, f: 180 }, { hp: [97, 128], an: AN0, t: 34, u: 92, f: 92 }], cues: ['Füße schulterbreit, Fersen bleiben am Boden', 'Hüfte nach hinten-unten, Arme zum Ausbalancieren nach vorn', 'Bis Oberschenkel mindestens parallel, oben Hüfte ganz strecken'] },
+  pushup_knee: { v: 's', down: true, eq: [], fr: [{ kn: [96, 160], q: 244, k: 268, t: 70, wr: [150, 163], ed: [-1, 0] }, { kn: [96, 160], q: 262, k: 268, t: 82, wr: [150, 163], ed: [-1, -.2] }], cues: ['Knie am Boden, Körper von Knie bis Kopf gerade', 'Brust zwischen die Hände absenken', 'Kräftig wegdrücken'] },
+  pushup_inc: { v: 's', down: true, eq: [...EQ_.bench(132, 184, 128)], fr: [{ nk: [150, 90], t: 56, line: 1, wr: [154, 128], ed: [-1, 0], fo: 120 }, { nk: [146, 114], t: 66, line: 1, wr: [154, 128], ed: [-1, -.2], fo: 125 }], cues: ['Hände auf Bank oder Stange, Körper gerade', 'Brust zur Kante absenken', 'Je höher die Hände, desto leichter'] },
+  benchdip: { v: 's', down: true, eq: [...EQ_.bench(56, 106, 128)], fr: [{ nk: [114, 90], t: -4, an: [184, 163], kd: [0, -1], wr: [102, 128], ed: [-1, 0], fo: 60 }, { nk: [116, 114], t: -2, an: [184, 163], kd: [0, -1], wr: [102, 128], ed: [-1, -.3], fo: 60 }], cues: ['Hände schulterbreit auf der Bankkante hinter dir', 'Gesäß nah an der Bank absenken, bis die Oberarme waagerecht sind', 'Mit dem Trizeps hochdrücken; gestreckte Beine machen es schwerer'] },
+  invrow: { v: 's', eq: [{ k: 'l', a: [110, 96], b: [210, 96], w: 4, c: '#8E8E93' }, { k: 'post', x: 200, y: 96 }], fr: [{ hp: [92, 146], t: 74, line: 1, wr: [150, 96], ed: [0, 1], fo: 20 }, { hp: [92, 134], t: 66, line: 1, wr: [150, 96], ed: [-1, .6], fo: 20 }], cues: ['Unter Stange oder Multipresse hängen, Fersen am Boden', 'Brust zur Stange ziehen, Körper bleibt gerade', 'Je aufrechter, desto leichter'] }
+});
+const LD_EX = [
+  { k: 'pull', n: 'Klimmzüge', m: 1, v: [['pullup', 'Klimmzug', 'pullup'], ['assist', 'Klimmzug assistiert (Band/Maschine)', 'pullup_assist'], ['neg', 'Negativ-Klimmzug (nur ablassen)', 'pullup'], ['row', 'Tischrudern (Australian Row)', 'invrow']] },
+  { k: 'dip', n: 'Dips', m: 2, v: [['dip', 'Dips am Barren', 'dip_tri'], ['assist', 'Dips assistiert', 'dip_assist'], ['bench', 'Bank-Dips', 'benchdip']] },
+  { k: 'push', n: 'Liegestütze', m: 3, v: [['push', 'Liegestütz', 'pushup'], ['inc', 'Liegestütz erhöht (Hände auf Bank)', 'pushup_inc'], ['knee', 'Knie-Liegestütz', 'pushup_knee']] },
+  { k: 'sit', n: 'Sit-ups', m: 4, v: [['sit', 'Sit-up', 'situp'], ['crunch', 'Crunch', 'crunch']] },
+  { k: 'squat', n: 'Air Squats', m: 5, v: [['squat', 'Air Squat', 'airsquat'], ['goblet', 'Goblet Squat (mit Gewicht)', 'goblet']] }
+];
+const LD_MM = { pull: 'lat2 bic1 trapM1 forF1', dip: 'tri2 pecM2 deltA1', push: 'pecM2 tri1 deltA1 abs1', sit: 'abs2 obl1', squat: 'quad2 gluMax2 add1' };
+const ldSteps = top => [...Array(top).keys()].map(i => i + 1).concat([...Array(top - 1).keys()].map(i => top - 1 - i));
+const ldTotal = cfg => ldSteps(cfg.top).reduce((a, n) => a + n * 15, 0);
+const ldVar = (cfg, e) => e.v.find(x => x[0] === (cfg.var || {})[e.k]) || e.v[0];
+function ldCfg() { if (!S.meta.extra.ldCfg) S.meta.extra.ldCfg = { top: 10, var: {} }; return S.meta.extra.ldCfg; }
+const ldLog = () => S.meta.extra.ldLog || (S.meta.extra.ldLog = []);
+const ldKey = cfg => cfg.top + ':' + LD_EX.map(e => ldVar(cfg, e)[0]).join(',');
+function ldElapsed(L) { return Math.max(0, ((L.paused || Date.now()) - L.start - (L.pauseMs || 0)) / 1000); }
+function ldBest(cfg) { return ldLog().filter(x => x.done && x.key === ldKey(cfg)).sort((a, b) => a.sec - b.sec)[0] || null; }
+
+/* Einrichtung */
+VIEWS.ladder = function () {
+  if (S.ladder) { V.page = null; return VIEWS.heute(); }
+  const c = ldCfg(), st = ldSteps(c.top), tot = ldTotal(c), best = ldBest(c), log = ldLog();
+  setHdr('Spider-Man-Leiter', 'Tom Holland', '', true);
+  let h = '<div class="hero ldh"><span class="eyebrow">Körpergewichts-Challenge</span><h3>Spider-Man-Leiter</h3>' +
+    '<p class="sm" style="margin:6px 0 10px;color:var(--mu)">Zirkel ohne feste Pausen: Runde 1 = 1 Klimmzug, 2 Dips, 3 Liegestütze, 4 Sit-ups, 5 Squats. Jede Runde eine Stufe höher bis Runde ' + c.top + ', dann wieder zurück auf 1.</p>' +
+    ldStairs(st, -1) +
+    '<div class="tiles" style="margin:12px 0 4px"><div class="tile"><div class="k" style="color:var(--acc)">Runden</div><div class="v">' + st.length + '</div></div><div class="tile"><div class="k" style="color:var(--cy)">Wiederholungen</div><div class="v">' + fmtT(tot) + '</div></div></div>' +
+    (best ? '<div class="sm" style="color:var(--mu)">Bestzeit mit diesen Einstellungen: <b style="color:var(--tx)">' + hms(best.sec) + '</b></div>' : '') +
+    '<button class="b go" data-a="ldStart"' + (S.draft ? ' disabled' : '') + '>' + icon('play') + 'Leiter starten</button>' + (S.draft ? '<p class="sm" style="color:var(--or)">Erst die laufende Einheit beenden.</p>' : '') + '</div>';
+  h += '<h2>Spitze der Leiter</h2><div class="card"><div class="scrollx">' + [5, 6, 7, 8, 9, 10].map(n => '<button class="chip n' + (c.top === n ? ' on' : '') + '" data-a="ldTop" data-v="' + n + '">' + n + (n === 10 ? ' ★' : '') + '</button>').join('') + '</div>' +
+    '<p class="sm mu" style="margin:8px 0 0">' + (c.top === 10 ? 'Original · ' : '') + 'Spitze ' + c.top + ' = ' + fmtT(tot) + ' Wdh. (' + LD_EX.map(e => fmtT(e.m * c.top * c.top) + ' ' + e.n).join(', ') + ').</p></div>';
+  h += '<h2>Übungen &amp; Varianten</h2><div class="lst">' + LD_EX.map(e => { const v = ldVar(c, e); return '<div class="li tap" data-a="ldVar" data-k="' + e.k + '"><div style="width:52px;flex:none">' + exFigure(v[2]) + '</div><div class="grow"><b>' + esc(e.n) + ' <span class="mu" style="display:inline;font-weight:500">× ' + e.m + '</span></b><span>' + esc(v[1]) + '</span></div><span class="mu">›</span></div>'; }).join('') + '</div>' +
+    '<p class="sm mu" style="margin:6px 4px 0">Zu schwer? Klimmzüge und Dips lassen sich ersetzen, ohne die Leiter zu ändern. Varianten werden bei Bestzeiten getrennt gewertet.</p>';
+  if (log.length) h += '<h2>Verlauf</h2><div class="lst">' + log.slice().reverse().slice(0, 12).map(x => '<div class="li"><div class="grow"><b>' + (x.done ? hms(x.sec) : fmtT(x.reps) + ' / ' + fmtT(x.total) + ' Wdh.') + '</b><span class="n">' + dde(x.d) + ' · Spitze ' + x.top + ' · ' + (x.done ? 'komplett' : 'abgebrochen in Runde ' + x.rounds) + (x.std ? '' : ' · mit Varianten') + '</span></div>' + (x.pb ? '<span class="tag pk">' + icon('trophy') + ' Bestzeit</span>' : '') + '</div>').join('') + '</div>';
+  h += '<p class="sm mu" style="margin:14px 4px">Quelle: Tom Hollands Körpergewichts-Workout, Men’s Health UK. Tipp: In ruhigem, gleichmäßigem Tempo starten – die zweite Hälfte ist länger als sie aussieht.</p>';
+  return h;
+};
+function ldStairs(st, cur) {
+  const top = Math.max(...st), w = 100 / st.length;
+  return '<div class="ldst" role="img" aria-label="Leiter">' + st.map((n, i) => '<i class="' + (i < cur ? 'ok' : i === cur ? 'cur' : '') + '" style="height:' + (14 + 86 * n / top).toFixed(0) + '%;width:calc(' + w.toFixed(3) + '% - 3px)"></i>').join('') + '</div>';
+}
+A.openLadder = () => push('ladder', {});
+A.ldTop = d => { ldCfg().top = +d.v; save(); haptic(1); render(); };
+A.ldVar = d => {
+  const e = LD_EX.find(x => x.k === d.k), c = ldCfg();
+  SH = { type: 'ldvar', k: d.k };
+  sheet('<h3>' + esc(e.n) + '</h3><div class="lst">' + e.v.map(v => '<div class="li tap" data-a="ldVarSet" data-v="' + v[0] + '"><div style="width:58px;flex:none">' + exFigure(v[2]) + '</div><div class="grow"><b>' + esc(v[1]) + '</b></div>' + (ldVar(c, e)[0] === v[0] ? '<span style="color:var(--acc)">' + icon('check') + '</span>' : '') + '</div>').join('') + '</div><button class="b wide" style="margin-top:10px" data-a="closeSheet">Fertig</button>');
+};
+A.ldVarSet = d => { const c = ldCfg(); c.var = c.var || {}; c.var[SH.k] = d.v; save(); closeSheet(); render(); };
+A.ldStart = () => {
+  if (S.draft) return;
+  const c = clone(ldCfg()), st = ldSteps(c.top);
+  S.ladder = { cfg: c, steps: st, start: Date.now(), pauseMs: 0, paused: null, r: 0, roundStart: Date.now(), done: [0, 0, 0, 0, 0], reps: st.map(() => [0, 0, 0, 0, 0]), splits: [] };
+  save(); haptic(2); wake(true); STACK.length = 0; V = { tab: 'heute', page: null, ctx: {} }; render('fade'); window.scrollTo(0, 0);
+};
+
+/* Laufende Leiter */
+function vLadder() {
+  const L = S.ladder, st = L.steps, n = st[L.r], sec = ldElapsed(L);
+  const repsDone = L.reps.reduce((a, r) => a + r.reduce((x, y) => x + y, 0), 0), tot = ldTotal(L.cfg);
+  const up = L.r < st.length - 1 && st[L.r + 1] > n ? '↑' : L.r === st.indexOf(Math.max(...st)) ? '▲ Spitze' : '↓';
+  setHdr('Spider-Man-Leiter', '', '<button class="b pri pill sm" data-a="ldEnd">Beenden</button>', false,
+    { noLarge: true, left: ringSvg(34, 5, [{ p: repsDone / tot, c: RC.li }], 'ldr'), center: '<span id="ldT1">' + mmss(sec) + '</span>' });
+  const best = ldBest(L.cfg), bs = best && best.splits ? best.splits.slice(0, L.r).reduce((a, x) => a + x, 0) / 1000 : null;
+  const cur = L.done.indexOf(0);
+  let h = '<div class="wk ldwk' + (L.paused ? ' paused' : '') + '"><div class="ldrn"><div><div class="wk-l">Runde</div><b class="n">' + (L.r + 1) + '<span>/' + st.length + '</span></b></div><div style="text-align:right"><div class="wk-l">Stufe</div><b class="n" style="color:var(--acc)">' + n + '<span> ' + up + '</span></b></div></div>' +
+    '<div class="wk-t n" id="ldT">' + hms(sec) + '</div>' +
+    '<div class="wk-m"><div><b class="n" id="ldR" style="color:var(--yl)">' + mmss(L.paused ? (L.paused - L.roundStart) / 1000 : (Date.now() - L.roundStart) / 1000) + '</b><span>diese Runde</span></div><div><b class="n" style="color:var(--acc)">' + fmtT(repsDone) + '</b><span>von ' + fmtT(tot) + ' Wdh.</span></div>' +
+    (bs != null ? '<div><b class="n" style="color:' + (sec - (Date.now() - L.roundStart) / 1000 <= bs ? 'var(--acc)' : 'var(--or)') + '">' + (sec - (Date.now() - L.roundStart) / 1000 <= bs ? '−' : '+') + mmss(Math.abs(sec - (Date.now() - L.roundStart) / 1000 - bs)) + '</b><span>vs. Bestzeit</span></div>' : '') + '</div>' +
+    ldStairs(st, L.r) + '</div>';
+  if (L.paused) h += '<div class="card warn" style="text-align:center"><b>Pausiert</b><button class="b pri wide" style="margin-top:8px" data-a="ldPause">Weiter</button></div>';
+  h += '<div class="lst ldl">' + LD_EX.map((e, i) => {
+    const v = ldVar(L.cfg, e), tg = e.m * n, dn = L.done[i], got = L.reps[L.r][i];
+    return '<div class="li ldx' + (dn ? ' fin' : i === cur ? ' cur' : '') + '"><div class="ldfig" data-a="ldHow" data-i="' + i + '">' + (i === cur && !L.paused ? exFigure(v[2], 1) : exFigure(v[2])) + '</div>' +
+      '<div class="grow" data-a="ldTap" data-i="' + i + '"><b>' + esc(e.n) + '</b><span>' + esc(v[1]) + (dn && got !== tg ? ' · ' + got + ' geschafft' : '') + '</span></div>' +
+      '<button class="ldn n" data-a="ldTap" data-i="' + i + '" aria-label="' + esc(e.n) + ' erledigt">' + (dn ? icon('check') : tg) + '</button></div>';
+  }).join('') + '</div>';
+  h += '<div class="btns" style="grid-template-columns:1fr 1fr 1fr;margin-top:12px"><button class="b" data-a="ldBack"' + (L.r === 0 && !L.done.some(Boolean) ? ' disabled' : '') + '>Zurück</button><button class="b" data-a="ldPause">' + (L.paused ? 'Weiter' : 'Pause') + '</button><button class="b" data-a="ldReps"' + (cur < 0 ? ' disabled' : '') + '>Weniger Wdh.</button></div>' +
+    '<p class="sm mu" style="margin:10px 4px">Tippe eine Übung an, sobald sie erledigt ist. Sind alle fünf durch, startet automatisch die nächste Runde.</p>';
+  return h;
+}
+function ldTick() {
+  const L = S.ladder; if (!L) return;
+  const sec = ldElapsed(L), a = $('#ldT'), b = $('#ldT1'), r = $('#ldR');
+  if (a) a.textContent = hms(sec); if (b) b.textContent = mmss(sec);
+  if (r && !L.paused) r.textContent = mmss((Date.now() - L.roundStart) / 1000);
+}
+function ldMark(i, reps) {
+  const L = S.ladder; if (!L || L.paused) return;
+  const tg = LD_EX[i].m * L.steps[L.r];
+  if (L.done[i] && reps == null) { L.done[i] = 0; L.reps[L.r][i] = 0; save(); render(); return; }
+  L.done[i] = 1; L.reps[L.r][i] = reps == null ? tg : Math.max(0, Math.min(tg, Math.round(reps)));
+  haptic(1); blip(880, .05);
+  if (L.done.every(Boolean)) {
+    const now = Date.now(), ms = now - L.roundStart; L.splits[L.r] = ms;
+    if (L.r === L.steps.length - 1) { ldFinish(true); return; }
+    const wasTop = L.steps[L.r] === Math.max(...L.steps);
+    L.r++; L.done = [0, 0, 0, 0, 0]; L.roundStart = now; save();
+    haptic(2); blip(1320, .07); render(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast('Runde ' + L.r + ' in ' + mmss(ms / 1000) + (wasTop ? ' · Spitze geschafft – ab jetzt bergab!' : ''));
+    if (wasTop) confetti(90);
+    return;
+  }
+  save(); render();
+}
+A.ldTap = d => ldMark(+d.i);
+A.ldReps = () => {
+  const L = S.ladder, i = L.done.indexOf(0); if (i < 0) return;
+  const tg = LD_EX[i].m * L.steps[L.r];
+  keypad(LD_EX[i].n + ' – wie viele geschafft?', tg, v => ldMark(i, v), { quick: [...new Set([tg, Math.round(tg * .75), Math.round(tg / 2), Math.round(tg / 4), 0])].filter(x => x >= 0) });
+};
+A.ldHow = d => { const e = LD_EX[+d.i], v = ldVar((S.ladder || {}).cfg || ldCfg(), e), S2 = ANIM[v[2]] || {};
+  SH = { type: 'ldhow' }; const mm = {}; LD_MM[e.k].split(' ').forEach(t => { const m = t.match(/^([a-zA-Z]+)(\d)$/); mm[m[1]] = +m[2]; });
+  sheet('<h3>' + esc(v[1]) + '</h3><div class="card exhero">' + exFigure(v[2], 1) + '</div><label class="lb">Trainierte Muskeln</label><div class="card mcard"><div>' + muscleMap(mm) + '</div><div>' + muscleLegend(mm) + '</div></div>' +
+    (S2.cues ? '<label class="lb">Ausführung</label><div class="lst">' + S2.cues.map((c, i) => '<div class="li"><b class="n" style="color:var(--acc);width:20px">' + (i + 1) + '</b><div class="grow" style="white-space:normal">' + esc(c) + '</div></div>').join('') + '</div>' : '') +
+    '<button class="b wide" style="margin-top:12px" data-a="closeSheet">Schließen</button>'); };
+A.ldBack = () => {
+  const L = S.ladder; if (!L) return;
+  if (L.done.some(Boolean)) { const j = L.done.lastIndexOf(1); L.done[j] = 0; L.reps[L.r][j] = 0; }
+  else if (L.r > 0) { L.r--; L.done = [1, 1, 1, 1, 0]; L.reps[L.r][4] = 0; L.roundStart = Date.now() - (L.splits[L.r] || 0); L.splits.length = L.r; }
+  save(); render();
+};
+A.ldPause = () => {
+  const L = S.ladder; if (!L) return;
+  if (L.paused) { const d = Date.now() - L.paused; L.pauseMs += d; L.roundStart += d; L.paused = null; wake(true); }
+  else L.paused = Date.now();
+  save(); haptic(1); render();
+};
+A.ldEnd = () => {
+  const L = S.ladder, any = L.reps.some(r => r.some(Boolean));
+  SH = { type: 'ldend' };
+  sheet('<h3>Leiter beenden?</h3><p class="sm mu">Runde ' + (L.r + 1) + ' von ' + L.steps.length + '. ' + (any ? 'Du kannst den Versuch speichern – er zählt als abgebrochen.' : 'Bisher wurde nichts erledigt.') + '</p>' +
+    '<div class="lst" style="margin-top:10px">' + (any ? '<button class="b pri wide" data-a="ldSave">Speichern &amp; beenden</button>' : '') + '<button class="b wide dg" style="margin-top:8px" data-a="ldDiscard">Verwerfen</button><button class="b wide" style="margin-top:8px" data-a="closeSheet">Weitermachen</button></div>');
+};
+A.ldSave = () => { closeSheet(); ldFinish(false); };
+A.ldDiscard = () => { closeSheet(); ask('Versuch wirklich verwerfen?', 'Verwerfen', () => { S.ladder = null; wake(false); save(); render('fade'); }, true); };
+function ldFinish(done) {
+  const L = S.ladder; if (L.paused) A.ldPause();
+  const reps = L.reps.reduce((a, r) => a + r.reduce((x, y) => x + y, 0), 0), sec = Math.round(ldElapsed(L));
+  const std = LD_EX.every(e => ldVar(L.cfg, e) === e.v[0]), key = ldKey(L.cfg), prev = ldBest(L.cfg);
+  const full = done && L.reps.every((r, i) => r.every((x, j) => x === LD_EX[j].m * L.steps[i]));
+  const pb = done && full && (!prev || sec < prev.sec);
+  const rec = { d: today(), ts: new Date().toISOString(), top: L.cfg.top, var: clone(L.cfg.var || {}), key, std, done: done && full, sec, reps, total: ldTotal(L.cfg), rounds: L.splits.filter(Boolean).length, splits: L.splits.slice(), pb };
+  const coins = Math.round((rec.done ? 150 : 0) + Math.min(reps, sec / 1.5) / 3); rec.coins = coins; S.casino.bal += coins; S.casino.earned = (S.casino.earned || 0) + coins;
+  ldLog().push(rec); S.ladder = null; wake(false); save();
+  V = { tab: 'heute', page: null, ctx: {} }; STACK.length = 0; push('ladder', {});
+  const per = LD_EX.map((e, j) => [e, L.reps.reduce((a, r) => a + r[j], 0)]);
+  const sp = L.splits.filter(Boolean), fast = sp.length ? Math.min(...sp) : 0;
+  setTimeout(() => {
+    sheet('<div class="sumh">' + ringSvg(132, 15, [{ p: reps / rec.total, c: RC.li }, { p: rec.rounds / L.steps.length, c: RC.cy }], 'ldsum' + rec.ts) +
+      '<h3>' + (rec.done ? (pb ? 'Neue Bestzeit!' : 'Leiter geschafft!') : 'Starker Versuch!') + '</h3><p>' + (rec.done ? fmtT(reps) + ' Wiederholungen in ' + hms(sec) : fmtT(reps) + ' von ' + fmtT(rec.total) + ' Wiederholungen') + '</p></div>' +
+      '<div class="tiles"><div class="tile"><div class="k" style="color:var(--yl)">' + icon('timer') + 'Zeit</div><div class="v n">' + hms(sec) + '</div></div>' +
+      '<div class="tile"><div class="k" style="color:var(--acc)">' + icon('check') + 'Runden</div><div class="v">' + rec.rounds + '<small>/' + L.steps.length + '</small></div></div>' +
+      '<div class="tile"><div class="k" style="color:var(--cy)">' + icon('bolt') + 'Schnellste Runde</div><div class="v n">' + (fast ? mmss(fast / 1000) : '–') + '</div></div>' +
+      '<div class="tile"><div class="k" style="color:var(--pk)">' + icon('trophy') + 'Spielgeld</div><div class="v">+' + fmtT(coins) + '</div></div></div>' +
+      '<label class="lb">Wiederholungen</label><div class="lst">' + per.map(([e, r]) => '<div class="li"><div class="grow"><b>' + esc(ldVar(L.cfg, e)[1]) + '</b></div><b class="n">' + fmtT(r) + '</b></div>').join('') + '</div>' +
+      (sp.length > 1 ? '<label class="lb">Rundenzeiten</label><div class="card">' + ldSplitBars(L.steps, sp) + '</div>' : '') +
+      '<button class="b pri wide" style="margin-top:12px" data-a="closeSheet">Fertig</button>');
+    if (rec.done) confetti(160);
+  }, 350);
+}
+function ldSplitBars(st, sp) {
+  const mx = Math.max(...sp);
+  return '<div class="ldsp">' + sp.map((ms, i) => '<div><i style="height:' + (8 + 92 * ms / mx).toFixed(0) + '%"></i><span>' + st[i] + '</span></div>').join('') + '</div><div class="sm mu" style="text-align:center;margin-top:4px">Balken = Rundendauer, Zahl = Stufe</div>';
+}
 
 boot();
 render();
 setInterval(tick, 500);
-if (S.draft) wake(true);
+if (S.draft || S.ladder) wake(true);
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => { });
 
 </script>
