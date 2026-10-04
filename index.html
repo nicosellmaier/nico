@@ -990,6 +990,7 @@ function stagnation(id) {
 /* Ermüdung / Deload-Vorschlag */
 function weekSets(from, to) {
   let n = 0; for (const s of S.sessions) { const d = sdate(s); if (d >= from && d <= to) for (const e of Object.values(s.entries)) for (const x of e.sets || []) if (!x.skip && x.type !== 'warm') n += SETW[x.type] ?? 1; }
+  for (const x of ldVolume(from, to)) n += x.n;
   return n;
 }
 function deloadAdvice() {
@@ -2053,6 +2054,7 @@ function muscleSets(from, to) {
       v[m] = (v[m] || 0) + n; for (const k of m2) v[k] = (v[k] || 0) + n / 2;
     }
   }
+  for (const x of ldVolume(from, to)) { v[x.m] = (v[x.m] || 0) + x.n; for (const k of x.m2) v[k] = (v[k] || 0) + x.n / 2; }
   return v;
 }
 VIEWS.stats = function () {
@@ -4088,6 +4090,7 @@ function muscleWeek() {
       for (const k of m2) { sets[k] = (sets[k] || 0) + n / 2; }
     }
   }
+  for (const x of ldVolume(from, t)) { sets[x.m] = (sets[x.m] || 0) + x.n; (days[x.m] = days[x.m] || new Set()).add(x.d); for (const k of x.m2) sets[k] = (sets[k] || 0) + x.n / 2; }
   return { sets, days };
 }
 function lmBar(k, v) {
@@ -4190,7 +4193,7 @@ VIEWS.ladder = function () {
   h += '<h2>Spitze der Leiter</h2><div class="card"><div class="scrollx">' + [5, 6, 7, 8, 9, 10].map(n => '<button class="chip n' + (c.top === n ? ' on' : '') + '" data-a="ldTop" data-v="' + n + '">' + n + (n === 10 ? ' ★' : '') + '</button>').join('') + '</div>' +
     '<p class="sm mu" style="margin:8px 0 0">' + (c.top === 10 ? 'Original · ' : '') + 'Spitze ' + c.top + ' = ' + fmtT(tot) + ' Wdh. (' + LD_EX.map(e => fmtT(e.m * c.top * c.top) + ' ' + e.n).join(', ') + ').</p></div>';
   h += '<h2>Übungen &amp; Varianten</h2><div class="lst">' + LD_EX.map(e => { const v = ldVar(c, e); return '<div class="li tap" data-a="ldVar" data-k="' + e.k + '"><div style="width:52px;flex:none">' + exFigure(v[2]) + '</div><div class="grow"><b>' + esc(e.n) + ' <span class="mu" style="display:inline;font-weight:500">× ' + e.m + '</span></b><span>' + esc(v[1]) + '</span></div><span class="mu">›</span></div>'; }).join('') + '</div>' +
-    '<p class="sm mu" style="margin:6px 4px 0">Zu schwer? Klimmzüge und Dips lassen sich ersetzen, ohne die Leiter zu ändern. Varianten werden bei Bestzeiten getrennt gewertet.</p>';
+    '<p class="sm mu" style="margin:6px 4px 0">Zu schwer? Klimmzüge und Dips lassen sich ersetzen, ohne die Leiter zu ändern. Varianten werden bei Bestzeiten getrennt gewertet. Fürs Wochenvolumen pro Muskel zählen nur die harten Runden ab Stufe ' + Math.ceil(c.top * .6) + ' (je Übung ' + ldSteps(c.top).filter(n => n >= Math.ceil(c.top * .6)).length + ' Sätze bei kompletter Leiter); Lasten im Plan bleiben unberührt.</p>';
   if (log.length) h += '<h2>Verlauf</h2><div class="lst">' + log.slice().reverse().slice(0, 12).map(x => '<div class="li"><div class="grow"><b>' + (x.done ? hms(x.sec) : fmtT(x.reps) + ' / ' + fmtT(x.total) + ' Wdh.') + '</b><span class="n">' + dde(x.d) + ' · Spitze ' + x.top + ' · ' + (x.done ? 'komplett' : 'abgebrochen in Runde ' + x.rounds) + (x.std ? '' : ' · mit Varianten') + '</span></div>' + (x.pb ? '<span class="tag pk">' + icon('trophy') + ' Bestzeit</span>' : '') + '</div>').join('') + '</div>';
   h += '<p class="sm mu" style="margin:14px 4px">Quelle: Tom Hollands Körpergewichts-Workout, Men’s Health UK. Tipp: In ruhigem, gleichmäßigem Tempo starten – die zweite Hälfte ist länger als sie aussieht.</p>';
   return h;
@@ -4300,7 +4303,7 @@ function ldFinish(done) {
   const std = LD_EX.every(e => ldVar(L.cfg, e) === e.v[0]), key = ldKey(L.cfg), prev = ldBest(L.cfg);
   const full = done && L.reps.every((r, i) => r.every((x, j) => x === LD_EX[j].m * L.steps[i]));
   const pb = done && full && (!prev || sec < prev.sec);
-  const rec = { d: today(), ts: new Date().toISOString(), top: L.cfg.top, var: clone(L.cfg.var || {}), key, std, done: done && full, sec, reps, total: ldTotal(L.cfg), rounds: L.splits.filter(Boolean).length, splits: L.splits.slice(), pb };
+  const rec = { d: today(), ts: new Date().toISOString(), top: L.cfg.top, var: clone(L.cfg.var || {}), key, std, done: done && full, sec, reps, total: ldTotal(L.cfg), rounds: L.splits.filter(Boolean).length, splits: L.splits.slice(), rr: clone(L.reps), pb };
   const coins = Math.round((rec.done ? 150 : 0) + Math.min(reps, sec / 1.5) / 3); rec.coins = coins; S.casino.bal += coins; S.casino.earned = (S.casino.earned || 0) + coins;
   ldLog().push(rec); S.ladder = null; wake(false); save();
   V = { tab: 'heute', page: null, ctx: {} }; STACK.length = 0; push('ladder', {});
@@ -4313,11 +4316,32 @@ function ldFinish(done) {
       '<div class="tile"><div class="k" style="color:var(--acc)">' + icon('check') + 'Runden</div><div class="v">' + rec.rounds + '<small>/' + L.steps.length + '</small></div></div>' +
       '<div class="tile"><div class="k" style="color:var(--cy)">' + icon('bolt') + 'Schnellste Runde</div><div class="v n">' + (fast ? mmss(fast / 1000) : '–') + '</div></div>' +
       '<div class="tile"><div class="k" style="color:var(--pk)">' + icon('trophy') + 'Spielgeld</div><div class="v">+' + fmtT(coins) + '</div></div></div>' +
-      '<label class="lb">Wiederholungen</label><div class="lst">' + per.map(([e, r]) => '<div class="li"><div class="grow"><b>' + esc(ldVar(L.cfg, e)[1]) + '</b></div><b class="n">' + fmtT(r) + '</b></div>').join('') + '</div>' +
+      (() => { const hs = ldHard(rec), t = hs.reduce((a, b) => a + b, 0); return t ? '<p class="sm mu" style="margin:10px 4px 0">Fürs Wochenvolumen zählen die harten Runden ab Stufe ' + Math.ceil(rec.top * .6) + ': ' + LD_EX.map((e, j) => fmt(hs[j], 1) + ' ' + e.n).join(', ') + ' Sätze.</p>' : ''; })() + '<label class="lb">Wiederholungen</label><div class="lst">' + per.map(([e, r]) => '<div class="li"><div class="grow"><b>' + esc(ldVar(L.cfg, e)[1]) + '</b></div><b class="n">' + fmtT(r) + '</b></div>').join('') + '</div>' +
       (sp.length > 1 ? '<label class="lb">Rundenzeiten</label><div class="card">' + ldSplitBars(L.steps, sp) + '</div>' : '') +
       '<button class="b pri wide" style="margin-top:12px" data-a="closeSheet">Fertig</button>');
     if (rec.done) confetti(160);
   }, 350);
+}
+
+/* Volumen: nur die harten Runden (Stufe ≥ 60 % der Spitze) zählen als Satz; Zuordnung wie die passende Datenbankübung */
+const LD_DB = { pull: { pullup: 'pullup', assist: 'assist_pullup', neg: 'pullup', row: 'cable_row' }, dip: { dip: 'dips_chest', assist: 'assist_dip', bench: 'dips_tri' }, push: { push: 'pushup', inc: 'pushup', knee: 'pushup' }, sit: { sit: 'crunch', crunch: 'crunch' }, squat: { squat: 'goblet', goblet: 'goblet' } };
+function ldHard(x) {
+  const st = ldSteps(x.top), min = Math.ceil(x.top * .6), out = [0, 0, 0, 0, 0];
+  st.forEach((n, i) => {
+    if (n < min) return;
+    const rr = x.rr ? x.rr[i] : (x.done || i < (x.rounds || 0) ? LD_EX.map(e => e.m * n) : null); if (!rr) return;
+    LD_EX.forEach((e, j) => { const tg = e.m * n; if (rr[j] >= tg / 2) out[j] += 1; else if (rr[j] > 0) out[j] += .5; });
+  });
+  return out;
+}
+function ldVolume(from, to) {
+  const res = [];
+  for (const x of ldLog()) {
+    if (x.d < from || x.d > to) continue;
+    const hs = ldHard(x);
+    LD_EX.forEach((e, j) => { if (!hs[j]) return; const vk = (x.var || {})[e.k] || e.v[0][0], E = EXDB[LD_DB[e.k][vk] || LD_DB[e.k][e.v[0][0]]]; if (E) res.push({ d: x.d, m: E.m, m2: E.m2, n: hs[j] }); });
+  }
+  return res;
 }
 function ldSplitBars(st, sp) {
   const mx = Math.max(...sp);
