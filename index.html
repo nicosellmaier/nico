@@ -479,6 +479,9 @@ input.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;b
 .ldn{flex:none;min-width:58px;height:48px;border-radius:14px;border:0;background:var(--s2);color:var(--tx);font:700 24px var(--rnd);display:flex;align-items:center;justify-content:center}.ldx.cur .ldn{background:var(--pk)}.ldx.fin .ldn{background:var(--acc);color:#000}.ldx.fin .grow{opacity:.55}.ldn svg{width:24px;height:24px}
 .ldcard .row{gap:12px;align-items:center}.ldic{font-size:30px;width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#FA114F,#7a0a2a);display:flex;align-items:center;justify-content:center;flex:none}
 .ldsp{display:flex;align-items:flex-end;gap:2px;height:90px}.ldsp div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;align-items:center}.ldsp i{display:block;width:100%;background:var(--cy);border-radius:3px 3px 0 0}.ldsp span{font-size:9px;color:var(--mu)}
+.wkh .wkbig{font:700 44px var(--rnd);letter-spacing:-.5px;margin:4px 0 2px;color:var(--tx)}.wklive{display:flex;gap:10px;align-items:center;margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(10,132,255,.14)}.wklive i{width:10px;height:10px;border-radius:50%;background:var(--st);flex:none;animation:ldp 1.4s ease-in-out infinite}.wklive b{display:block;font-size:15px}.wklive span{font-size:13px;color:var(--mu)}
+.wkm{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.wkm small{font:500 13px var(--sans);color:var(--mu)}.wkd{width:38px;flex:none;text-align:center}.wkd b{display:block;font:700 19px var(--rnd);line-height:1}.wkd span{font-size:11px;color:var(--mu)}.wkr{text-align:right;flex:none}.wkr b{display:block;font-size:15px}.wkr span{font-size:12px;color:var(--mu)}
+.wkf .fld{grid-template-columns:1fr minmax(0,170px)}.wkf .fld:first-child{border-top:0}.wkf .in{min-height:40px;padding:8px 10px}.wkprev{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.wkprev div{background:var(--s2);border-radius:14px;padding:10px 12px}.wkprev span{display:block;font-size:12px;color:var(--mu)}.wkprev b{font:700 22px var(--rnd)}
 </style>
 </head>
 <body>
@@ -528,6 +531,7 @@ function blank() {
     v: SCHEMA, lib: {}, programs: [], active: null, loads: {}, sessions: [], weights: [],
     settings: clone(DEF_SET), draft: null, game: { best: 0, plays: 0 },
     gymMark: {},
+    work: { rate: 0, autoP: true, entries: [], live: null },
     casino: { bal: 1000, earned: 0, bets: {}, run: {}, hist: [], rounds: 0, won: 0, wager: 0, best: 0 },
     meta: { created: new Date().toISOString(), lastExport: null, migrations: [], archive: {}, extra: {}, dismiss: {}, notes: [] }
   };
@@ -1249,6 +1253,7 @@ function renderTimer(build) {
 function timerRem() { const T = S && S.draft && S.draft.timer; return T ? T.dur - (Date.now() - T.start) / 1000 : null; }
 function tick() {
   if (S && S.ladder) ldTick();
+  if (S && S.work && S.work.live) wkTick();
   const D = S && S.draft; if (!D) { if (typeof gameTick === 'function') gameTick(); return; }
   const el = $('#elapsed'), el2 = $('#elapsed2'), sec = (Date.now() - D.started) / 1000;
   if (el) el.textContent = mmss(sec);
@@ -1374,6 +1379,7 @@ VIEWS.heute = function () {
     '<div class="tile"><div class="k" style="color:var(--cy)">' + icon('bolt') + 'Tonnage Woche</div><div class="v"><span data-count="' + Math.round(st.ton) + '">' + fmtT(st.ton) + '</span><small> kg</small></div></div></div>';
   { const lb = ldBest(ldCfg()), ll = ldLog()[ldLog().length - 1];
     h += '<div class="card ldcard tap" data-a="openLadder"><div class="row"><div class="ldic">🕷️</div><div class="grow"><div class="eyebrow" style="color:var(--pk)">Challenge</div><b>Spider-Man-Leiter</b><div class="sm mu">1 → ' + ldCfg().top + ' → 1 · Klimmzüge, Dips, Liegestütze, Sit-ups, Squats' + (lb ? ' · Bestzeit ' + hms(lb.sec) : ll ? ' · zuletzt ' + fmtT(ll.reps) + ' Wdh.' : '') + '</div></div><span class="mu">' + icon('chevR') + '</span></div></div>'; }
+  if (W().live) h += '<div class="card ldcard tap" data-a="openWork"><div class="row"><div class="ldic" style="background:linear-gradient(135deg,#0A84FF,#063a75)">' + icon('clock') + '</div><div class="grow"><div class="eyebrow" style="color:var(--st)">Stempeluhr</div><b>Eingestempelt seit ' + W().live.a + '</b><div class="sm mu n" id="wkLive">' + hm(wkLiveMin()) + ' h · ≈ ' + eur(wkLiveMin() / 60 * W().rate) + '</div></div><span class="mu">' + icon('chevR') + '</span></div></div>';
   const dse = daysSinceExport();
   if (S.sessions.length && (dse == null || dse > 14))
     h += '<div class="card warn"><div class="eyebrow">Sicherung</div><p>' + (dse == null ? 'Noch keine Sicherung exportiert.' : 'Letzte Sicherung vor ' + dse + ' Tagen.') + '</p><button class="b pri wide" data-a="exportJson">Jetzt sichern</button></div>';
@@ -2238,7 +2244,9 @@ A.bakExport = d => { const o = localStorage.getItem(d.k); deliver(d.k.replace(/\
 VIEWS.daten = function () {
   setHdr('Daten', 'Sicherung · Import · Einstellungen');
   const dse = daysSinceExport(), st = S.settings;
-  let h = '<h2>Sicherung</h2><div class="card"><div class="kv"><span>Letzte Sicherung</span><b>' + (S.meta.lastExport ? dde(S.meta.lastExport.slice(0, 10), true) + ' (vor ' + dse + ' T.)' : 'noch nie') + '</b></div>' +
+  let h = (() => { const w = W(), t = today(), mo = wkSum(w.entries.filter(e => e.d.slice(0, 7) === t.slice(0, 7))), all = wkSum(w.entries);
+    return '<h2>Stempeluhr</h2><div class="card ldcard tap" data-a="openWork"><div class="row"><div class="ldic" style="background:linear-gradient(135deg,#0A84FF,#063a75)">' + icon('clock') + '</div><div class="grow"><b>' + (w.live ? 'Eingestempelt seit ' + w.live.a : 'Arbeitszeit &amp; Verdienst') + '</b><div class="sm mu n">' + (w.entries.length ? MONTHS[+t.slice(5, 7) - 1] + ': ' + hm(mo.min) + ' h · ' + eur(mo.pay) + ' · gesamt ' + eur(all.pay) : 'Kommen und Gehen eintragen, Lohn wird berechnet') + '</div></div><span class="mu">' + icon('chevR') + '</span></div></div>'; })();
+  h += '<h2>Sicherung</h2><div class="card"><div class="kv"><span>Letzte Sicherung</span><b>' + (S.meta.lastExport ? dde(S.meta.lastExport.slice(0, 10), true) + ' (vor ' + dse + ' T.)' : 'noch nie') + '</b></div>' +
     '<button class="b pri wide" style="margin-top:8px" data-a="exportJson">JSON exportieren (vollständig)</button>' +
     '<label class="b wide" style="margin-top:8px">JSON importieren<input type="file" accept="application/json,.json,text/plain" data-f="importFile" style="display:none"></label>' +
     '<div class="grid2" style="margin-top:8px"><button class="b" data-a="csvSess">CSV Einheiten</button><button class="b" data-a="csvSets">CSV Sätze</button></div>' +
@@ -4347,6 +4355,112 @@ function ldSplitBars(st, sp) {
   const mx = Math.max(...sp);
   return '<div class="ldsp">' + sp.map((ms, i) => '<div><i style="height:' + (8 + 92 * ms / mx).toFixed(0) + '%"></i><span>' + st[i] + '</span></div>').join('') + '</div><div class="sm mu" style="text-align:center;margin-top:4px">Balken = Rundendauer, Zahl = Stufe</div>';
 }
+
+/* ============================================================
+   Stempeluhr: Arbeitszeit und Verdienst
+   Pause automatisch nach § 4 ArbZG: über 6 h 30 min, über 9 h 45 min
+   ============================================================ */
+ICO.plus = '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>';
+ICO.clock = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>';
+function W() { if (!S.work) S.work = { rate: 0, autoP: true, entries: [], live: null }; return S.work; }
+const eur = x => (Math.round((x || 0) * 100) / 100).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' });
+const hm = min => { min = Math.max(0, Math.round(min || 0)); return Math.floor(min / 60) + ':' + String(min % 60).padStart(2, '0'); };
+const tMin = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : null; };
+const nowHM = () => hhmm(Date.now());
+function wkSpan(a, b) { const x = tMin(a), y = tMin(b); if (x == null || y == null) return null; return y - x + (y <= x ? 1440 : 0); }
+function wkAutoP(span) { return span > 9 * 60 + 30 ? Math.min(45, span - 9 * 60) : span > 6 * 60 + 30 ? 30 : span > 6 * 60 ? span - 6 * 60 : 0; }
+function wkMin(e) { const s = wkSpan(e.a, e.b); return s == null ? 0 : Math.max(0, s - (e.p || 0)); }
+const wkPay = e => wkMin(e) / 60 * (e.rate || 0);
+function wkSum(list) { return list.reduce((o, e) => { o.min += wkMin(e); o.pay += wkPay(e); o.days.add(e.d); return o; }, { min: 0, pay: 0, days: new Set() }); }
+function wkLiveMin() { const L = W().live; if (!L) return 0; return Math.max(0, (Date.now() - L.ts) / 60000); }
+const MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+VIEWS.work = function () {
+  const w = W(), es = w.entries.slice().sort((a, b) => (b.d + b.a).localeCompare(a.d + a.a)), t = today();
+  setHdr('Stempeluhr', 'Arbeitszeit & Verdienst', '<button class="b gh" data-a="wkNew" aria-label="Tag nachtragen">' + icon('plus') + '</button>', true);
+  const all = wkSum(es), wk = wkSum(es.filter(e => e.d >= weekStart(t))), mo = wkSum(es.filter(e => e.d.slice(0, 7) === t.slice(0, 7)));
+  let h = '<div class="hero wkh"><span class="eyebrow">Bisher verdient</span><div class="wkbig n">' + eur(all.pay) + '</div>' +
+    '<div class="meta n">' + hm(all.min) + ' h an ' + all.days.size + ' ' + (all.days.size === 1 ? 'Tag' : 'Tagen') + ' · brutto</div>';
+  if (w.live) h += '<div class="wklive"><i></i><div class="grow"><b>Eingestempelt seit ' + w.live.a + '</b><span class="n" id="wkLive">' + hm(wkLiveMin()) + ' h · ≈ ' + eur(wkLiveMin() / 60 * w.rate) + '</span></div></div>' +
+    '<div class="grid2" style="margin-top:12px"><button class="b" data-a="wkCancel">Verwerfen</button><button class="b go" style="margin:0" data-a="wkOut">' + icon('check') + 'Ausstempeln</button></div>';
+  else h += '<div class="grid2" style="margin-top:12px"><button class="b" data-a="wkIn">' + icon('play') + 'Jetzt einstempeln</button><button class="b go" style="margin:0" data-a="wkNew">' + icon('plus') + 'Tag nachtragen</button></div>';
+  h += '</div>';
+  h += '<div class="tiles"><div class="tile"><div class="k" style="color:var(--acc)">Diese Woche</div><div class="v n">' + eur(wk.pay) + '</div><div class="sm mu n">' + hm(wk.min) + ' h</div></div>' +
+    '<div class="tile"><div class="k" style="color:var(--cy)">' + MONTHS[+t.slice(5, 7) - 1] + '</div><div class="v n">' + eur(mo.pay) + '</div><div class="sm mu n">' + hm(mo.min) + ' h</div></div></div>';
+  h += '<h2>Einstellungen</h2><div class="card"><div class="fld"><span>Stundenlohn<small>brutto, gilt für neue Einträge</small></span><button class="b n" data-a="wkRate">' + (w.rate ? eur(w.rate) + ' / h' : 'festlegen') + '</button></div>' +
+    '<div class="fld swr"><span>Pause automatisch<small>nach Arbeitszeitgesetz: über 6 h 30 min, über 9 h 45 min</small></span><button class="swi' + (w.autoP ? ' on' : '') + '" data-a="wkAutoP"><i></i></button></div></div>';
+  if (!w.rate) h += '<div class="card warn"><p class="sm" style="margin:0">Lege deinen Stundenlohn fest, damit der Verdienst berechnet wird.</p></div>';
+  if (!es.length) h += '<div class="card" style="text-align:center"><div style="font-size:44px">🕘</div><p class="mu">Noch keine Arbeitstage. Nach der Arbeit „Tag nachtragen“ tippen und Kommen und Gehen eintragen.</p></div>';
+  const months = {}; es.forEach(e => (months[e.d.slice(0, 7)] = months[e.d.slice(0, 7)] || []).push(e));
+  for (const [m, list] of Object.entries(months)) {
+    const s = wkSum(list);
+    h += '<h2 class="wkm"><span>' + MONTHS[+m.slice(5) - 1] + ' ' + m.slice(0, 4) + '</span><small class="n">' + hm(s.min) + ' h · ' + eur(s.pay) + '</small></h2><div class="lst">' +
+      list.map(e => '<div class="li tap" data-a="wkEdit" data-id="' + e.id + '"><div class="wkd"><b>' + e.d.slice(8) + '</b><span>' + WD[new Date(e.d + 'T12:00').getDay()] + '</span></div><div class="grow"><b class="n">' + e.a + ' – ' + e.b + (wkSpan(e.a, e.b) && tMin(e.b) <= tMin(e.a) ? ' <small class="mu">(+1 Tag)</small>' : '') + '</b><span>' + (e.p ? 'Pause ' + e.p + ' min' : 'ohne Pause') + (e.note ? ' · ' + esc(e.note) : '') + '</span></div><div class="wkr"><b class="n">' + eur(wkPay(e)) + '</b><span class="n">' + hm(wkMin(e)) + ' h</span></div></div>').join('') + '</div>';
+  }
+  if (es.length) h += '<button class="b wide" style="margin-top:16px" data-a="wkCsv">Als CSV exportieren</button>';
+  h += '<p class="hint" style="margin:12px 4px">Alle Beträge brutto, ohne Steuern und Abgaben. Schichten über Mitternacht werden automatisch erkannt. Die Daten stecken in deiner normalen JSON-Sicherung.</p>';
+  return h;
+};
+A.openWork = () => push('work', {});
+A.wkIn = () => { W().live = { d: today(), a: nowHM(), ts: Date.now() }; save(); haptic(2); render(); toast('Eingestempelt um ' + W().live.a); };
+A.wkCancel = () => ask('Einstempeln verwerfen?', 'Verwerfen', () => { W().live = null; save(); render(); }, true);
+A.wkOut = () => { const L = W().live; wkSheet({ d: L.d, a: L.a, b: nowHM(), fromLive: true }); };
+A.wkNew = () => { const last = W().entries.slice().sort((a, b) => (b.d + b.a).localeCompare(a.d + a.a))[0]; wkSheet({ d: today(), a: last ? last.a : '08:00', b: last ? last.b : '16:30' }); };
+A.wkEdit = d => { const e = W().entries.find(x => x.id === d.id); if (e) wkSheet(Object.assign({}, e, { edit: true })); };
+function wkSheet(o) {
+  const w = W(), span = wkSpan(o.a, o.b), p = o.p != null ? o.p : (w.autoP && span != null ? wkAutoP(span) : 0);
+  SH = { type: 'wk', o, pTouched: o.p != null };
+  sheet('<h3>' + (o.edit ? 'Arbeitstag bearbeiten' : o.fromLive ? 'Ausstempeln' : 'Arbeitstag nachtragen') + '</h3>' +
+    '<div class="card wkf"><label class="fld"><span>Datum</span><input class="in" type="date" id="wkD" value="' + o.d + '" max="' + addDays(today(), 1) + '"></label>' +
+    '<label class="fld"><span>Gekommen</span><input class="in n" type="time" id="wkA" value="' + o.a + '" data-f="wkCalc"></label>' +
+    '<label class="fld"><span>Gegangen</span><input class="in n" type="time" id="wkB" value="' + o.b + '" data-f="wkCalc"></label>' +
+    '<label class="fld"><span>Pause<small id="wkPH">' + (w.autoP ? 'automatisch nach ArbZG' : 'in Minuten') + '</small></span><input class="in n" type="number" inputmode="numeric" min="0" step="5" id="wkP" value="' + p + '" data-f="wkPause" style="max-width:110px;text-align:right"></label>' +
+    '<label class="fld"><span>Notiz</span><input class="in" type="text" id="wkN" maxlength="60" placeholder="optional" value="' + esc(o.note || '') + '"></label></div>' +
+    '<div class="wkprev" id="wkPrev"></div>' +
+    '<div class="grid2" style="margin-top:12px"><button class="b" data-a="closeSheet">Abbrechen</button><button class="b pri" data-a="wkSave">Speichern</button></div>' +
+    (o.edit ? '<button class="b wide dg" style="margin-top:8px" data-a="wkDel">Eintrag löschen</button>' : ''));
+  wkPreview();
+}
+function wkVals() { const g = id => (document.getElementById(id) || {}).value || ''; return { d: g('wkD'), a: g('wkA'), b: g('wkB'), p: Math.max(0, Math.round(+g('wkP') || 0)), note: g('wkN').trim() }; }
+function wkPreview() {
+  const v = wkVals(), el = document.getElementById('wkPrev'); if (!el) return;
+  const span = wkSpan(v.a, v.b); if (span == null) { el.innerHTML = ''; return; }
+  const min = Math.max(0, span - v.p), rate = SH && SH.o && SH.o.edit ? SH.o.rate : W().rate;
+  el.innerHTML = '<div><span>Arbeitszeit</span><b class="n">' + hm(min) + ' h</b></div><div><span>Verdienst</span><b class="n" style="color:var(--acc)">' + (rate ? eur(min / 60 * rate) : '–') + '</b></div>' +
+    (tMin(v.b) <= tMin(v.a) ? '<p class="sm mu" style="grid-column:1/-1;margin:0">Gehen liegt vor Kommen – zählt als Schicht über Mitternacht.</p>' : '') +
+    (min > 10 * 60 ? '<p class="sm" style="grid-column:1/-1;margin:0;color:var(--or)">Mehr als 10 Stunden – bitte prüfen.</p>' : '');
+}
+F.wkCalc = () => {
+  if (SH && SH.type === 'wk' && !SH.pTouched && W().autoP) { const v = wkVals(), s = wkSpan(v.a, v.b), p = document.getElementById('wkP'); if (s != null && p) p.value = wkAutoP(s); }
+  wkPreview();
+};
+F.wkPause = () => { if (SH) SH.pTouched = true; wkPreview(); };
+A.wkSave = () => {
+  const v = wkVals(), o = SH.o, w = W();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v.d)) return toast('Bitte ein Datum wählen.', true);
+  const span = wkSpan(v.a, v.b); if (span == null) return toast('Bitte Kommen und Gehen eintragen.', true);
+  if (v.p >= span) return toast('Die Pause ist länger als die Anwesenheit.', true);
+  if (o.edit) { const e = w.entries.find(x => x.id === o.id); Object.assign(e, v); }
+  else w.entries.push(Object.assign({ id: 'w' + uid(), rate: w.rate }, v));
+  if (o.fromLive) w.live = null;
+  save(); closeSheet(); haptic(2); render();
+  const e = o.edit ? w.entries.find(x => x.id === o.id) : w.entries[w.entries.length - 1];
+  toast(hm(wkMin(e)) + ' h gespeichert' + (e.rate ? ' · ' + eur(wkPay(e)) : ''));
+  if (!o.edit && fxOn()) { const b = document.querySelector('.wkbig'); if (b) { const r = b.getBoundingClientRect(); confetti(40, r.left + r.width / 2, r.top + r.height / 2); } }
+};
+A.wkDel = () => { const id = SH.o.id; closeSheet(); ask('Arbeitstag löschen?', 'Löschen', () => { W().entries = W().entries.filter(x => x.id !== id); save(); render(); }, true); };
+A.wkAutoP = () => { W().autoP = !W().autoP; save(); render(); };
+A.wkRate = () => keypad('Stundenlohn brutto', W().rate || '', v => {
+  const w = W(), old = w.rate; w.rate = Math.round(v * 100) / 100; save(); render();
+  const other = w.entries.filter(e => e.rate !== w.rate);
+  if (other.length && old !== w.rate) ask('Neuen Lohn von ' + eur(w.rate) + ' auch für ' + other.length + ' bisherige ' + (other.length === 1 ? 'Eintrag' : 'Einträge') + ' übernehmen?', 'Übernehmen', () => { other.forEach(e => e.rate = w.rate); save(); render(); toast('Für alle Einträge übernommen.'); });
+}, { dec: true, unit: '€/h', quick: [12.82, 13.9, 15, 18, 20] });
+A.wkCsv = () => {
+  const rows = [['Datum', 'Wochentag', 'Gekommen', 'Gegangen', 'Pause min', 'Arbeitszeit h', 'Stundenlohn €', 'Verdienst €', 'Notiz']];
+  W().entries.slice().sort((a, b) => (a.d + a.a).localeCompare(b.d + b.a)).forEach(e => rows.push([dde(e.d, true), WD[new Date(e.d + 'T12:00').getDay()], e.a, e.b, e.p || 0, wkMin(e) / 60, e.rate || 0, wkPay(e), e.note || '']));
+  deliver('stempeluhr-' + today() + '.csv', csv(rows), 'text/csv');
+};
+function wkTick() { const el = document.getElementById('wkLive'), L = S && S.work && S.work.live; if (el && L) el.textContent = hm(wkLiveMin()) + ' h · ≈ ' + eur(wkLiveMin() / 60 * S.work.rate); }
 
 boot();
 render();
