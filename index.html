@@ -481,7 +481,7 @@ input.rng::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;b
 .ldsp{display:flex;align-items:flex-end;gap:2px;height:90px}.ldsp div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;align-items:center}.ldsp i{display:block;width:100%;background:var(--cy);border-radius:3px 3px 0 0}.ldsp span{font-size:9px;color:var(--mu)}
 .wkh .wkbig{font:700 44px var(--rnd);letter-spacing:-.5px;margin:4px 0 2px;color:var(--tx)}.wklive{display:flex;gap:10px;align-items:center;margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(10,132,255,.14)}.wklive i{width:10px;height:10px;border-radius:50%;background:var(--st);flex:none;animation:ldp 1.4s ease-in-out infinite}.wklive b{display:block;font-size:15px}.wklive span{font-size:13px;color:var(--mu)}
 .wkm{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.wkm small{font:500 13px var(--sans);color:var(--mu)}.wkd{width:38px;flex:none;text-align:center}.wkd b{display:block;font:700 19px var(--rnd);line-height:1}.wkd span{font-size:11px;color:var(--mu)}.wkr{text-align:right;flex:none}.wkr b{display:block;font-size:15px}.wkr span{font-size:12px;color:var(--mu)}
-.wkf .fld{grid-template-columns:1fr minmax(0,170px)}.wkf .fld:first-child{border-top:0}.wkf .in{min-height:40px;padding:8px 10px}.wkprev{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.wkprev div{background:var(--s2);border-radius:14px;padding:10px 12px}.wkprev span{display:block;font-size:12px;color:var(--mu)}.wkprev b{font:700 22px var(--rnd)}
+.wkf .fld{grid-template-columns:1fr minmax(0,170px)}.wkf .fld:first-child{border-top:0}.wkf .in{min-height:40px;padding:8px 10px}.wkf .swr .swi{justify-self:end}.wkprev{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.wkprev div{background:var(--s2);border-radius:14px;padding:10px 12px}.wkprev span{display:block;font-size:12px;color:var(--mu)}.wkprev b{font:700 22px var(--rnd)}
 </style>
 </head>
 <body>
@@ -4397,7 +4397,7 @@ VIEWS.work = function () {
     h += '<h2 class="wkm"><span>' + MONTHS[+m.slice(5) - 1] + ' ' + m.slice(0, 4) + '</span><small class="n">' + hm(s.min) + ' h · ' + eur(s.pay) + '</small></h2><div class="lst">' +
       list.map(e => '<div class="li tap" data-a="wkEdit" data-id="' + e.id + '"><div class="wkd"><b>' + e.d.slice(8) + '</b><span>' + WD[new Date(e.d + 'T12:00').getDay()] + '</span></div><div class="grow"><b class="n">' + e.a + ' – ' + e.b + (wkSpan(e.a, e.b) && tMin(e.b) <= tMin(e.a) ? ' <small class="mu">(+1 Tag)</small>' : '') + '</b><span>' + (e.p ? 'Pause ' + e.p + ' min' : 'ohne Pause') + (e.note ? ' · ' + esc(e.note) : '') + '</span></div><div class="wkr"><b class="n">' + eur(wkPay(e)) + '</b><span class="n">' + hm(wkMin(e)) + ' h</span></div></div>').join('') + '</div>';
   }
-  if (es.length) h += '<button class="b wide" style="margin-top:16px" data-a="wkCsv">Als CSV exportieren</button>';
+  if (es.length) h += '<div class="btns" style="grid-template-columns:1.4fr 1fr;margin-top:16px"><button class="b pri" data-a="wkPdf">Stunden als PDF</button><button class="b" data-a="wkCsv">CSV</button></div>';
   h += '<p class="hint" style="margin:12px 4px">Alle Beträge brutto, ohne Steuern und Abgaben. Schichten über Mitternacht werden automatisch erkannt. Die Daten stecken in deiner normalen JSON-Sicherung.</p>';
   return h;
 };
@@ -4461,6 +4461,149 @@ A.wkCsv = () => {
   deliver('stempeluhr-' + today() + '.csv', csv(rows), 'text/csv');
 };
 function wkTick() { const el = document.getElementById('wkLive'), L = S && S.work && S.work.live; if (el && L) el.textContent = hm(wkLiveMin()) + ' h · ≈ ' + eur(wkLiveMin() / 60 * S.work.rate); }
+
+const PDFW = {R:[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584,350,556,350,222,556,333,1000,556,556,333,1000,667,333,1000,350,611,350,350,222,222,333,333,350,556,1000,333,1000,500,333,944,350,500,667,278,333,556,556,556,556,260,556,333,737,370,556,584,333,737,333,400,584,333,333,333,556,537,278,333,333,365,556,834,834,834,611,667,667,667,667,667,667,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,500,556,556,556,556,278,278,278,278,556,556,556,556,556,556,556,584,611,556,556,556,556,500,556,500],B:[278,333,474,556,556,889,722,238,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,333,333,584,584,584,611,975,722,722,722,722,667,611,778,722,278,556,722,611,833,722,778,667,778,722,667,611,722,667,944,667,667,611,333,278,333,584,556,333,556,611,556,611,556,333,611,611,278,278,556,278,889,611,611,611,611,389,556,333,611,556,778,556,556,500,389,280,389,584,350,556,350,278,556,500,1000,556,556,333,1000,667,333,1000,350,611,350,350,278,278,500,500,350,556,1000,333,1000,556,333,944,350,500,667,278,333,556,556,556,556,280,556,333,737,370,556,584,333,737,333,400,584,333,333,333,611,556,278,333,333,365,556,834,834,834,611,722,722,722,722,722,722,1000,722,667,667,667,667,278,278,278,278,722,722,778,778,778,778,778,584,778,722,722,722,722,667,667,611,556,556,556,556,556,556,889,556,556,556,556,556,278,278,278,278,611,611,611,611,611,611,611,584,611,611,611,611,611,556,611,556]};
+const PDF1252 = {8364:128,8218:130,402:131,8222:132,8230:133,8224:134,8225:135,710:136,8240:137,352:138,8249:139,338:140,381:142,8216:145,8217:146,8220:147,8221:148,8226:149,8211:150,8212:151,732:152,8482:153,353:154,8250:155,339:156,382:158,376:159};
+/* ---------- Minimaler PDF-Schreiber (A4, Helvetica, WinAnsi) – offline, ohne Bibliothek ---------- */
+function pdfEnc(s) { let o = ''; for (const ch of String(s)) { const c = ch.codePointAt(0); o += c < 256 && !(c >= 128 && c < 160) ? String.fromCharCode(c) : PDF1252[c] ? String.fromCharCode(PDF1252[c]) : '?'; } return o; }
+function pdfW(s, size, bold) { const t = pdfEnc(s), w = PDFW[bold ? 'B' : 'R']; let n = 0; for (let i = 0; i < t.length; i++) { const c = t.charCodeAt(i); n += c >= 32 ? w[c - 32] || 0 : 0; } return n * size / 1000; }
+function pdfFit(s, size, bold, max) { s = String(s); if (pdfW(s, size, bold) <= max) return s; while (s.length && pdfW(s + '…', size, bold) > max) s = s.slice(0, -1); return s + '…'; }
+function PDFDoc() {
+  const pages = []; let cur = null;
+  const esc = s => pdfEnc(s).replace(/[\\()]/g, m => '\\' + m);
+  const col = c => { const h = c.replace('#', ''); return [0, 2, 4].map(i => (parseInt(h.substr(i, 2), 16) / 255).toFixed(3)).join(' '); };
+  const D = {
+    W: 595.28, H: 841.89,
+    page() { cur = []; pages.push(cur); return D; },
+    text(x, y, s, o = {}) { const sz = o.size || 10, b = o.bold, w = pdfW(s, sz, b); if (o.align === 'right') x -= w; else if (o.align === 'center') x -= w / 2; cur.push('BT /' + (b ? 'F2' : 'F1') + ' ' + sz + ' Tf ' + col(o.color || '#111111') + ' rg ' + x.toFixed(2) + ' ' + (D.H - y).toFixed(2) + ' Td (' + esc(s) + ') Tj ET'); return D; },
+    rect(x, y, w, h, fill) { cur.push(col(fill) + ' rg ' + x.toFixed(2) + ' ' + (D.H - y - h).toFixed(2) + ' ' + w.toFixed(2) + ' ' + h.toFixed(2) + ' re f'); return D; },
+    line(x1, y1, x2, y2, c = '#C8C8CC', w = .6) { cur.push(col(c) + ' RG ' + w + ' w ' + x1.toFixed(2) + ' ' + (D.H - y1).toFixed(2) + ' m ' + x2.toFixed(2) + ' ' + (D.H - y2).toFixed(2) + ' l S'); return D; },
+    count: () => pages.length,
+    onPage(i) { cur = pages[i]; return D; },
+    bytes() {
+      const objs = [], add = s => { objs.push(s); return objs.length; };
+      const f1 = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+      const f2 = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>');
+      const pagesId = objs.length + 1; objs.push(null);
+      const kids = [];
+      for (const p of pages) { const c = p.join('\n'); const cid = add('<< /Length ' + c.length + ' >>\nstream\n' + c + '\nendstream'); kids.push(add('<< /Type /Page /Parent ' + pagesId + ' 0 R /MediaBox [0 0 ' + D.W + ' ' + D.H + '] /Resources << /Font << /F1 ' + f1 + ' 0 R /F2 ' + f2 + ' 0 R >> >> /Contents ' + cid + ' 0 R >>')); }
+      objs[pagesId - 1] = '<< /Type /Pages /Kids [' + kids.map(k => k + ' 0 R').join(' ') + '] /Count ' + kids.length + ' >>';
+      const cat = add('<< /Type /Catalog /Pages ' + pagesId + ' 0 R >>');
+      const info = add('<< /Title (' + esc(D.title || 'Dokument') + ') /Producer (Stufe REV 3) /CreationDate (D:' + new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14) + ') >>');
+      let out = '%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'; const off = [];
+      objs.forEach((o, i) => { off.push(out.length); out += (i + 1) + ' 0 obj\n' + o + '\nendobj\n'; });
+      const xref = out.length;
+      out += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n' + off.map(o => String(o).padStart(10, '0') + ' 00000 n \n').join('');
+      out += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root ' + cat + ' 0 R /Info ' + info + ' 0 R >>\nstartxref\n' + xref + '\n%%EOF';
+      const u = new Uint8Array(out.length); for (let i = 0; i < out.length; i++) u[i] = out.charCodeAt(i) & 255; return u;
+    }
+  };
+  return D;
+}
+
+/* ---------- Stempeluhr: Arbeitszeitnachweis als PDF (ohne Lohn und Beträge) ---------- */
+const wkDec = min => (Math.round(min / 60 * 100) / 100).toFixed(2).replace('.', ',');
+function wkRange(k, from, to) {
+  const t = today(), m0 = t.slice(0, 8) + '01';
+  if (k === 'month') return [m0, t];
+  if (k === 'last') { const d = new Date(m0 + 'T12:00'); d.setMonth(d.getMonth() - 1); const a = dstr(d); const e = new Date(m0 + 'T12:00'); e.setDate(0); return [a, dstr(e)]; }
+  if (k === 'week') return [weekStart(t), t];
+  if (k === 'custom') return [from || m0, to || t];
+  const ds = W().entries.map(e => e.d).sort(); return [ds[0] || t, ds[ds.length - 1] || t];
+}
+A.wkPdf = () => {
+  const w = W(), o = w.pdf || (w.pdf = { range: 'month', name: '', firm: '', sign: true });
+  SH = { type: 'wkpdf' };
+  const R = [['month', 'Dieser Monat'], ['last', 'Letzter Monat'], ['week', 'Diese Woche'], ['all', 'Alles'], ['custom', 'Zeitraum']];
+  const [a, b] = wkRange(o.range, o.from, o.to), n = w.entries.filter(e => e.d >= a && e.d <= b);
+  sheet('<h3>Stunden als PDF</h3><p class="sm mu" style="margin-top:-4px">Arbeitszeitnachweis mit Datum, Beginn, Ende, Pause und Arbeitszeit – ohne Stundenlohn und Beträge.</p>' +
+    '<label class="lb">Zeitraum</label><div class="scrollx">' + R.map(([k, l]) => '<button class="chip' + (o.range === k ? ' on' : '') + '" data-a="wkPdfR" data-v="' + k + '">' + l + '</button>').join('') + '</div>' +
+    (o.range === 'custom' ? '<div class="grid2" style="margin-top:8px"><input class="in" type="date" id="wpF" value="' + a + '" data-f="wkPdfD"><input class="in" type="date" id="wpT" value="' + b + '" data-f="wkPdfD"></div>' : '') +
+    '<div class="card wkf" style="margin-top:10px"><label class="fld"><span>Dein Name<small>optional</small></span><input class="in" type="text" id="wpN" maxlength="50" value="' + esc(o.name || '') + '" placeholder="Name"></label>' +
+    '<label class="fld"><span>Arbeitgeber<small>optional</small></span><input class="in" type="text" id="wpE" maxlength="60" value="' + esc(o.firm || '') + '" placeholder="Firma"></label>' +
+    '<div class="fld swr"><span>Unterschriftsfelder</span><button class="swi' + (o.sign ? ' on' : '') + '" data-a="wkPdfS"><i></i></button></div></div>' +
+    '<p class="sm mu n" style="margin:10px 4px 0">' + dde(a, true) + ' – ' + dde(b, true) + ' · ' + n.length + ' ' + (n.length === 1 ? 'Eintrag' : 'Einträge') + ' · ' + hm(n.reduce((s, e) => s + wkMin(e), 0)) + ' h</p>' +
+    '<div class="grid2" style="margin-top:12px"><button class="b" data-a="closeSheet">Abbrechen</button><button class="b pri" data-a="wkPdfGo"' + (n.length ? '' : ' disabled') + '>PDF erstellen</button></div>');
+};
+function wkPdfKeep() { const o = W().pdf, g = id => document.getElementById(id); if (g('wpN')) o.name = g('wpN').value.trim(); if (g('wpE')) o.firm = g('wpE').value.trim(); }
+A.wkPdfR = d => { wkPdfKeep(); const o = W().pdf; if (d.v === 'custom' && o.range !== 'custom') [o.from, o.to] = wkRange(o.range); o.range = d.v; save(); A.wkPdf(); };
+A.wkPdfS = () => { wkPdfKeep(); W().pdf.sign = !W().pdf.sign; save(); A.wkPdf(); };
+F.wkPdfD = () => { wkPdfKeep(); const o = W().pdf; o.from = document.getElementById('wpF').value; o.to = document.getElementById('wpT').value; if (o.from > o.to) [o.from, o.to] = [o.to, o.from]; save(); A.wkPdf(); };
+A.wkPdfGo = () => {
+  wkPdfKeep(); save();
+  const o = W().pdf, [a, b] = wkRange(o.range, o.from, o.to);
+  const es = W().entries.filter(e => e.d >= a && e.d <= b).sort((x, y) => (x.d + x.a).localeCompare(y.d + y.a));
+  if (!es.length) return toast('Keine Einträge in diesem Zeitraum.', true);
+  const bytes = wkPdfBuild(es, a, b, o);
+  const fn = 'Arbeitszeit_' + (o.name ? o.name.replace(/[^\wäöüÄÖÜß-]+/g, '_') + '_' : '') + a + '_bis_' + b + '.pdf';
+  closeSheet(); deliver(fn, bytes, 'application/pdf').then(ok => { if (ok) toast('PDF erstellt.'); });
+};
+function wkPdfBuild(es, a, b, o) {
+  const P = PDFDoc(), M = 46, R = P.W - M, ACC = '#1F6FEB', GR = '#6E6E73';
+  P.title = 'Arbeitszeitnachweis ' + dde(a, true) + ' – ' + dde(b, true);
+  // Spalten: Datum | Tag | Beginn | Ende | Pause | Arbeitszeit | Notiz
+  const C = [{ x: M + 6, t: 'Datum' }, { x: M + 82, t: 'Tag' }, { x: M + 146, t: 'Beginn', r: 1 }, { x: M + 202, t: 'Ende', r: 1 }, { x: M + 260, t: 'Pause', r: 1 }, { x: M + 334, t: 'Arbeitszeit', r: 1 }, { x: M + 354, t: 'Notiz' }];
+  const WDL = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
+  const tot = es.reduce((s, e) => s + wkMin(e), 0), days = new Set(es.map(e => e.d)).size, pause = es.reduce((s, e) => s + (e.p || 0), 0);
+  let y = 0;
+  const head = first => {
+    P.page(); y = M;
+    P.rect(0, 0, P.W, 6, ACC);
+    if (first) {
+      P.text(M, y + 22, 'Arbeitszeitnachweis', { size: 22, bold: true });
+      P.text(R, y + 22, dde(a, true) + ' – ' + dde(b, true), { size: 11, bold: true, align: 'right', color: '#333333' });
+      y += 44;
+      const meta = [['Name', o.name || '—'], ['Arbeitgeber', o.firm || '—']];
+      meta.forEach(([k, v], i) => { P.text(M + i * 250, y, k, { size: 8, color: GR }); P.text(M + i * 250, y + 14, pdfFit(v, 11, true, 240), { size: 11, bold: true }); });
+      y += 30;
+      // Kennzahlen
+      const K = [['Arbeitstage', String(days)], ['Arbeitszeit gesamt', hm(tot) + ' h'], ['in Dezimalstunden', wkDec(tot) + ' Std.'], ['Ø pro Arbeitstag', hm(days ? tot / days : 0) + ' h']];
+      const bw = (R - M - 18) / 4;
+      K.forEach(([k, v], i) => { const x = M + i * (bw + 6); P.rect(x, y, bw, 46, '#F2F4F8'); P.text(x + 10, y + 16, k, { size: 8, color: GR }); P.text(x + 10, y + 35, v, { size: 14, bold: true, color: i === 1 ? ACC : '#111111' }); });
+      y += 64;
+    } else { P.text(M, y + 14, 'Arbeitszeitnachweis · ' + dde(a, true) + ' – ' + dde(b, true) + (o.name ? ' · ' + o.name : ''), { size: 9, color: GR }); y += 30; }
+  };
+  const thead = () => { P.rect(M, y, R - M, 20, '#1C1C1E'); C.forEach(c => P.text(c.x, y + 13.5, c.t, { size: 8.5, bold: true, color: '#FFFFFF', align: c.r ? 'right' : 'left' })); y += 20; };
+  const need = h => { if (y + h > P.H - 70) { head(false); thead(); } };
+  head(true);
+  const months = []; es.forEach(e => { const k = e.d.slice(0, 7); if (!months.length || months[months.length - 1].k !== k) months.push({ k, list: [] }); months[months.length - 1].list.push(e); });
+  months.forEach(mo => {
+    need(70);
+    { P.text(M, y + 14, MONTHS[+mo.k.slice(5) - 1] + ' ' + mo.k.slice(0, 4), { size: 13, bold: true }); y += 22; }
+    thead();
+    mo.list.forEach((e, i) => {
+      need(18);
+      if (i % 2) P.rect(M, y, R - M, 18, '#F6F7F9');
+      const dt = new Date(e.d + 'T12:00'), night = tMin(e.b) <= tMin(e.a);
+      const cells = [dde(e.d, true), WDL[dt.getDay()], e.a, e.b + (night ? '¹' : ''), e.p ? e.p + ' min' : '—', hm(wkMin(e)) + ' h', pdfFit(e.note || '', 9, false, R - C[6].x - 6)];
+      C.forEach((c, j) => P.text(c.x, y + 12.5, cells[j], { size: 9, bold: j === 5, align: c.r ? 'right' : 'left', color: j === 6 ? GR : '#111111' }));
+      y += 18;
+    });
+    const mt = mo.list.reduce((s, e) => s + wkMin(e), 0), md = new Set(mo.list.map(e => e.d)).size;
+    need(24); P.line(M, y, R, y, '#1C1C1E', .8);
+    P.text(C[0].x, y + 14, 'Summe ' + MONTHS[+mo.k.slice(5) - 1], { size: 9, bold: true });
+    P.text(C[4].x, y + 14, md + ' ' + (md === 1 ? 'Tag' : 'Tage'), { size: 9, color: GR, align: 'right' });
+    P.text(C[5].x, y + 14, hm(mt) + ' h', { size: 9.5, bold: true, align: 'right', color: ACC });
+    P.text(C[6].x, y + 14, '= ' + wkDec(mt) + ' Std.', { size: 9, color: GR });
+    y += 34;
+  });
+  // Gesamt
+  need(60);
+  P.rect(M, y, R - M, 34, '#EAF1FD');
+  P.text(M + 10, y + 21, 'Gesamt ' + dde(a, true) + ' – ' + dde(b, true), { size: 10.5, bold: true });
+  P.text(R - 10, y + 21, hm(tot) + ' h  (' + wkDec(tot) + ' Std.)  ·  ' + days + ' Arbeitstage  ·  Pausen ' + hm(pause) + ' h', { size: 10, bold: true, align: 'right', color: ACC });
+  y += 46;
+  if (es.some(e => tMin(e.b) <= tMin(e.a))) { P.text(M, y, '¹ Ende am Folgetag (Schicht über Mitternacht)', { size: 8, color: GR }); y += 14; }
+  P.text(M, y, 'Arbeitszeit = Ende - Beginn - Pause. Angaben in Stunden:Minuten.', { size: 8, color: GR }); y += 14;
+  if (o.sign) {
+    need(90); y += 40;
+    const sw = (R - M - 40) / 2;
+    [['Ort, Datum, Unterschrift Arbeitnehmer', M], ['Ort, Datum, Unterschrift Arbeitgeber', M + sw + 40]].forEach(([t, x]) => { P.line(x, y, x + sw, y, '#111111', .7); P.text(x, y + 12, t, { size: 8, color: GR }); });
+  }
+  const n = P.count(), cr = 'Erstellt am ' + dde(today(), true) + ' um ' + nowHM() + ' Uhr';
+  for (let i = 0; i < n; i++) { P.onPage(i); P.line(M, P.H - 40, R, P.H - 40); P.text(M, P.H - 26, cr, { size: 7.5, color: GR }); P.text(R, P.H - 26, 'Seite ' + (i + 1) + ' von ' + n, { size: 7.5, color: GR, align: 'right' }); }
+  return P.bytes();
+}
 
 boot();
 render();
