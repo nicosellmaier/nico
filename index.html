@@ -4540,7 +4540,7 @@ A.wkPdfGo = () => {
 };
 function wkPdfBuild(es, a, b, o) {
   const P = PDFDoc(), M = 46, R = P.W - M, ACC = '#1F6FEB', GR = '#6E6E73';
-  P.title = 'Arbeitszeitnachweis ' + dde(a, true) + ' – ' + dde(b, true);
+  P.title = 'Arbeitszeitnachweis ' + dde(a, true) + ' bis ' + dde(b, true);
   // Spalten: Datum | Tag | Beginn | Ende | Pause | Arbeitszeit | Notiz
   const C = [{ x: M + 6, t: 'Datum' }, { x: M + 82, t: 'Tag' }, { x: M + 146, t: 'Beginn', r: 1 }, { x: M + 202, t: 'Ende', r: 1 }, { x: M + 260, t: 'Pause', r: 1 }, { x: M + 334, t: 'Arbeitszeit', r: 1 }, { x: M + 354, t: 'Notiz' }];
   const WDL = ['So.', 'Mo.', 'Di.', 'Mi.', 'Do.', 'Fr.', 'Sa.'];
